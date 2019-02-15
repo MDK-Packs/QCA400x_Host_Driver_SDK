@@ -1,0 +1,1 @@
+/*Qualcomm ATHEROS, Inc. chooses to receive under the BSD license.*/
