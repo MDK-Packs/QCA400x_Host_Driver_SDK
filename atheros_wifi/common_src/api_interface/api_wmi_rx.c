@@ -25,6 +25,7 @@
 #include <a_osapi.h>
 #include <common_api.h>
 #include <custom_wlan_api.h>
+#include "common_stack_offload.h"
 #include <a_drv_api.h>
 #include <wmi_api.h>
 #include <aggr_recv_api.h>
@@ -32,6 +33,7 @@
 #include <atheros_wifi_api.h> //IGX_UD_CHANGES
 #include <atheros_wifi_internal.h> //IGX_UD_CHANGES
 #include <wlan_api.h>
+#include "stdio.h"
 
 #if ENABLE_P2P_MODE
 #include "p2p.h"

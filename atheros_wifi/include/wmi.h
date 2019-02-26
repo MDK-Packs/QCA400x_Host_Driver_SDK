@@ -37,6 +37,7 @@
 
 //#include "wmix.h"
 #include "wlan_defs.h"
+#include "a_osapi.h"
 
 //athstartpack.h must be the last include else it may be
 //undone by another include file including athendpack.h
@@ -79,7 +80,7 @@ struct host_app_area_s {
     QOSAL_UINT32 wmi_protocol_ver;
 };
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
 	QOSAL_UINT8 a FIELD_PACKED;
 	QOSAL_UINT8 b FIELD_PACKED;
 	QOSAL_UINT8 c FIELD_PACKED;
@@ -89,13 +90,13 @@ typedef PREPACK struct {
 /*
  * Data Path
  */
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT8     dstMac[ATH_MAC_LEN] FIELD_PACKED;
     QOSAL_UINT8     srcMac[ATH_MAC_LEN] FIELD_PACKED;
     QOSAL_UINT16    typeOrLen FIELD_PACKED;
 } POSTPACK ATH_MAC_HDR;
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT8     dsap FIELD_PACKED;
     QOSAL_UINT8     ssap FIELD_PACKED;
     QOSAL_UINT8     cntl FIELD_PACKED;
@@ -259,7 +260,7 @@ typedef enum {
 #define WMI_DATA_HDR_SET_PARTIAL_FLUSH_BIT(h)            ((h)->info3 |= (WMI_DATA_HDR_PARTIAL_FLUSH_BIT_MASK << WMI_DATA_HDR_PARTIAL_FLUSH_BIT_SHIFT))
 
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_INT8      rssi FIELD_PACKED;
     QOSAL_UINT8     info FIELD_PACKED;               /* usage of 'info' field(8-bit):
                                      *  b1:b0       - WMI_MSG_TYPE
@@ -300,12 +301,12 @@ typedef PREPACK struct {
 #define WMI_ACL_TO_DOT11_HEADROOM   36
 
 #if 0 /* removed to prevent compile errors for WM.. */
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
 /* intentionally empty. Default version is no meta data. */
 } POSTPACK WMI_TX_META_V0;
 #endif
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT8     pktID FIELD_PACKED;           /* The packet ID to identify the tx request */
     QOSAL_UINT8     ratePolicyID FIELD_PACKED;    /* The rate policy to be used for the tx of this frame */
 } POSTPACK WMI_TX_META_V1;
@@ -313,7 +314,7 @@ typedef PREPACK struct {
 
 #define WMI_CSUM_DIR_TX (0x1)
 #define TX_CSUM_CALC_FILL (0x1)
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT8    csumStart FIELD_PACKED;       /*Offset from start of the WMI header for csum calculation to begin */
     QOSAL_UINT8    csumDest FIELD_PACKED;        /*Offset from start of WMI header where final csum goes*/
     QOSAL_UINT8     csumFlags FIELD_PACKED;    /*number of bytes over which csum is calculated*/
@@ -336,7 +337,7 @@ typedef PREPACK struct {
 /* WMI_TX_RATE_SCHEDULE - Acts as a host-provided rate schedule to replace what would be normally determined
  * by firmware.  This allows the host to specify what rates and attempts should be used to transmit the
  * frame. */
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
 #define WMI_TX_MAX_RATE_SERIES (4)
     QOSAL_UINT8 rateSeries[WMI_TX_MAX_RATE_SERIES] FIELD_PACKED; //rate index for each series. first invalid rate terminates series.
     QOSAL_UINT8 trySeries[WMI_TX_MAX_RATE_SERIES] FIELD_PACKED; //number of tries for each series.
@@ -346,12 +347,12 @@ typedef PREPACK struct {
     //
 }POSTPACK WMI_TX_RATE_SCHEDULE;
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     WMI_TX_RATE_SCHEDULE rateSched FIELD_PACKED;
     QOSAL_UINT8     pktID FIELD_PACKED;           /* The packet ID to identify the tx request */
 } POSTPACK WMI_TX_META_V3;
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT8 reserved FIELD_PACKED;
 } POSTPACK WMI_TX_META_V5;
 
@@ -382,12 +383,12 @@ typedef PREPACK struct {
 #define WMI_RX_META_GET_CRYPTO(flags) (((flags) >> WMI_RX_FLAGS_CRYPTO_SHIFT) & WMI_RX_FLAGS_CRYPTO_MASK)
 
 #if 0 /* removed to prevent compile errors for WM.. */
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
 /* intentionally empty. Default version is no meta data. */
 } POSTPACK WMI_RX_META_VERSION_0;
 #endif
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT8     status FIELD_PACKED; /* one of WMI_RX_STATUS_... */
     QOSAL_UINT8     rix FIELD_PACKED;    /* rate index mapped to rate at which this packet was received. */
     QOSAL_UINT8     rssi FIELD_PACKED;   /* rssi of packet */
@@ -396,7 +397,7 @@ typedef PREPACK struct {
 } POSTPACK WMI_RX_META_V1;
 
 #define RX_CSUM_VALID_FLAG (0x1)
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT16    csum FIELD_PACKED;
     QOSAL_UINT8     csumFlags FIELD_PACKED;/* bit 0 set -partial csum valid
                              bit 1 set -test mode */
@@ -412,7 +413,7 @@ typedef PREPACK struct {
 /*
  * Control Path
  */
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT16    commandId FIELD_PACKED;
 /*
  * info1 - 16 bits
@@ -592,11 +593,11 @@ typedef enum {
         WMI_HEATBEAT_CHALLENGE                 =0xF0F8,
 } WMI_COMMAND_ID;
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT8 enable;
 } POSTPACK  WMI_PROBE_REQ_REPORT_CMD_STRUCT;
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_INT32  param_val;
 }POSTPACK WMI_SET_TX_POWER_SCALE_CMD;
 
@@ -697,7 +698,7 @@ typedef enum {
 
 #define DEFAULT_CONNECT_CTRL_FLAGS    (CONNECT_CSA_FOLLOW_BSS)
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT8     networkType FIELD_PACKED;
     QOSAL_UINT8     dot11AuthMode FIELD_PACKED;
     QOSAL_UINT8     authMode FIELD_PACKED;
@@ -719,23 +720,23 @@ typedef PREPACK struct {
 #define HIDDEN_SSID_FALSE   0
 #define HIDDEN_SSID_TRUE    1
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT8     hidden_ssid FIELD_PACKED;
 } POSTPACK WMI_AP_HIDDEN_SSID_CMD;
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT32 period FIELD_PACKED;
 } POSTPACK WMI_AP_CONN_INACT_CMD;
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT16     beaconInterval FIELD_PACKED;
 } POSTPACK WMI_BEACON_INT_CMD;
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT8 dtim FIELD_PACKED;
 } POSTPACK WMI_AP_SET_DTIM_CMD;
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT8    enable FIELD_PACKED; /* enable/disable IoE AP PS Offload */
     QOSAL_UINT8    psBufCount FIELD_PACKED; /* PS Buf count per PS Client */
 } POSTPACK WMI_AP_PSBUF_OFFLOAD_CMD;
@@ -744,20 +745,20 @@ typedef PREPACK struct {
 /*
  * WMI_RECONNECT_CMDID
  */
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT16    channel FIELD_PACKED;                    /* hint */
     QOSAL_UINT8     bssid[ATH_MAC_LEN] FIELD_PACKED;         /* mandatory if set */
 } POSTPACK WMI_RECONNECT_CMD;
 
 #define WMI_PMK_LEN     32
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT8 pmk[WMI_PMK_LEN] FIELD_PACKED;
     QOSAL_UINT8 pmk_len FIELD_PACKED;
 } POSTPACK WMI_SET_PMK_CMD, WMI_GET_PMK_REPLY;
 
 
 #define WMI_PASSPHRASE_LEN    64
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UCHAR ssid[WMI_MAX_SSID_LEN] FIELD_PACKED;
     QOSAL_UINT8 passphrase[WMI_PASSPHRASE_LEN] FIELD_PACKED;
     QOSAL_UINT8 ssid_len FIELD_PACKED;
@@ -786,7 +787,7 @@ typedef enum {
 #define KEY_OP_INIT_VAL     0x03     /* Default Initialise the TSC & RSC */
 #define KEY_OP_VALID_MASK   0x03
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT8     keyIndex FIELD_PACKED;
     QOSAL_UINT8     keyType FIELD_PACKED;
     QOSAL_UINT8     keyUsage FIELD_PACKED;           /* KEY_USAGE */
@@ -800,7 +801,7 @@ typedef PREPACK struct {
 /*
  * WMI_DELETE_CIPHER_KEY_CMDID
  */
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT8     keyIndex FIELD_PACKED;
 } POSTPACK WMI_DELETE_CIPHER_KEY_CMD;
 
@@ -812,7 +813,7 @@ typedef enum {
     WMI_SHORT_SCAN = 1
 } WMI_SCAN_TYPE;
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_BOOL   forceFgScan FIELD_PACKED;
     QOSAL_BOOL   isLegacy FIELD_PACKED;        /* For Legacy Cisco AP compatibility */
     QOSAL_UINT32 homeDwellTime FIELD_PACKED;   /* Maximum duration in the home channel(milliseconds) */
@@ -853,7 +854,7 @@ typedef enum {
 #define DEFAULT_SCAN_CTRL_FLAGS         (CONNECT_SCAN_CTRL_FLAGS| SCAN_CONNECTED_CTRL_FLAGS| ACTIVE_SCAN_CTRL_FLAGS| ROAM_SCAN_CTRL_FLAGS | ENABLE_AUTO_CTRL_FLAGS)
 
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT16    fg_start_period FIELD_PACKED;        /* seconds */
     QOSAL_UINT16    fg_end_period FIELD_PACKED;          /* seconds */
     QOSAL_UINT16    bg_period FIELD_PACKED;              /* seconds */
@@ -880,7 +881,7 @@ typedef enum {
     LAST_BSS_FILTER                    /* marker only */
 } WMI_BSS_FILTER;
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT8    bssFilter FIELD_PACKED;                      /* see WMI_BSS_FILTER */
     QOSAL_UINT8    reserved1 FIELD_PACKED;                      /* For alignment */
     QOSAL_UINT16   reserved2 FIELD_PACKED;                      /* For alignment */
@@ -898,7 +899,7 @@ typedef enum {
     ANY_SSID_FLAG      = 0x02               /* probes for any ssid */
 } WMI_SSID_FLAG;
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT8     entryIndex FIELD_PACKED;                     /* 0 to MAX_PROBED_SSID_INDEX */
     QOSAL_UINT8     flag FIELD_PACKED;                           /* WMI_SSID_FLG */
     QOSAL_UINT8     ssidLength FIELD_PACKED;
@@ -914,7 +915,7 @@ typedef PREPACK struct {
 #define MIN_LISTEN_BEACONS 1
 #define MAX_LISTEN_BEACONS 50
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT16     listenInterval FIELD_PACKED;
     QOSAL_UINT16     numBeacons FIELD_PACKED;
 } POSTPACK WMI_LISTEN_INT_CMD;
@@ -929,7 +930,7 @@ typedef PREPACK struct {
 #define MIN_BMISS_BEACONS  1
 #define MAX_BMISS_BEACONS  50
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT16     bmissTime FIELD_PACKED;
     QOSAL_UINT16     numBeacons FIELD_PACKED;
 } POSTPACK WMI_BMISS_TIME_CMD;
@@ -942,11 +943,11 @@ typedef enum {
     MAX_PERF_POWER
 } WMI_POWER_MODE;
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT8     powerMode FIELD_PACKED;      /* WMI_POWER_MODE */
 } POSTPACK WMI_POWER_MODE_CMD;
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_INT8 status FIELD_PACKED;      /* WMI_SET_PARAMS_REPLY */
 } POSTPACK WMI_SET_PARAMS_REPLY;
 
@@ -975,7 +976,7 @@ typedef enum {
     IGNORE_POWER_SAVE_FAIL_EVENT_DURING_SCAN = 2
 } POWER_SAVE_FAIL_EVENT_POLICY;
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT16    idle_period FIELD_PACKED;             /* msec */
     QOSAL_UINT16    pspoll_number FIELD_PACKED;
     QOSAL_UINT16    dtim_policy FIELD_PACKED;
@@ -995,7 +996,7 @@ typedef enum {
 /*
  * WMI_SET_DISC_TIMEOUT_CMDID
  */
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT8     disconnectTimeout FIELD_PACKED;          /* seconds */
 } POSTPACK WMI_DISC_TIMEOUT_CMD;
 
@@ -1019,14 +1020,14 @@ typedef enum {
 /*
  * WMI_SYNCHRONIZE_CMDID
  */
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT8 dataSyncMap FIELD_PACKED;
 } POSTPACK WMI_SYNC_CMD;
 
 /*
  * WMI_CREATE_PSTREAM_CMDID
  */
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT32        minServiceInt FIELD_PACKED;           /* in milli-sec */
     QOSAL_UINT32        maxServiceInt FIELD_PACKED;           /* in milli-sec */
     QOSAL_UINT32        inactivityInt FIELD_PACKED;           /* in milli-sec */
@@ -1055,7 +1056,7 @@ typedef PREPACK struct {
 /*
  * WMI_DELETE_PSTREAM_CMDID
  */
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT8     txQueueNumber FIELD_PACKED;
     QOSAL_UINT8     rxQueueNumber FIELD_PACKED;
     QOSAL_UINT8     trafficDirection FIELD_PACKED;
@@ -1076,7 +1077,7 @@ typedef enum {
 
 #define WMI_MAX_CHANNELS        32
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT8     reserved1 FIELD_PACKED;
     QOSAL_UINT8     scanParam FIELD_PACKED;              /* set if enable scan */
     QOSAL_UINT8     phyMode FIELD_PACKED;                /* see WMI_PHY_MODE */
@@ -1096,7 +1097,7 @@ typedef enum {
 } WMI_PREAMBLE_POLICY;
 
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT16    threshold FIELD_PACKED;
 }POSTPACK WMI_SET_RTS_CMD;
 
@@ -1106,14 +1107,14 @@ typedef PREPACK struct {
  *  upon an error. Subsequent errors are counted, but not reported
  *  via event, unless the bitmask is set again.
  */
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT32    bitmask FIELD_PACKED;
 } POSTPACK  WMI_TARGET_ERROR_REPORT_BITMASK;
 
 /*
  * WMI_SET_TX_PWR_CMDID
  */
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT8     dbM FIELD_PACKED;                  /* in dbM units */
 } POSTPACK WMI_SET_TX_PWR_CMD, WMI_TX_PWR_REPLY;
 
@@ -1133,7 +1134,7 @@ typedef PREPACK struct {
 #define WMI_MAX_CW_ACPARAM          15      /* maximum eCWmin or eCWmax */
 #define WMI_DEFAULT_AIFSN_ACPARAM   2
 #define WMI_MAX_AIFSN_ACPARAM       15
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT16 txop FIELD_PACKED;                      /* in units of 32 usec */
     QOSAL_UINT8  eCWmin FIELD_PACKED;
     QOSAL_UINT8  eCWmax FIELD_PACKED;
@@ -1141,7 +1142,7 @@ typedef PREPACK struct {
     QOSAL_UINT8  ac FIELD_PACKED;
 } POSTPACK WMI_SET_ACCESS_PARAMS_CMD;
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT32 sleepState FIELD_PACKED;
 }WMI_REPORT_SLEEP_STATE_EVENT;
 
@@ -1152,7 +1153,7 @@ typedef PREPACK struct {
 /*
  * WMI_GET_CHANNEL_LIST_CMDID reply
  */
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT8     reserved1 FIELD_PACKED;
     QOSAL_UINT8     numChannels FIELD_PACKED;            /* number of channels in reply */
     QOSAL_UINT16    channelList[1] FIELD_PACKED;         /* channel in Mhz */
@@ -1167,7 +1168,7 @@ typedef enum {
     A_FAILED_CREATE_REMOVE_PSTREAM_FIRST = 254
 } PSTREAM_REPLY_STATUS;
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT8     status FIELD_PACKED;                 /* PSTREAM_REPLY_STATUS */
     QOSAL_UINT8     txQueueNumber FIELD_PACKED;
     QOSAL_UINT8     rxQueueNumber FIELD_PACKED;
@@ -1175,7 +1176,7 @@ typedef PREPACK struct {
     QOSAL_UINT8     trafficDirection FIELD_PACKED;       /* DIR_TYPE */
 } POSTPACK WMI_CRE_PRIORITY_STREAM_REPLY;
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT8     status FIELD_PACKED;                 /* PSTREAM_REPLY_STATUS */
     QOSAL_UINT8     txQueueNumber FIELD_PACKED;
     QOSAL_UINT8     rxQueueNumber FIELD_PACKED;
@@ -1183,30 +1184,30 @@ typedef PREPACK struct {
     QOSAL_UINT8     trafficClass FIELD_PACKED;
 } POSTPACK WMI_DEL_PRIORITY_STREAM_REPLY;
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT32  tempDegree;
     QOSAL_UINT8   tempRegVal;    
 } POSTPACK WMI_GET_TEMPERATURE_REPLY;
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT32  status;
 } POSTPACK WMI_WLAN_WPS_INIT_KEY_REPLY;
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT8  country_code[3];
 } POSTPACK WMI_GET_COUNTRY_CODE_REPLY;
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
         QOSAL_UINT8 bssid[ATH_MAC_LEN];
         QOSAL_INT8  bias;
 } POSTPACK WMI_BSS_BIAS;
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
         QOSAL_UINT8 numBss;
         WMI_BSS_BIAS bssBias[1];
 } POSTPACK WMI_BSS_BIAS_INFO;
 
-typedef PREPACK struct WMI_LOWRSSI_SCAN_PARAMS {
+typedef PREPACK_STRUCT WMI_LOWRSSI_SCAN_PARAMS {
         QOSAL_UINT16 lowrssi_scan_period;
         QOSAL_INT16  lowrssi_scan_threshold;
         QOSAL_INT16  lowrssi_roam_threshold;
@@ -1214,8 +1215,8 @@ typedef PREPACK struct WMI_LOWRSSI_SCAN_PARAMS {
         QOSAL_UINT8  reserved[1];              /* For alignment */
 } POSTPACK WMI_LOWRSSI_SCAN_PARAMS;
 
-typedef PREPACK struct {
-    PREPACK union {
+typedef PREPACK_STRUCT {
+    PREPACK_UNION {
         QOSAL_UINT8 bssid[ATH_MAC_LEN]; /* WMI_FORCE_ROAM */
         QOSAL_UINT8 roamMode;           /* WMI_SET_ROAM_MODE  */
         WMI_BSS_BIAS_INFO bssBiasInfo; /* WMI_SET_HOST_BIAS */
@@ -1318,7 +1319,7 @@ typedef enum {
 
 #if ENABLE_P2P_MODE
 #define P2P_EVT_BUF_SIZE 512
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
   QOSAL_UINT32 EVENT_ID FIELD_PACKED;
   QOSAL_UINT8  data[P2P_EVT_BUF_SIZE] FIELD_PACKED;
 }POSTPACK WMI_EVT_TO_APP;
@@ -1340,12 +1341,12 @@ typedef enum {
     WMI_11N_CAPABILITY_OFFSET = (WMI_11NA_CAPABILITY - WMI_11A_CAPABILITY)
 } WMI_PHY_CAPABILITY;
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT8     macaddr[ATH_MAC_LEN] FIELD_PACKED;
     QOSAL_UINT8     phyCapability FIELD_PACKED;              /* WMI_PHY_CAPABILITY */
 } POSTPACK WMI_READY_EVENT_1;
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT32    sw_version FIELD_PACKED;
     QOSAL_UINT32    abi_version FIELD_PACKED;
     QOSAL_UINT8     macaddr[ATH_MAC_LEN] FIELD_PACKED;
@@ -1354,7 +1355,7 @@ typedef PREPACK struct {
 
 #define WMI_READY_EVENT WMI_READY_EVENT_2 /* host code */
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT32 freq;
     QOSAL_UINT16 len;
     QOSAL_UINT8 data[1];
@@ -1363,7 +1364,7 @@ typedef PREPACK struct {
 /*
  * Connect Event
  */
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT16    channel FIELD_PACKED;
     QOSAL_UINT8     bssid[ATH_MAC_LEN] FIELD_PACKED;
     QOSAL_UINT16    listenInterval FIELD_PACKED;
@@ -1400,7 +1401,7 @@ typedef enum {
     CCKM_ROAMING_INDICATION = 0xfe,  /* hack for CCKM fast roaming */
 } WMI_DISCONNECT_REASON;
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT16    protocolReasonStatus FIELD_PACKED;  /* reason code, see 802.11 spec. */
     QOSAL_UINT8     bssid[ATH_MAC_LEN] FIELD_PACKED;    /* set if known */
     QOSAL_UINT8     disconnectReason  FIELD_PACKED;      /* see WMI_DISCONNECT_REASON */
@@ -1426,7 +1427,7 @@ enum {
     BSS_ELEMID_ATHEROS = 0x02
 };
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT16    channel FIELD_PACKED;
     QOSAL_UINT8     frameType FIELD_PACKED;          /* see WMI_BI_FTYPE */
     QOSAL_UINT8     snr FIELD_PACKED;
@@ -1443,7 +1444,7 @@ typedef PREPACK struct {
  * - Reduce the ieMask to 2 bytes as only two bit flags are used
  * - Remove rssi and compute it on the host. rssi = snr - 95
  */
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT16    channel FIELD_PACKED;
     QOSAL_UINT8     frameType FIELD_PACKED;          /* see WMI_BI_FTYPE */
     QOSAL_UINT8     snr FIELD_PACKED;
@@ -1461,7 +1462,7 @@ typedef enum {
     STACK_ERROR    = 0x04
 } WMI_ERROR_CODE;
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT16    commandId FIELD_PACKED;
     QOSAL_UINT8     errorCode FIELD_PACKED;
 } POSTPACK WMI_CMD_ERROR_EVENT;
@@ -1469,11 +1470,11 @@ typedef PREPACK struct {
 /*
  * New Regulatory Domain Event
  */
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT32    regDomain FIELD_PACKED;
 } POSTPACK WMI_REG_DOMAIN_EVENT;
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT8     txQueueNumber FIELD_PACKED;
     QOSAL_UINT8     rxQueueNumber FIELD_PACKED;
     QOSAL_UINT8     trafficDirection FIELD_PACKED;
@@ -1483,7 +1484,7 @@ typedef PREPACK struct {
 /*
  * TKIP MIC Error Event
  */
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT8 keyid FIELD_PACKED;
     QOSAL_UINT8 ismcast FIELD_PACKED;
 } POSTPACK WMI_TKIP_MICERR_EVENT;
@@ -1491,7 +1492,7 @@ typedef PREPACK struct {
 /*
  * WMI_SCAN_COMPLETE_EVENTID - no parameters (old), staus parameter (new)
  */
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_INT32 status FIELD_PACKED;
 } POSTPACK WMI_SCAN_COMPLETE_EVENT;
 
@@ -1502,7 +1503,7 @@ typedef PREPACK struct {
 /*
  * Reporting statistics.
  */
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT32   tx_packets FIELD_PACKED;
     QOSAL_UINT32   tx_bytes FIELD_PACKED;
     QOSAL_UINT32   tx_unicast_pkts FIELD_PACKED;
@@ -1523,7 +1524,7 @@ typedef PREPACK struct {
     QOSAL_INT32    tx_unicast_rate FIELD_PACKED;
 }POSTPACK tx_stats_t;
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT32   rx_packets FIELD_PACKED;
     QOSAL_UINT32   rx_bytes FIELD_PACKED;
     QOSAL_UINT32   rx_unicast_pkts FIELD_PACKED;
@@ -1542,16 +1543,16 @@ typedef PREPACK struct {
     QOSAL_INT32    rx_unicast_rate FIELD_PACKED;
 }POSTPACK rx_stats_t;
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT32   tkip_local_mic_failure FIELD_PACKED;
     QOSAL_UINT32   tkip_counter_measures_invoked FIELD_PACKED;
     QOSAL_UINT32   tkip_replays FIELD_PACKED;
     QOSAL_UINT32   tkip_format_errors FIELD_PACKED;
     QOSAL_UINT32   ccmp_format_errors FIELD_PACKED;
     QOSAL_UINT32   ccmp_replays FIELD_PACKED;
-}POSTPACK tkip_ccmp_stats_t FIELD_PACKED;
+}POSTPACK tkip_ccmp_stats_t;
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT32   power_save_failure_cnt FIELD_PACKED;
     QOSAL_UINT16   stop_tx_failure_cnt FIELD_PACKED;
     QOSAL_UINT16   atim_tx_failure_cnt FIELD_PACKED;
@@ -1559,7 +1560,7 @@ typedef PREPACK struct {
     QOSAL_UINT16   bcn_rx_failure_cnt FIELD_PACKED;
 }POSTPACK pm_stats_t;
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT32    cs_bmiss_cnt FIELD_PACKED;
     QOSAL_UINT32    cs_lowRssi_cnt FIELD_PACKED;
     QOSAL_UINT16    cs_connect_cnt FIELD_PACKED;
@@ -1572,26 +1573,26 @@ typedef PREPACK struct {
     QOSAL_UINT8     cs_lastRoam_msec FIELD_PACKED;
 } POSTPACK cserv_stats_t;
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     tx_stats_t          tx_stats FIELD_PACKED;
     rx_stats_t          rx_stats FIELD_PACKED;
     tkip_ccmp_stats_t   tkipCcmpStats FIELD_PACKED;
 }POSTPACK wlan_net_stats_t;
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT32    arp_received FIELD_PACKED;
     QOSAL_UINT32    arp_matched FIELD_PACKED;
     QOSAL_UINT32    arp_replied FIELD_PACKED;
 } POSTPACK arp_stats_t;
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT32    wow_num_pkts_dropped FIELD_PACKED;
     QOSAL_UINT16    wow_num_events_discarded FIELD_PACKED;
     QOSAL_UINT8     wow_num_host_pkt_wakeups FIELD_PACKED;
     QOSAL_UINT8     wow_num_host_event_wakeups FIELD_PACKED;
 } POSTPACK wlan_wow_stats_t;
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT32            lqVal FIELD_PACKED;
     QOSAL_INT32             noise_floor_calibation FIELD_PACKED;
     pm_stats_t          pmStats FIELD_PACKED;
@@ -1614,11 +1615,11 @@ typedef enum{
     WMI_TARGET_FATAL_ERR        = 0x00000040
 } WMI_TARGET_ERROR_VAL;
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT32 errorVal FIELD_PACKED;
 }POSTPACK  WMI_TARGET_ERROR_REPORT_EVENT;
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT8 retrys FIELD_PACKED;
 }POSTPACK  WMI_TX_RETRY_ERR_EVENT;
 
@@ -1697,14 +1698,14 @@ typedef enum {
     RATE_MCS_7_40 = 27
 } WMI_BIT_RATE;
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_INT8      rateIndex FIELD_PACKED;          /* see WMI_BIT_RATE */
     QOSAL_INT8      mgmtRateIndex FIELD_PACKED;
     QOSAL_INT8      ctlRateIndex FIELD_PACKED;
 } POSTPACK WMI_BIT_RATE_CMD;
 
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_INT8      rateIndex FIELD_PACKED;          /* see WMI_BIT_RATE */
 } POSTPACK  WMI_BIT_RATE_REPLY;
 
@@ -1749,11 +1750,11 @@ typedef enum {
     WMI_WMM_ENABLED
 } WMI_WMM_STATUS;
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT8    status FIELD_PACKED;
 }POSTPACK WMI_SET_WMM_CMD;
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT8    status FIELD_PACKED;
 }POSTPACK WMI_SET_QOS_SUPP_CMD;
 
@@ -1762,15 +1763,15 @@ typedef enum {
     WMI_TXOP_ENABLED
 } WMI_TXOP_CFG;
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT8    txopEnable FIELD_PACKED;
 }POSTPACK WMI_SET_WMM_TXOP_CMD;
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT8 keepaliveInterval FIELD_PACKED;
 } POSTPACK WMI_SET_KEEPALIVE_CMD;
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_BOOL configured FIELD_PACKED;
     QOSAL_UINT8 keepaliveInterval FIELD_PACKED;
 } POSTPACK WMI_GET_KEEPALIVE_CMD;
@@ -1780,24 +1781,24 @@ typedef PREPACK struct {
  */
 #define WMI_MAX_IE_LEN  64
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT8 mgmtFrmType;  /* one of WMI_MGMT_FRAME_TYPE */
     QOSAL_UINT8 ieLen;    /* Length  of the IE that should be added to the MGMT frame */
-    QOSAL_UINT8 ieInfo[0];
+    QOSAL_UINT8 *ieInfo;
 } POSTPACK WMI_SET_APPIE_CMD;
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT16 oldChannel FIELD_PACKED;
     QOSAL_UINT32 newChannel FIELD_PACKED;
 } POSTPACK WMI_CHANNEL_CHANGE_EVENT;
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT32 version FIELD_PACKED;
 } POSTPACK WMI_WLAN_VERSION_EVENT;
 
 
 /* WMI_ADDBA_REQ_EVENTID */
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT8     tid FIELD_PACKED;
     QOSAL_UINT8     win_sz FIELD_PACKED;
     QOSAL_UINT16    st_seq_no FIELD_PACKED;
@@ -1805,7 +1806,7 @@ typedef PREPACK struct {
 } POSTPACK WMI_ADDBA_REQ_EVENT;
 
 /* WMI_ADDBA_RESP_EVENTID */
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT8     tid FIELD_PACKED;
     QOSAL_UINT8     status FIELD_PACKED;         /* OK(0), failure (!=0) */
     QOSAL_UINT16    amsdu_sz FIELD_PACKED;       /* Three values: Not supported(0), 3839, 8k */
@@ -1815,7 +1816,7 @@ typedef PREPACK struct {
  * f/w received a DELBA for peer and processed it.
  * Host is notified of this
  */
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT8     tid FIELD_PACKED;
     QOSAL_UINT8     is_peer_initiator FIELD_PACKED;
     QOSAL_UINT16    reason_code FIELD_PACKED;
@@ -1826,7 +1827,7 @@ typedef PREPACK struct {
  * Configures tid's to allow ADDBA negotiations
  * on each tid, in each direction
  */
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT16    tx_allow_aggr FIELD_PACKED;  /* 16-bit mask to allow uplink ADDBA negotiation - bit position indicates tid*/
     QOSAL_UINT16    rx_allow_aggr FIELD_PACKED;  /* 16-bit mask to allow donwlink ADDBA negotiation - bit position indicates tid*/
 } POSTPACK WMI_ALLOW_AGGR_CMD;
@@ -1835,7 +1836,7 @@ typedef PREPACK struct {
  * f/w starts performing ADDBA negotiations with peer
  * on the given tid
  */
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT8     tid FIELD_PACKED;
 } POSTPACK WMI_ADDBA_REQ_CMD;
 
@@ -1843,7 +1844,7 @@ typedef PREPACK struct {
  * f/w would teardown BA with peer.
  * is_send_initiator indicates if it's or tx or rx side
  */
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT8     tid FIELD_PACKED;
     QOSAL_UINT8     is_sender_initiator FIELD_PACKED;
 
@@ -1853,7 +1854,7 @@ typedef PREPACK struct {
 #define PEER_NODE_LEAVE_EVENT 0x01
 #define PEER_FIRST_NODE_JOIN_EVENT 0x10
 #define PEER_LAST_NODE_LEAVE_EVENT 0x11
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT8 eventCode FIELD_PACKED;
     QOSAL_UINT8 peerMacAddr[ATH_MAC_LEN] FIELD_PACKED;
 } POSTPACK WMI_PEER_NODE_EVENT;
@@ -1863,7 +1864,7 @@ typedef PREPACK struct {
 
 
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT8  band FIELD_PACKED; /* specifies which band to apply these values */
     QOSAL_UINT8  enable FIELD_PACKED; /* allows 11n to be disabled on a per band basis */
     QOSAL_UINT8  chan_width_40M_supported FIELD_PACKED;
@@ -1873,11 +1874,11 @@ typedef PREPACK struct {
     QOSAL_UINT8  max_ampdu_len_exp FIELD_PACKED;
 } POSTPACK WMI_SET_HT_CAP_CMD;
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT8   sta_chan_width FIELD_PACKED;
 } POSTPACK WMI_SET_HT_OP_CMD;
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT8 metaVersion FIELD_PACKED; /* version of meta data for rx packets <0 = default> (0-7 = valid) */
     QOSAL_UINT8 dot11Hdr FIELD_PACKED; /* 1 == leave .11 header intact , 0 == replace .11 header with .3 <default> */
     QOSAL_UINT8 defragOnHost FIELD_PACKED; /* 1 == defragmentation is performed by host, 0 == performed by target <default> */
@@ -1892,72 +1893,72 @@ typedef PREPACK struct {
 
 #define  IS_STRRCL_DSET(a)  (((a)>=DSET_STORE_RECALL_START) && ((a) <= DSET_STORE_RECALL_END))
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT8 enable FIELD_PACKED;
 #define STRRCL_RECIPIENT_HOST 1
     QOSAL_UINT8 recipient FIELD_PACKED;
 } POSTPACK WMI_STORERECALL_CONFIGURE_CMD;
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT32 dset_id FIELD_PACKED; /* number of bytes of data to follow */
     QOSAL_UINT32 length FIELD_PACKED; /* start of data */
 } POSTPACK WMI_STORERECALL_RECALL_DSET;
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT32 length FIELD_PACKED; /* number of bytes of data to follow */
     QOSAL_UINT8  data[1] FIELD_PACKED; /* start of data */
 } POSTPACK WMI_STORERECALL_RECALL_CMD;
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT32 sleep_msec FIELD_PACKED;
     QOSAL_UINT8 store_after_tx_empty FIELD_PACKED;
     QOSAL_UINT8 store_after_fresh_beacon_rx FIELD_PACKED;
 } POSTPACK WMI_STORERECALL_HOST_READY_CMD;
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT32    msec_sleep FIELD_PACKED; /* time between power off/on */
     QOSAL_UINT32    length FIELD_PACKED; /* length of following data */
     QOSAL_UINT8     data[1] FIELD_PACKED; /* start of data */
 } POSTPACK WMI_STORERECALL_STORE_EVENT;
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT32    length FIELD_PACKED; /* length of following data */
     QOSAL_UINT8     data[1] FIELD_PACKED; /* start of data */
 } POSTPACK WMI_HOST_DSET_STORE_EVENT;
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT32    dset_id FIELD_PACKED; /* length of following data */
     QOSAL_UINT32    length FIELD_PACKED; /* length of following data */
 } POSTPACK WMI_HOST_DSET_CREATE_EVENT;
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT32    dset_id FIELD_PACKED; /* length of following data */
     QOSAL_UINT32    offset FIELD_PACKED; /* length of following data */
     QOSAL_UINT32    length FIELD_PACKED; /* length of following data */
     QOSAL_UINT8     data[1] FIELD_PACKED; /* start of data */
 } POSTPACK WMI_HOST_DSET_WRITE_EVENT;
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT32    dset_id FIELD_PACKED; /* length of following data */
     QOSAL_UINT32    offset FIELD_PACKED; /* length of following data */
     QOSAL_UINT32    length FIELD_PACKED; /* length of following data */
 } POSTPACK WMI_HOST_DSET_READBACK_EVENT;
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT32    dset_count FIELD_PACKED; /* length of following data */
 } POSTPACK WMI_HOST_DSET_SYNC_EVENT;
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT32    dset_id FIELD_PACKED;   /* dset_id */
     QOSAL_UINT32    status FIELD_PACKED;    /* status */
 } POSTPACK WMI_DSET_OP_CREATE_EVENT;
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT32    dset_id FIELD_PACKED;   /* dset_id */
     QOSAL_UINT32    status FIELD_PACKED;    /* status */
 } POSTPACK WMI_DSET_OP_OPEN_EVENT;
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT32    dset_id FIELD_PACKED;   /* dset_id */
     QOSAL_UINT32    status FIELD_PACKED;    /* status */
     QOSAL_UINT32    offset FIELD_PACKED;    /* status */
@@ -1965,56 +1966,56 @@ typedef PREPACK struct {
     QOSAL_UINT8     data[1];
 } POSTPACK WMI_DSET_OP_READ_EVENT;
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT32    dset_id FIELD_PACKED;   /* dset_id */
     QOSAL_UINT32    status FIELD_PACKED;    /* status */
 } POSTPACK WMI_DSET_OP_WRITE_EVENT;
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT32    dset_id FIELD_PACKED;   /* dset_id */
     QOSAL_UINT32    status FIELD_PACKED;    /* status */
 } POSTPACK WMI_DSET_OP_COMMIT_EVENT;
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT32    dset_id FIELD_PACKED;   /* dset_id */
     QOSAL_UINT32    status FIELD_PACKED;    /* status */
 } POSTPACK WMI_DSET_OP_CLOSE_EVENT;
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT32 length FIELD_PACKED; /* number of bytes of data to follow */
     QOSAL_UINT8  data[1] FIELD_PACKED; /* start of data */
 } POSTPACK WMI_STORERECALL_READ_CMD;
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT32 dset_count FIELD_PACKED; /* number of bytes of data to follow */
     QOSAL_UINT8  data[1] FIELD_PACKED; /* start of data */
 } POSTPACK WMI_HOST_DSET_SYNC_CMD;
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT32    dset_id FIELD_PACKED; /* length of following data */
     QOSAL_UINT32    length FIELD_PACKED; /* length of following data */
     QOSAL_UINT32    offset FIELD_PACKED; /* length of following data */
     QOSAL_UINT8     data[1] FIELD_PACKED; /* start of data */
 } POSTPACK WMI_HOST_DSET_READBACK_CMD;
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT32 flags FIELD_PACKED; /* number of bytes of data to follow */
 } POSTPACK WMI_HOST_DSET_RESP_CREATE_CMD;
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT32    dset_id FIELD_PACKED; /* length of following data */
     QOSAL_UINT32    offset FIELD_PACKED; /* length of following data */
     QOSAL_UINT32    length FIELD_PACKED; /* length of following data */
 } POSTPACK WMI_HOST_DSET_RESP_WRITE_CMD;
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT32    msec_sleep FIELD_PACKED; /* time between power off/on */
 } POSTPACK WMI_STORERECALL_START_EVENT;
 
 /* STORE / RECALL Commands AND Events DEFINITION END */
 /* WPS Commands AND Events DEFINITION START */
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT8 ssid[WMI_MAX_SSID_LEN] FIELD_PACKED;
     QOSAL_UINT8 macaddress[ATH_MAC_LEN] FIELD_PACKED;
     QOSAL_UINT16 channel FIELD_PACKED;
@@ -2035,7 +2036,7 @@ typedef enum {
 
 #define WPS_PIN_LEN (8)
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT8 pin[WPS_PIN_LEN+1] FIELD_PACKED;
     QOSAL_UINT8 pin_length FIELD_PACKED;
 }POSTPACK WPS_PIN;
@@ -2045,7 +2046,7 @@ typedef enum {
     WPS_PBC_MODE = 0x2
 } WPS_MODE;
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     WPS_SCAN_LIST_ENTRY ssid_info FIELD_PACKED;
     QOSAL_UINT8 config_mode FIELD_PACKED; /* WPS_MODE */
     WPS_PIN wps_pin FIELD_PACKED;
@@ -2062,7 +2063,7 @@ typedef enum {
     WPS_STATUS_IN_PROGRESS  = 0x3
 } WPS_STATUS;
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT8  wps_status FIELD_PACKED;  /* WPS_STATUS */
     QOSAL_UINT8  wps_state FIELD_PACKED;
 } POSTPACK WMI_WPS_GET_STATUS_EVENT;
@@ -2092,7 +2093,7 @@ typedef enum {
 #define WPS_CRED_ENCR_TKIP 0x0004
 #define WPS_CRED_ENCR_AES  0x0008
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
   QOSAL_UINT16 ap_channel FIELD_PACKED;
   QOSAL_UINT8  ssid[WMI_MAX_SSID_LEN] FIELD_PACKED;
   QOSAL_UINT8  ssid_len FIELD_PACKED;
@@ -2104,7 +2105,7 @@ typedef PREPACK struct {
   QOSAL_UINT8  mac_addr[ATH_MAC_LEN] FIELD_PACKED;
 } POSTPACK WPS_CREDENTIAL;
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
   QOSAL_UINT8 status FIELD_PACKED;      /* WPS_STATUS */
   QOSAL_UINT8 error_code FIELD_PACKED;  /* WPS_ERROR_CODE */
   WPS_CREDENTIAL  credential FIELD_PACKED;
@@ -2114,7 +2115,7 @@ typedef PREPACK struct {
 
 
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT8 enable FIELD_PACKED;     /* 1 == device operates in promiscuous mode , 0 == normal mode <default> */
 #define WMI_PROM_FILTER_SRC_ADDR 0x01
 #define WMI_PROM_FILTER_DST_ADDR 0x02
@@ -2125,17 +2126,17 @@ typedef PREPACK struct {
 
 
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT16    channel FIELD_PACKED; /* frequency in Mhz */
 } POSTPACK WMI_SET_CHANNEL_CMD;
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT32 cmd_type FIELD_PACKED; /*Socket command type*/
     QOSAL_UINT32 length FIELD_PACKED;   /* number of bytes of data to follow */
     //QOSAL_UINT8  data[1] FIELD_PACKED;  /* start of data */
 } POSTPACK WMI_SOCKET_CMD;
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
 	QOSAL_UINT32    resp_type FIELD_PACKED;			/*Socket command response type*/
     QOSAL_UINT32    sock_handle FIELD_PACKED;  		/*Socket handle*/
     QOSAL_UINT32    error FIELD_PACKED;  			/*Return value*/
@@ -2144,19 +2145,19 @@ typedef PREPACK struct {
 
 #if ENABLE_P2P_MODE
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT8 flag FIELD_PACKED;
 }POSTPACK WMI_P2P_SET_CONCURRENT_MODE;
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT8 value FIELD_PACKED;
 }POSTPACK WMI_P2P_SET_GO_INTENT;
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
 	QOSAL_UINT8 enable FIELD_PACKED;
 }POSTPACK WMI_P2P_SET_CCK_RATES;
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT8 go_intent FIELD_PACKED;
     QOSAL_UINT8 reserved[3] FIELD_PACKED; /* Deprecated 'country' field */
     QOSAL_UINT8 reg_class FIELD_PACKED;
@@ -2167,16 +2168,16 @@ typedef PREPACK struct {
     QOSAL_UINT8 max_node_count FIELD_PACKED;
 } POSTPACK WMI_P2P_FW_SET_CONFIG_CMD;
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT8 enable FIELD_PACKED;
 }POSTPACK WMI_P2P_SET_PROFILE_CMD;
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT16 categ FIELD_PACKED;
     QOSAL_UINT16 sub_categ FIELD_PACKED;
 } POSTPACK device_type_tuple;
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     device_type_tuple pri_dev_type FIELD_PACKED;
     QOSAL_UINT8 pri_device_type[8] FIELD_PACKED;
 #define MAX_P2P_SEC_DEVICE_TYPES 5
@@ -2188,7 +2189,7 @@ typedef PREPACK struct {
     QOSAL_UINT8 dev_name_len FIELD_PACKED;
 } POSTPACK WMI_WPS_SET_CONFIG_CMD;
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     device_type_tuple pri_dev_type FIELD_PACKED;
     device_type_tuple sec_dev_type[MAX_P2P_SEC_DEVICE_TYPES] FIELD_PACKED;
     QOSAL_UINT8  device_addr[ATH_MAC_LEN] FIELD_PACKED;
@@ -2197,18 +2198,18 @@ typedef PREPACK struct {
 #define MAX_LIST_COUNT 8
 #define MAX_PASS_LEN 32
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT8 data[1];
 } POSTPACK WMI_P2P_PERSISTENT_LIST_NETWORK_EVENT;
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT8  role;
     QOSAL_UINT8  macaddr[ATH_MAC_LEN];
     QOSAL_UINT8  ssid[WMI_MAX_SSID_LEN];
     QOSAL_UINT8  passphrase[MAX_PASS_LEN];
 } POSTPACK WMI_PERSISTENT_MAC_LIST;
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT8 ssidLength FIELD_PACKED;
     QOSAL_UINT8 ssid[WMI_MAX_SSID_LEN] FIELD_PACKED;
 } POSTPACK P2P_SSID;
@@ -2219,12 +2220,12 @@ typedef enum wmi_p2p_discovery_type {
     WMI_P2P_FIND_PROGRESSIVE
 } WMI_P2P_DISC_TYPE;
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT32 timeout FIELD_PACKED;
     QOSAL_UINT8 type FIELD_PACKED;
 } POSTPACK WMI_P2P_FIND_CMD;
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT16 listen_freq FIELD_PACKED;
     QOSAL_UINT16 force_freq FIELD_PACKED;
     QOSAL_UINT16 go_oper_freq FIELD_PACKED;
@@ -2240,21 +2241,21 @@ typedef PREPACK struct {
     QOSAL_UINT8 persistent_grp FIELD_PACKED;
 } POSTPACK WMI_P2P_GO_NEG_START_CMD;
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT8 persistent_group FIELD_PACKED;
     QOSAL_UINT8 group_formation FIELD_PACKED;
 } POSTPACK WMI_P2P_GRP_INIT_CMD;
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT8 peer_addr[ATH_MAC_LEN] FIELD_PACKED;
     QOSAL_UINT8 grp_formation_status FIELD_PACKED;
 } POSTPACK WMI_P2P_GRP_FORMATION_DONE_CMD;
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT32 timeout FIELD_PACKED;
 }POSTPACK WMI_P2P_LISTEN_CMD;
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT16 listen_freq FIELD_PACKED;
     QOSAL_UINT16 force_freq FIELD_PACKED;
     QOSAL_UINT8 status FIELD_PACKED;
@@ -2274,7 +2275,7 @@ typedef enum {
     WMI_P2P_INVITE_ROLE_CLIENT
 } WMI_P2P_INVITE_ROLE;
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT8 role FIELD_PACKED;
     QOSAL_UINT16 listen_freq FIELD_PACKED;
     QOSAL_UINT16 force_freq FIELD_PACKED;
@@ -2287,7 +2288,7 @@ typedef PREPACK struct {
     QOSAL_UINT8 wps_method FIELD_PACKED;
 }POSTPACK WMI_P2P_INVITE_CMD;
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT16 force_freq FIELD_PACKED;
     QOSAL_UINT8 status FIELD_PACKED;
     QOSAL_UINT8 dialog_token FIELD_PACKED;
@@ -2297,7 +2298,7 @@ typedef PREPACK struct {
     QOSAL_UINT8 group_bssid[ATH_MAC_LEN] FIELD_PACKED;
 }POSTPACK WMI_P2P_INVITE_REQ_RSP_CMD;
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT16 force_freq FIELD_PACKED;
     QOSAL_UINT8 status FIELD_PACKED;
     QOSAL_UINT8 dialog_token FIELD_PACKED;
@@ -2305,7 +2306,7 @@ typedef PREPACK struct {
     QOSAL_UINT8 group_bssid[ATH_MAC_LEN] FIELD_PACKED;
 }POSTPACK WMI_P2P_FW_INVITE_REQ_RSP_CMD;
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT16 wps_method FIELD_PACKED;
     QOSAL_UINT16 listen_freq FIELD_PACKED;
     QOSAL_UINT8 dialog_token FIELD_PACKED;
@@ -2326,21 +2327,21 @@ typedef enum {
     WMI_P2P_CONFID_CCK_RATES=9
 } WMI_P2P_CONF_ID;
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT8 reg_class FIELD_PACKED;
     QOSAL_UINT8 listen_channel FIELD_PACKED;
 }POSTPACK WMI_P2P_LISTEN_CHANNEL;
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT8 flag FIELD_PACKED;
 }POSTPACK WMI_P2P_SET_CROSS_CONNECT;
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT8 ssid_postfix[WMI_MAX_SSID_LEN-9] FIELD_PACKED;
     QOSAL_UINT8 ssid_postfix_len FIELD_PACKED;
 }POSTPACK WMI_P2P_SET_SSID_POSTFIX;
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT8 flag FIELD_PACKED;
 }POSTPACK WMI_P2P_SET_INTRA_BSS;
 
@@ -2348,7 +2349,7 @@ typedef PREPACK struct {
 #define P2P_CLIENT (1<<1)
 #define P2P_GO     (1<<2)
 #define P2P_PERSISTENT_FLAG 0x80
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT8 p2pmode FIELD_PACKED;
 }POSTPACK WMI_P2P_SET_MODE;
 
@@ -2356,7 +2357,7 @@ typedef PREPACK struct {
 #define RATECTRL_MODE_DEFAULT 0
 #define RATECTRL_MODE_PERONLY 1
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT32 mode FIELD_PACKED;
 }POSTPACK WMI_SET_RATECTRL_PARM_CMD;
 
@@ -2375,7 +2376,7 @@ typedef enum {
     WMI_P2P_SDPD_TRANSACTION_COMP = 0x2
 } WMI_P2P_SDPD_TRANSACTION_STATUS;
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT8 type FIELD_PACKED;
     QOSAL_UINT8 dialog_token FIELD_PACKED;
     QOSAL_UINT8 frag_id FIELD_PACKED;
@@ -2391,7 +2392,7 @@ typedef PREPACK struct {
     QOSAL_UINT8  tlv[WMI_P2P_MAX_TLV_LEN] FIELD_PACKED;
 } POSTPACK WMI_P2P_SDPD_TX_CMD;
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT16 go_oper_freq FIELD_PACKED;
     QOSAL_UINT8  dialog_token FIELD_PACKED;
     QOSAL_UINT8  peer_addr[ATH_MAC_LEN] FIELD_PACKED;
@@ -2404,7 +2405,7 @@ typedef PREPACK struct {
     QOSAL_UINT8 go_intent FIELD_PACKED;
 } POSTPACK  WMI_P2P_FW_CONNECT_CMD_STRUCT;
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT16 wps_method FIELD_PACKED;
     QOSAL_UINT8 dialog_token FIELD_PACKED;
     QOSAL_UINT8 peer[ATH_MAC_LEN] FIELD_PACKED;
@@ -2412,18 +2413,18 @@ typedef PREPACK struct {
 
 /* P2P module events */
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT8 num_p2p_dev FIELD_PACKED;
     QOSAL_UINT8 data[1] FIELD_PACKED;
 } POSTPACK WMI_P2P_NODE_LIST_EVENT;
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT8 sa[ATH_MAC_LEN] FIELD_PACKED;
     QOSAL_UINT8 dialog_token FIELD_PACKED;
     QOSAL_UINT16 dev_password_id FIELD_PACKED;
 }POSTPACK WMI_P2P_REQ_TO_AUTH_EVENT;
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT8 sa[ATH_MAC_LEN] FIELD_PACKED;
     QOSAL_UINT8 wps_buf[512] FIELD_PACKED;
     QOSAL_UINT16 wps_buflen FIELD_PACKED;
@@ -2432,7 +2433,7 @@ typedef PREPACK struct {
     QOSAL_UINT8 dialog_token FIELD_PACKED;
 }POSTPACK WMI_P2P_GO_NEG_REQ_EVENT;
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT16 freq FIELD_PACKED;
     QOSAL_INT8 status FIELD_PACKED;
     QOSAL_UINT8 role_go FIELD_PACKED;
@@ -2446,7 +2447,7 @@ typedef PREPACK struct {
     QOSAL_UINT8 persistent_grp FIELD_PACKED;
 } POSTPACK WMI_P2P_GO_NEG_RESULT_EVENT;
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT8 sa[ATH_MAC_LEN] FIELD_PACKED;
     QOSAL_UINT8 bssid[ATH_MAC_LEN] FIELD_PACKED;
     QOSAL_UINT8 go_dev_addr[ATH_MAC_LEN] FIELD_PACKED;
@@ -2455,7 +2456,7 @@ typedef PREPACK struct {
     QOSAL_UINT8 dialog_token FIELD_PACKED;
 } POSTPACK WMI_P2P_FW_INVITE_REQ_EVENT;
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT16 oper_freq FIELD_PACKED;
     QOSAL_UINT8 sa[ATH_MAC_LEN] FIELD_PACKED;
     QOSAL_UINT8 bssid[ATH_MAC_LEN] FIELD_PACKED;
@@ -2465,13 +2466,13 @@ typedef PREPACK struct {
     QOSAL_UINT8 status FIELD_PACKED;
 } POSTPACK WMI_P2P_INVITE_RCVD_RESULT_EVENT;
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT8 status FIELD_PACKED;
     QOSAL_UINT8 bssid[ATH_MAC_LEN] FIELD_PACKED;
     QOSAL_UINT8 is_bssid_valid FIELD_PACKED;
 } POSTPACK WMI_P2P_INVITE_SENT_RESULT_EVENT;
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT8 sa[ATH_MAC_LEN] FIELD_PACKED;
     QOSAL_UINT16 wps_config_method FIELD_PACKED;
     QOSAL_UINT8 dev_addr[ATH_MAC_LEN] FIELD_PACKED;
@@ -2485,12 +2486,12 @@ typedef PREPACK struct {
     QOSAL_UINT8 group_capab FIELD_PACKED;
 } POSTPACK WMI_P2P_PROV_DISC_REQ_EVENT;
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT8 peer[ATH_MAC_LEN] FIELD_PACKED;
     QOSAL_UINT16 config_methods FIELD_PACKED;
 } POSTPACK WMI_P2P_PROV_DISC_RESP_EVENT;
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT8 type FIELD_PACKED;
     QOSAL_UINT8 transaction_status FIELD_PACKED;
     QOSAL_UINT8 dialog_token FIELD_PACKED;
@@ -2504,13 +2505,13 @@ typedef PREPACK struct {
     //  Variable length TLV will be placed after the event
 } POSTPACK WMI_P2P_SDPD_RX_EVENT;
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_CHAR wps_pin[WPS_PIN_LEN] FIELD_PACKED;
     QOSAL_UINT8 peer_addr[ATH_MAC_LEN] FIELD_PACKED;
     QOSAL_UINT8 wps_role FIELD_PACKED;
 }POSTPACK WMI_P2P_PROV_INFO;
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     WPS_CREDENTIAL  credential FIELD_PACKED;
 }POSTPACK WMI_P2P_PERSISTENT_PROFILE_CMD;
 
@@ -2519,14 +2520,14 @@ typedef PREPACK struct {
 
 #if ENABLE_P2P_MODE
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT8 dev_name[WPS_MAX_DEVNAME_LEN] FIELD_PACKED;
     QOSAL_UINT8 dev_name_len FIELD_PACKED;
 }POSTPACK WMI_P2P_SET_DEV_NAME;
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT8 config_id;    /* set to one of WMI_P2P_CONF_ID */
-    PREPACK union {
+    PREPACK_UNION {
         WMI_P2P_LISTEN_CHANNEL listen_ch;
         WMI_P2P_SET_CROSS_CONNECT cross_conn;
         WMI_P2P_SET_SSID_POSTFIX ssid_postfix;
@@ -2539,27 +2540,27 @@ typedef PREPACK struct {
     }POSTPACK val;
 }POSTPACK WMI_P2P_SET_CMD;
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT32 duration FIELD_PACKED;
     QOSAL_UINT32 interval FIELD_PACKED;
     QOSAL_UINT32 start_or_offset FIELD_PACKED;
     QOSAL_UINT8 count_or_type FIELD_PACKED;
 } POSTPACK P2P_NOA_DESCRIPTOR;
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT8 enable FIELD_PACKED;
     QOSAL_UINT8 count FIELD_PACKED;
     QOSAL_UINT8 noas[1] FIELD_PACKED;
 } POSTPACK WMI_NOA_INFO_STRUCT;
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT8 enable FIELD_PACKED;
     QOSAL_UINT8 ctwin FIELD_PACKED;
 } POSTPACK WMI_OPPPS_INFO_STRUCT;
 
 #endif
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_BOOL  enable FIELD_PACKED;
     QOSAL_UINT8 nextProbeCount FIELD_PACKED;
     QOSAL_UINT8 maxBackOff FIELD_PACKED;
@@ -2568,7 +2569,7 @@ typedef PREPACK struct {
 } POSTPACK WMI_GREENTX_PARAMS_CMD;
 
 /* LPL commands */
-typedef PREPACK struct  {
+typedef PREPACK_STRUCT  {
     QOSAL_UINT8 lplPolicy FIELD_PACKED;          /*0 - force off, 1 force on, 2 dynamic*/
     QOSAL_UINT8 noBlockerDetect FIELD_PACKED;    /*don't do blocker detection if lpl policy is set
                                               to dynamic*/
@@ -2585,7 +2586,7 @@ typedef PREPACK struct  {
  * Extended WMI events are similarly embedded in a WMI event message with
  * WMI_EVENT_ID=WMI_EXTENSION_EVENTID.
  */
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT32    commandId FIELD_PACKED;
 } POSTPACK WMIX_CMD_HDR;
 
@@ -2616,7 +2617,7 @@ typedef PREPACK struct {
  * If a request is made to simultaneously set/clear or set/disable or
  * clear/disable or disable/enable, results are undefined.
  */
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT32              set_mask;             /* pins to set */
     QOSAL_UINT32              clear_mask;           /* pins to clear */
     QOSAL_UINT32              enable_mask;          /* pins to enable for output */
@@ -2628,13 +2629,13 @@ typedef PREPACK struct {
  * Values for gpioreg_id are GPIO_ID_*, defined in a
  * platform-dependent header, gpio.h.
  */
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT32              gpioreg_id;           /* GPIO register ID */
     QOSAL_UINT32              value;                /* value to write */
 } POSTPACK WMIX_GPIO_REGISTER_SET_CMD;
 
 /* Get a GPIO register.  For debug/exceptional cases. */
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT32              gpioreg_id;           /* GPIO register to read */
 } POSTPACK WMIX_GPIO_REGISTER_GET_CMD;
 
@@ -2643,7 +2644,7 @@ typedef PREPACK struct {
  * message should be used to acknowledge all interrupts that
  * were delivered in an earlier WMIX_GPIO_INTR_EVENT message.
  */
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT32              ack_mask;             /* interrupts to acknowledge */
 } POSTPACK WMIX_GPIO_INTR_ACK_CMD;
 
@@ -2653,7 +2654,7 @@ typedef PREPACK struct {
  * the current GPIO input values is provided -- in order to support
  * use of a GPIO interrupt as a Data Valid signal for other GPIO pins.
  */
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT32              intr_mask;            /* pending GPIO interrupts */
     QOSAL_UINT32              input_values;         /* recent GPIO input values */
 } POSTPACK WMIX_GPIO_INTR_EVENT;
@@ -2661,7 +2662,7 @@ typedef PREPACK struct {
  * WMIX_HB_CHALLENGE_RESP_CMDID
  * Heartbeat Challenge Response command
  */
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT32              cookie;
     QOSAL_UINT32              source;
 } POSTPACK WMIX_HB_CHALLENGE_RESP_CMD;
@@ -2683,7 +2684,7 @@ typedef PREPACK struct {
  * WMIX_GPIO_DATA_EVENTs (for polling GPIO input), and it may
  * simplify Host GPIO support.
  */
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT32              value;
     QOSAL_UINT32              reg_id;
 } POSTPACK WMIX_GPIO_DATA_EVENT;
@@ -2691,14 +2692,14 @@ typedef PREPACK struct {
 /*----------------------------------------------------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------------------------------------------------*/
 
-typedef PREPACK struct  {
+typedef PREPACK_STRUCT  {
     QOSAL_UINT8 max_queued_buffers FIELD_PACKED;    /*don't do blocker detection if lpl policy is set to dynamic*/
     QOSAL_UINT8 endpoint_mapping[8] FIELD_PACKED;        /*don't do rate fall back  detection if lpl policy is set to dynamic*/
     QOSAL_UINT8 start_credits_per_queue[8] FIELD_PACKED;
     QOSAL_UINT8 num_credit_queues FIELD_PACKED;          /*0 - force off, 1 force on, 2 dynamic*/
 } POSTPACK  WMI_INIT_REVERSE_CREDIT_CMD;
 
-typedef PREPACK struct  {
+typedef PREPACK_STRUCT  {
     QOSAL_UINT8 offset FIELD_PACKED;
     QOSAL_UINT8 shift FIELD_PACKED;
     QOSAL_UINT32 mask FIELD_PACKED;
@@ -2708,13 +2709,13 @@ typedef PREPACK struct  {
 
 } POSTPACK WMI_INIT_RCV_DATA_CLASSIFIER_CMD;
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT32              log_time;
     QOSAL_UINT16              event_id;
 	QOSAL_UINT16              unused;
 } POSTPACK WMIX_PFM_DATA_EVENT;
 
-typedef PREPACK struct  {
+typedef PREPACK_STRUCT  {
     QOSAL_BOOL  enable FIELD_PACKED;
 } POSTPACK WMID_EVENT_SET_CMD;
 
@@ -2739,7 +2740,7 @@ typedef struct ath_dset_param
 
 #define		MAX_TIMESTAMP		32
 
-typedef PREPACK struct  {
+typedef PREPACK_STRUCT  {
     QOSAL_UINT8  eventID[MAX_TIMESTAMP] FIELD_PACKED;
     QOSAL_UINT32 timestamp[MAX_TIMESTAMP] FIELD_PACKED;
 } POSTPACK WMI_PFM_REPORT_EVENT;
@@ -2761,7 +2762,7 @@ typedef struct
  * Extended WMIX_DSET commands are those that are needed for host dset
  * operation
  */
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT32    commandId FIELD_PACKED;
 } POSTPACK WMIX_DSET_CMD_HDR;
 
@@ -2774,38 +2775,38 @@ typedef PREPACK struct {
 #define WMIX_DSET_SIZE_CMDID        		0x1007
 #define WMIX_DSET_DELETE_CMDID        		0x1008
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
 	WMIX_DSET_CMD_HDR	hdr;
     QOSAL_UINT8     data[1] FIELD_PACKED; /* start of data */
 }  POSTPACK WMI_DSET_OP_EVENT;
 
 /* 
  */
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT32       dset_id FIELD_PACKED;           
 	QOSAL_UINT32       flags FIELD_PACKED;
     QOSAL_UINT32       length FIELD_PACKED;               
 } POSTPACK WMIX_DSET_OP_CREATE_PARAM_CMD;
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT32       dset_id FIELD_PACKED;           
 	QOSAL_UINT32       flags FIELD_PACKED;
 } POSTPACK WMIX_DSET_OP_OPEN_PARAM_CMD;
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT32       dset_id FIELD_PACKED;           
 } POSTPACK WMIX_DSET_OP_COMMIT_PARAM_CMD;
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT32       dset_id FIELD_PACKED;           
 } POSTPACK WMIX_DSET_OP_CLOSE_PARAM_CMD;
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT32       dset_id FIELD_PACKED;           
     QOSAL_UINT32       flags FIELD_PACKED;           
 } POSTPACK WMIX_DSET_OP_DELETE_PARAM_CMD;
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT32       dset_id FIELD_PACKED;           
 	QOSAL_UINT32       flags FIELD_PACKED;
 	QOSAL_UINT32       offset FIELD_PACKED;
@@ -2813,7 +2814,7 @@ typedef PREPACK struct {
 	QOSAL_UINT8        data[1] FIELD_PACKED;
 } POSTPACK WMIX_DSET_OP_WRITE_PARAM_CMD;
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT32       dset_id FIELD_PACKED;           
 	QOSAL_UINT32       offset FIELD_PACKED;
 	QOSAL_UINT32       length FIELD_PACKED;
@@ -2835,14 +2836,14 @@ typedef PREPACK struct {
 
 /* WMI_SYS_SET_PARAM_REPLY */
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     A_STATUS status;  
 } POSTPACK WMI_PARAM_SET_REPLY;
 
 
  /* WMI_SYS_SET_PARAMS */
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT32 length;
     QOSAL_UINT32 which_param;
     QOSAL_UINT8 data_buffer[1]; 

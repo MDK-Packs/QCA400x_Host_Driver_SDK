@@ -66,7 +66,7 @@ A_STATUS custom_send_tcpip
 
 QOSAL_VOID custom_free(QOSAL_VOID* buf);
 QOSAL_VOID* custom_alloc(QOSAL_UINT32 size);
-QOSAL_UINT32 get_total_pkts_buffered();
+QOSAL_UINT32 get_total_pkts_buffered(void);
 #if 0
 QOSAL_INT32 t_ipconfig(ENET_CONTEXT_STRUCT_PTR enet_ptr, QOSAL_UINT32 mode,QOSAL_UINT32* ipv4_addr, QOSAL_UINT32* subnetMask, QOSAL_UINT32* gateway4);
 QOSAL_INT32 t_ip6config(ENET_CONTEXT_STRUCT_PTR enet_ptr, QOSAL_UINT32 mode,IP6_ADDR_T *v6Global,IP6_ADDR_T *v6Local,

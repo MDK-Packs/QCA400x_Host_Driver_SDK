@@ -51,12 +51,12 @@ typedef uint32_t    QOSAL_UINT32;
 typedef int32_t     QOSAL_BOOL;
 typedef char        QOSAL_CHAR;
 typedef uint8_t     QOSAL_UCHAR;
-typedef void        QOSAL_VOID;
 typedef uint32_t    QOSAL_ULONG;
 typedef int32_t     QOSAL_LONG;
 
 typedef void*       pointer;
 #define QOSAL_CONST const
+#define QOSAL_VOID  void
 
 typedef int8_t      int_8;
 typedef int16_t     int_16;
@@ -67,8 +67,6 @@ typedef uint16_t    uint_16;
 typedef uint32_t    uint_32;
 
 typedef QOSAL_BOOL  A_BOOL;
-
-typedef void        A_VOID;
 typedef char        A_CHAR;
 
 
@@ -81,6 +79,7 @@ typedef uint16_t    A_UINT16;
 typedef uint32_t    A_UINT32;
 typedef uint32_t    A_ULONG;
 
+#define A_VOID      void
 #define A_TRUE      true
 #define A_FALSE     false
 

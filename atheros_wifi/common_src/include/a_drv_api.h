@@ -98,6 +98,12 @@ QOSAL_VOID
 Api_AggrRecvAddbaReqEvent(QOSAL_VOID *pCxt, QOSAL_UINT8 devId, WMI_ADDBA_REQ_EVENT *evt);          
 QOSAL_VOID
 Api_AggrRecvDelbaReqEvent(QOSAL_VOID *pCxt, QOSAL_UINT8 devId, WMI_DELBA_EVENT *evt);              
+QOSAL_VOID
+Api_GetCountryCodeReply(QOSAL_VOID *pCxt,QOSAL_UINT8 *datap, QOSAL_UINT32 len);
+A_VOID
+Api_GetSetParamReply(A_VOID *pCxt,A_UINT8 *datap);
+QOSAL_VOID
+Api_GetWpsInitReply(QOSAL_VOID *pCxt,QOSAL_UINT8 *datap, QOSAL_UINT32 len);
 A_STATUS
 Api_WmiTxStart(QOSAL_VOID *pCxt, QOSAL_VOID *pReq, HTC_ENDPOINT_ID eid);
 QOSAL_VOID

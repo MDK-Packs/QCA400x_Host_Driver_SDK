@@ -40,7 +40,7 @@
 #define WIFI_MAX_DNS_NAME_LENGTH    (253)
 
 /* Taken from FNET */
-typedef PREPACK struct
+typedef PREPACK_STRUCT
 {
     uint16_t id;
     uint16_t flags;
@@ -51,7 +51,7 @@ typedef PREPACK struct
 } POSTPACK wifi_dns_header_t;
 
 /* Taken from FNET */
-typedef PREPACK struct
+typedef PREPACK_STRUCT
 {
     uint8_t   zero_length;
     uint16_t  qtype;
@@ -60,9 +60,9 @@ typedef PREPACK struct
 } POSTPACK wifi_dns_q_tail_t;
 
 /* Taken from FNET */
-typedef PREPACK struct
+typedef PREPACK_STRUCT
 {
-    PREPACK union
+    PREPACK_UNION
     {
         uint8_t   name_ptr_c[2];
         uint16_t  name_ptr;

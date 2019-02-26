@@ -85,8 +85,8 @@ uint_32    dset_write(HOST_DSET *pDset, uint_8 *pData, uint_32 offset, uint_32 l
 uint_32    dset_read(HOST_DSET *pDset, uint_8 *pData, uint_32 offset, uint_32 length);
 uint_32    dset_fill(uint_8 *pData, uint_32 max_dset_count);
 
-HOST_DSET  *dset_get_first();
-HOST_DSET  *dset_get_next();
+HOST_DSET  *dset_get_first(void);
+HOST_DSET  *dset_get_next(void);
 
 
 

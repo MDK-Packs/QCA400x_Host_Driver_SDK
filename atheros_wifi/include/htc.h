@@ -64,7 +64,7 @@
  */
 
 /* HTC frame header */
-typedef PREPACK struct _HTC_FRAME_HDR{
+typedef PREPACK_STRUCT _HTC_FRAME_HDR{
         /* do not remove or re-arrange these fields, these are minimally required
          * to take advantage of 4-byte lookaheads in some hardware implementations */
     QOSAL_UINT8   EndpointID FIELD_PACKED;
@@ -109,13 +109,13 @@ typedef PREPACK struct _HTC_FRAME_HDR{
 #define HTC_MAX_CONTROL_MESSAGE_LENGTH  256
          
 /* base message ID header */
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT16 MessageID FIELD_PACKED;    
 } POSTPACK HTC_UNKNOWN_MSG;
                                                      
 /* HTC ready message
  * direction : target-to-host  */
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT16  MessageID FIELD_PACKED;    /* ID */
     QOSAL_UINT16  CreditCount FIELD_PACKED;  /* number of credits the target can offer */       
     QOSAL_UINT16  CreditSize FIELD_PACKED;   /* size of each credit */
@@ -124,7 +124,7 @@ typedef PREPACK struct {
 } POSTPACK HTC_READY_MSG;
 
     /* extended HTC ready message */
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     HTC_READY_MSG   Version2_0_Info FIELD_PACKED;   /* legacy version 2.0 information at the front... */
     /* extended information */
     QOSAL_UINT8         HTCVersion FIELD_PACKED;
@@ -138,7 +138,7 @@ typedef PREPACK struct {
 
 /* connect service
  * direction : host-to-target */
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT16  MessageID FIELD_PACKED;
     QOSAL_UINT16  ServiceID FIELD_PACKED;           /* service ID of the service to connect to */       
     QOSAL_UINT16  ConnectionFlags FIELD_PACKED;     /* connection flags */
@@ -160,7 +160,7 @@ typedef PREPACK struct {
 
 /* connect response
  * direction : target-to-host */
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT16  MessageID FIELD_PACKED;
     QOSAL_UINT16  ServiceID FIELD_PACKED;            /* service ID that the connection request was made */
     QOSAL_UINT8   Status FIELD_PACKED;               /* service connection status */ 
@@ -173,13 +173,13 @@ typedef PREPACK struct {
     
 } POSTPACK HTC_CONNECT_SERVICE_RESPONSE_MSG;
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT16  MessageID FIELD_PACKED;
     /* currently, no other fields */
 } POSTPACK HTC_SETUP_COMPLETE_MSG;
 
     /* extended setup completion message */
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT16  MessageID FIELD_PACKED;
     QOSAL_UINT32  SetupFlags FIELD_PACKED;
     QOSAL_UINT8   MaxMsgsPerBundledRecv FIELD_PACKED;
@@ -203,17 +203,17 @@ typedef PREPACK struct {
 #define HTC_RECORD_LOOKAHEAD        2
 #define HTC_RECORD_LOOKAHEAD_BUNDLE 3
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT8 RecordID FIELD_PACKED;     /* Record ID */
     QOSAL_UINT8 Length FIELD_PACKED;       /* Length of record */
 } POSTPACK HTC_RECORD_HDR;
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT8 EndpointID FIELD_PACKED;     /* Endpoint that owns these credits */
     QOSAL_UINT8 Credits FIELD_PACKED;        /* credits to report since last report */
 } POSTPACK HTC_CREDIT_REPORT;
 
-typedef PREPACK struct {    
+typedef PREPACK_STRUCT {    
     QOSAL_UINT8 PreValid FIELD_PACKED;         /* pre valid guard */
     QOSAL_UINT8 LookAhead[4] FIELD_PACKED;     /* 4 byte lookahead */
     QOSAL_UINT8 PostValid FIELD_PACKED;        /* post valid guard */
@@ -223,7 +223,7 @@ typedef PREPACK struct {
     
 } POSTPACK HTC_LOOKAHEAD_REPORT;
 
-typedef PREPACK struct {    
+typedef PREPACK_STRUCT {    
     QOSAL_UINT8 LookAhead[4] FIELD_PACKED;     /* 4 byte lookahead */    
 } POSTPACK HTC_BUNDLED_LOOKAHEAD_REPORT;
 

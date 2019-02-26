@@ -168,7 +168,7 @@ typedef struct ath_sock_stack_init {
 	QOSAL_UINT8 reserved;
 } ATH_STACK_INIT;
 
-typedef PREPACK struct sock_open {
+typedef PREPACK_STRUCT sock_open {
     WMI_SOCKET_CMD wmi_cmd FIELD_PACKED;
 	QOSAL_UINT32 domain FIELD_PACKED;		//ATH_AF_INET, ATH_AF_INET6
 	QOSAL_UINT32 type FIELD_PACKED;			//SOCK_STREAM_TYPE, SOCK_DGRAM_TYPE
@@ -176,15 +176,15 @@ typedef PREPACK struct sock_open {
 }POSTPACK SOCK_OPEN_T;
 
 
-typedef PREPACK struct sock_close {
+typedef PREPACK_STRUCT sock_close {
     WMI_SOCKET_CMD wmi_cmd FIELD_PACKED;
 	QOSAL_UINT32 handle FIELD_PACKED;		//socket handle
 }POSTPACK SOCK_CLOSE_T;
 
-typedef PREPACK struct sock_connect_cmd {
+typedef PREPACK_STRUCT sock_connect_cmd {
     WMI_SOCKET_CMD wmi_cmd FIELD_PACKED;
 	QOSAL_UINT32 handle FIELD_PACKED;		//socket handle
-	PREPACK union  
+	PREPACK_UNION  
 	{
 		SOCKADDR_T name FIELD_PACKED;
 		SOCKADDR_6_T name6 FIELD_PACKED;	
@@ -192,9 +192,9 @@ typedef PREPACK struct sock_connect_cmd {
 	QOSAL_UINT16 length FIELD_PACKED;		//socket address length
 }POSTPACK SOCK_CONNECT_CMD_T, SOCK_BIND_CMD_T, SOCK_ACCEPT_CMD_T;
 
-typedef PREPACK struct sock_connect_recv {
+typedef PREPACK_STRUCT sock_connect_recv {
     QOSAL_UINT32 handle FIELD_PACKED;		//socket handle
-	PREPACK union
+	PREPACK_UNION
 	{
 		SOCKADDR_T name FIELD_PACKED;
 		SOCKADDR_6_T name6 FIELD_PACKED;	
@@ -202,7 +202,7 @@ typedef PREPACK struct sock_connect_recv {
 	QOSAL_UINT16 length FIELD_PACKED;		//socket address length
 }POSTPACK SOCK_CONNECT_RECV_T, SOCK_BIND_RECV_T, SOCK_ACCEPT_RECV_T;
 
-typedef PREPACK struct sock_errno {
+typedef PREPACK_STRUCT sock_errno {
     WMI_SOCKET_CMD wmi_cmd FIELD_PACKED;
     QOSAL_UINT32 errno;
 }POSTPACK SOCK_ERRNO_T;
@@ -213,7 +213,7 @@ typedef struct sock_listen {
 	QOSAL_UINT32 backlog FIELD_PACKED;		//Max length of queue of backlog connections
 }POSTPACK SOCK_LISTEN_T;
 
-typedef PREPACK struct sock_setopt 
+typedef PREPACK_STRUCT sock_setopt 
 {
     WMI_SOCKET_CMD wmi_cmd FIELD_PACKED;
 	QOSAL_UINT32 handle FIELD_PACKED;		//socket handle
@@ -225,7 +225,7 @@ typedef PREPACK struct sock_setopt
 
 
 
-typedef PREPACK struct ipconfig_recv {
+typedef PREPACK_STRUCT ipconfig_recv {
     QOSAL_UINT32        mode FIELD_PACKED;			//0-query, 1-static, 2-dhcp
     QOSAL_UINT32        ipv4 FIELD_PACKED;				//IPv4 address
     QOSAL_UINT32        subnetMask FIELD_PACKED;
@@ -243,7 +243,7 @@ typedef PREPACK struct ipconfig_recv {
 }POSTPACK IPCONFIG_RECV_T;
 
 
-typedef PREPACK struct ipconfig {
+typedef PREPACK_STRUCT ipconfig {
     WMI_SOCKET_CMD wmi_cmd FIELD_PACKED;
     QOSAL_UINT32        mode FIELD_PACKED;			//0-query, 1-static, 2-dhcp
     QOSAL_UINT32        ipv4 FIELD_PACKED;				//IPv4 address
@@ -259,20 +259,20 @@ typedef PREPACK struct ipconfig {
     QOSAL_INT32         GlbPrefixExtd;
 }POSTPACK IPCONFIG_CMD_T;
 
-typedef PREPACK struct ping {
+typedef PREPACK_STRUCT ping {
     WMI_SOCKET_CMD wmi_cmd FIELD_PACKED;
     QOSAL_UINT32 ip_addr FIELD_PACKED;			//Destination IPv4 address
     QOSAL_UINT32 size FIELD_PACKED;	
 }POSTPACK PING_T;
 
-typedef PREPACK struct ping6 {
+typedef PREPACK_STRUCT ping6 {
     WMI_SOCKET_CMD wmi_cmd FIELD_PACKED;
     QOSAL_UINT8 ip6addr[16] FIELD_PACKED;		//Destination IPv6 address
     QOSAL_UINT32 size FIELD_PACKED;
 }POSTPACK PING_6_T;
 
 
-typedef PREPACK struct ipconfigdhcppool {
+typedef PREPACK_STRUCT ipconfigdhcppool {
     WMI_SOCKET_CMD wmi_cmd FIELD_PACKED;
 	QOSAL_UINT32   startaddr FIELD_PACKED;
 	QOSAL_UINT32   endaddr FIELD_PACKED;
@@ -280,7 +280,7 @@ typedef PREPACK struct ipconfigdhcppool {
 }POSTPACK IPCONFIG_DHCP_POOL_T;
 
 
-typedef PREPACK struct  ip6config_router_prefix  {
+typedef PREPACK_STRUCT  ip6config_router_prefix  {
     WMI_SOCKET_CMD wmi_cmd FIELD_PACKED;
     QOSAL_UINT8  v6addr[16]  FIELD_PACKED;
     QOSAL_INT32  prefixlen  FIELD_PACKED; 
@@ -289,38 +289,38 @@ typedef PREPACK struct  ip6config_router_prefix  {
 }POSTPACK IP6CONFIG_ROUTER_PREFIX_T;	
 
 
-typedef PREPACK struct  sock_ip_backoff  {
+typedef PREPACK_STRUCT  sock_ip_backoff  {
     WMI_SOCKET_CMD wmi_cmd FIELD_PACKED;    
     QOSAL_INT32  max_retry FIELD_PACKED;
 }POSTPACK SOCK_IP_BACKOFF_T;
 
-typedef PREPACK struct sock_ipv6_status {
+typedef PREPACK_STRUCT sock_ipv6_status {
     WMI_SOCKET_CMD wmi_cmd FIELD_PACKED; 
     QOSAL_UINT16 ipv6_status FIELD_PACKED;
 }POSTPACK SOCK_IPv6_STATUS_T;
 
-typedef PREPACK struct sock_ip_bridgemode {
+typedef PREPACK_STRUCT sock_ip_bridgemode {
     WMI_SOCKET_CMD wmi_cmd FIELD_PACKED; 
     QOSAL_UINT16 bridgemode FIELD_PACKED;
 }POSTPACK SOCK_IP_BRIDGEMODE_T;
 
-typedef PREPACK struct sock_ip_dhcp_release {
+typedef PREPACK_STRUCT sock_ip_dhcp_release {
     WMI_SOCKET_CMD wmi_cmd FIELD_PACKED;    
     QOSAL_UINT16  ifIndex FIELD_PACKED;
 }POSTPACK SOCK_IP_DHCP_RELEASE_T;	
 
 
-typedef PREPACK struct  sock_ip_tcp_rx_buf  {
+typedef PREPACK_STRUCT  sock_ip_tcp_rx_buf  {
     WMI_SOCKET_CMD wmi_cmd FIELD_PACKED;    
     QOSAL_INT32  rxbuf FIELD_PACKED;
 }POSTPACK SOCK_IP_TCP_RX_BUF_T;
 
-typedef PREPACK struct  sock_ip_http_server  {
+typedef PREPACK_STRUCT  sock_ip_http_server  {
     WMI_SOCKET_CMD wmi_cmd FIELD_PACKED;    
     QOSAL_INT32        enable FIELD_PACKED;
 }POSTPACK SOCK_IP_HTTP_SERVER_T;
 
-typedef PREPACK struct  sock_ip_http_server_cmd  {
+typedef PREPACK_STRUCT  sock_ip_http_server_cmd  {
     WMI_SOCKET_CMD wmi_cmd FIELD_PACKED;    
     QOSAL_INT32   command FIELD_PACKED;
     QOSAL_UINT8    pagename[32] FIELD_PACKED;
@@ -329,28 +329,28 @@ typedef PREPACK struct  sock_ip_http_server_cmd  {
     QOSAL_UINT8    value[32] FIELD_PACKED;
 }POSTPACK SOCK_IP_HTTP_SERVER_CMD_T;
 
-typedef PREPACK struct  sock_ip_dns_client  {
+typedef PREPACK_STRUCT  sock_ip_dns_client  {
     WMI_SOCKET_CMD wmi_cmd FIELD_PACKED;    
     QOSAL_INT32  command FIELD_PACKED;
     }POSTPACK SOCK_IP_DNS_CLIENT_T;
 
 
-typedef PREPACK struct sock_ip_dns_config_server_addr {
+typedef PREPACK_STRUCT sock_ip_dns_config_server_addr {
     WMI_SOCKET_CMD wmi_cmd FIELD_PACKED;
     IP46ADDR addr FIELD_PACKED;			//Server address
 }POSTPACK SOCK_IP_CFG_DNS_SRVR_ADDR;
 
-typedef PREPACK struct sock_ip_dns_local_domain {
+typedef PREPACK_STRUCT sock_ip_dns_local_domain {
     WMI_SOCKET_CMD wmi_cmd FIELD_PACKED;
     QOSAL_CHAR domain_name[33] FIELD_PACKED;			//Server address
 }POSTPACK SOCK_IP_CFG_DNS_LOCAL_DOMAIN;
 
-typedef PREPACK struct sock_ip_dns_hostname {
+typedef PREPACK_STRUCT sock_ip_dns_hostname {
     WMI_SOCKET_CMD wmi_cmd FIELD_PACKED;
     QOSAL_CHAR domain_name[33] FIELD_PACKED;			//Server address
 }POSTPACK SOCK_IP_CFG_HOST_NAME;
 
-typedef PREPACK struct sock_ip_dns {
+typedef PREPACK_STRUCT sock_ip_dns {
     WMI_SOCKET_CMD wmi_cmd FIELD_PACKED;
     QOSAL_INT32 command FIELD_PACKED;
     QOSAL_CHAR domain_name[36] FIELD_PACKED;			//Server address
@@ -358,14 +358,14 @@ typedef PREPACK struct sock_ip_dns {
 }POSTPACK SOCK_IP_DNS_T;
 
 
-typedef PREPACK struct  sock_ip_dns_server  {
+typedef PREPACK_STRUCT  sock_ip_dns_server  {
 WMI_SOCKET_CMD wmi_cmd FIELD_PACKED;
 QOSAL_INT32        enable FIELD_PACKED;
 }POSTPACK SOCK_IP_DNS_SERVER_STATUS_T;
 
 
 #if ENABLE_HTTP_CLIENT
-typedef PREPACK struct httpc_command {
+typedef PREPACK_STRUCT httpc_command {
     WMI_SOCKET_CMD wmi_cmd FIELD_PACKED;
     QOSAL_UINT32  command FIELD_PACKED;
     QOSAL_UINT8   url[256] FIELD_PACKED;
@@ -373,13 +373,13 @@ typedef PREPACK struct httpc_command {
 }POSTPACK SOCK_HTTPC_T;
 #endif /* ENABLE_HTTP_CLIENT */
 
-typedef PREPACK struct sock_ip_sntp_local_domain {
+typedef PREPACK_STRUCT sock_ip_sntp_local_domain {
     WMI_SOCKET_CMD wmi_cmd FIELD_PACKED;
     QOSAL_INT32 command FIELD_PACKED;
     QOSAL_CHAR FIELD_PREPACKED addr[68] FIELD_PACKED;			//Server address
 }POSTPACK SOCK_IP_CFG_SNTP_SRVR_ADDR;
 
-typedef PREPACK struct sock_ip_sntp_zone
+typedef PREPACK_STRUCT sock_ip_sntp_zone
 {
     WMI_SOCKET_CMD wmi_cmd FIELD_PACKED;
     QOSAL_UINT8 hour FIELD_PACKED;
@@ -388,41 +388,41 @@ typedef PREPACK struct sock_ip_sntp_zone
     QOSAL_UINT8 dse FIELD_PACKED;//enable/disable day light saving
 }POSTPACK SOCK_SNTP_MODIFY_TIMEZONE;
 
-typedef PREPACK struct sock_ip_sntp_config
+typedef PREPACK_STRUCT sock_ip_sntp_config
 {
     WMI_SOCKET_CMD wmi_cmd FIELD_PACKED;
     tSntpDnsAddr SntpDnsAddr[MAX_SNTP_SERVERS] FIELD_PACKED;
 }POSTPACK SOCK_IP_QUERY_SNTP_CONFIG;
 
-typedef PREPACK struct sDestIpToDevMapEvtType
+typedef PREPACK_STRUCT sDestIpToDevMapEvtType
 {
     QOSAL_INT8      result;
     QOSAL_UINT8     domain;
     QOSAL_INT16     device_id;
-    PREPACK union
+    PREPACK_UNION
     {
         QOSAL_UINT32   ip_addr FIELD_PACKED;
         IP6_ADDR_T ip6_addr FIELD_PACKED;	
     }dev_addr;
-    PREPACK union
+    PREPACK_UNION
     {
         QOSAL_UINT32   ip_addr FIELD_PACKED;
         IP6_ADDR_T ip6_addr FIELD_PACKED;	
     }dest_addr;
 } POSTPACK tDestIpToDevMapEvtType;
 
-typedef PREPACK struct sock_destip_dev_map_evt_type
+typedef PREPACK_STRUCT sock_destip_dev_map_evt_type
 {
     WMI_SOCKET_CMD         wmi_cmd FIELD_PACKED;
     tDestIpToDevMapEvtType ipToDevMap FIELD_PACKED;
 }POSTPACK WMI_SOCK_DESTIP_TO_DEV_MAP_EVENT;
 
-typedef PREPACK struct  sock_ip_sntp_client  {
+typedef PREPACK_STRUCT  sock_ip_sntp_client  {
     WMI_SOCKET_CMD wmi_cmd FIELD_PACKED;    
     QOSAL_INT32  command FIELD_PACKED;
 }POSTPACK SOCK_IP_SNTP_CLIENT_T;
 
-typedef PREPACK struct sock_ipv4_route {
+typedef PREPACK_STRUCT sock_ipv4_route {
     WMI_SOCKET_CMD wmi_cmd FIELD_PACKED;    
     QOSAL_INT32  command FIELD_PACKED;
     QOSAL_UINT32 address FIELD_PACKED;
@@ -432,7 +432,7 @@ typedef PREPACK struct sock_ipv4_route {
     QOSAL_UINT32 prot FIELD_PACKED;
 } POSTPACK SOCK_IPV4_ROUTE_T;
 
-typedef PREPACK struct sock_ipv6_route {
+typedef PREPACK_STRUCT sock_ipv6_route {
     WMI_SOCKET_CMD wmi_cmd FIELD_PACKED;
     QOSAL_UINT32 command FIELD_PACKED;
     QOSAL_UINT8  address[16] FIELD_PACKED;
@@ -442,12 +442,12 @@ typedef PREPACK struct sock_ipv6_route {
     QOSAL_UINT32 prot FIELD_PACKED;
 }POSTPACK SOCK_IPV6_ROUTE_T;
 
-typedef PREPACK struct sock_tcp_conn_timeout{
+typedef PREPACK_STRUCT sock_tcp_conn_timeout{
 WMI_SOCKET_CMD wmi_cmd FIELD_PACKED;
 QOSAL_UINT32 timeout_val;
 }POSTPACK SOCK_TCP_CONN_TIMEOUT_T;
 
-typedef PREPACK struct sock_ota_upgrade {
+typedef PREPACK_STRUCT sock_ota_upgrade {
     WMI_SOCKET_CMD wmi_cmd FIELD_PACKED;
     QOSAL_UINT32 ipaddress FIELD_PACKED;
     QOSAL_CHAR   filename[256] FIELD_PACKED;
@@ -456,42 +456,42 @@ typedef PREPACK struct sock_ota_upgrade {
     QOSAL_UINT8  protocol FIELD_PACKED;
 }POSTPACK SOCK_OTA_UPGRADE_T;
 
-typedef PREPACK struct sock_ota_read_ota_area{
+typedef PREPACK_STRUCT sock_ota_read_ota_area{
     WMI_SOCKET_CMD wmi_cmd FIELD_PACKED;
     QOSAL_UINT32 offset;
     QOSAL_UINT32 size;
 }POSTPACK SOCK_OTA_READ_OTA_AREA_T;
 
-typedef PREPACK struct sock_ota_done {
+typedef PREPACK_STRUCT sock_ota_done {
     WMI_SOCKET_CMD wmi_cmd FIELD_PACKED;
     QOSAL_UINT32 data;
 }POSTPACK SOCK_OTA_DONE_T;
 
-typedef PREPACK struct sock_ota_session_start_s{
+typedef PREPACK_STRUCT sock_ota_session_start_s{
      WMI_SOCKET_CMD wmi_cmd FIELD_PACKED;
      QOSAL_UINT32 flags;
      QOSAL_UINT32 partition_index;
 }POSTPACK SOCK_OTA_SESSION_START_T;
 
-typedef PREPACK struct sock_ota_parse_image_hdr_s{
+typedef PREPACK_STRUCT sock_ota_parse_image_hdr_s{
      WMI_SOCKET_CMD wmi_cmd FIELD_PACKED;
      QOSAL_UINT8 header[40];
 }POSTPACK SOCK_OTA_PARSE_IMAGE_HDR_T;
 
-typedef PREPACK struct sock_ota_partion_write_data_s{
+typedef PREPACK_STRUCT sock_ota_partion_write_data_s{
      WMI_SOCKET_CMD wmi_cmd FIELD_PACKED;
      QOSAL_UINT32 offset;
      QOSAL_UINT32 size;
      QOSAL_UINT8  data[1];
 }POSTPACK SOCK_OTA_PARTITON_WRITE_DATA_T;
 
-typedef PREPACK struct dhcps_success_cb_resp{
+typedef PREPACK_STRUCT dhcps_success_cb_resp{
     A_UINT32 resp_code;
     A_UINT8  mac[16];
     A_UINT32 ip;
 }POSTPACK SOCK_DHCPS_SUCCESS_CALLBACK_T;
 
-typedef PREPACK struct dhcpc_success_cb_resp{
+typedef PREPACK_STRUCT dhcpc_success_cb_resp{
     A_UINT32 resp_code;
     A_UINT32 ip;
 	A_UINT32 mask;
@@ -502,7 +502,7 @@ typedef PREPACK struct dhcpc_success_cb_resp{
 /*This structure is sent to the target in a data packet.
   It allows the target to route the data to correct socket with 
   all the necessary parameters*/
-typedef PREPACK struct sock_send 
+typedef PREPACK_STRUCT sock_send 
 {    
 	QOSAL_UINT32 handle FIELD_PACKED;			//Socket handle
 	QOSAL_UINT16 length FIELD_PACKED;			//Payload length
@@ -512,7 +512,7 @@ typedef PREPACK struct sock_send
 	QOSAL_UINT16 socklength FIELD_PACKED;		
 }POSTPACK SOCK_SEND_T;
 
-typedef PREPACK struct sock_send6 
+typedef PREPACK_STRUCT sock_send6 
 {    
 	QOSAL_UINT32 handle FIELD_PACKED;			//Socket handle
 	QOSAL_UINT16 length FIELD_PACKED;			//Payload length
@@ -522,7 +522,7 @@ typedef PREPACK struct sock_send6
 	QOSAL_UINT16 socklength FIELD_PACKED;		
 }POSTPACK SOCK_SEND6_T;
 
-typedef PREPACK struct sock_recv 
+typedef PREPACK_STRUCT sock_recv 
 {    
 	QOSAL_UINT32 handle FIELD_PACKED;			//Socket handle
 	SOCKADDR_T name FIELD_PACKED; 		    //IPv4 destination socket information
@@ -531,7 +531,7 @@ typedef PREPACK struct sock_recv
 	QOSAL_UINT32 reassembly_info FIELD_PACKED;   //Placeholder for reassembly info
 }POSTPACK SOCK_RECV_T;
 
-typedef PREPACK struct sock_recv6 
+typedef PREPACK_STRUCT sock_recv6 
 {    
 	QOSAL_UINT32 handle FIELD_PACKED;			//Socket handle
 	SOCKADDR_6_T name6 FIELD_PACKED;  		//IPv6 destination socket information
@@ -541,40 +541,40 @@ typedef PREPACK struct sock_recv6
 }POSTPACK SOCK_RECV6_T;
 
 #if ENABLE_SSL
-typedef PREPACK struct sock_ssl_new {
+typedef PREPACK_STRUCT sock_ssl_new {
     WMI_SOCKET_CMD wmi_cmd FIELD_PACKED;
     QOSAL_UINT32 ctx FIELD_PACKED;  // SSL context
 }POSTPACK SOCK_SSL_NEW_T;
 
-typedef PREPACK struct sock_ssl_set_fd {
+typedef PREPACK_STRUCT sock_ssl_set_fd {
     WMI_SOCKET_CMD wmi_cmd FIELD_PACKED;
     QOSAL_UINT32 ssl FIELD_PACKED;  // SSL connection object
     QOSAL_UINT32 fd FIELD_PACKED;   // Socket handle
 }POSTPACK SOCK_SSL_SET_FD_T;
 
-typedef PREPACK struct sock_ssl_accept {
+typedef PREPACK_STRUCT sock_ssl_accept {
     WMI_SOCKET_CMD wmi_cmd FIELD_PACKED;
     QOSAL_UINT32 ssl FIELD_PACKED;  // SSL connection object
 }POSTPACK SOCK_SSL_ACCEPT_T;
 
-typedef PREPACK struct sock_ssl_connect {
+typedef PREPACK_STRUCT sock_ssl_connect {
     WMI_SOCKET_CMD wmi_cmd FIELD_PACKED;
     QOSAL_UINT32 ssl FIELD_PACKED;  // SSL connection object
 }POSTPACK SOCK_SSL_CONNECT_T;
 
-typedef PREPACK struct sock_ssl_shutdown {
+typedef PREPACK_STRUCT sock_ssl_shutdown {
     WMI_SOCKET_CMD wmi_cmd FIELD_PACKED;
     QOSAL_UINT32 ssl FIELD_PACKED;  // SSL connection object
 }POSTPACK SOCK_SSL_SHUTDOWN_T;
 
-typedef PREPACK struct sock_ssl_configure {
+typedef PREPACK_STRUCT sock_ssl_configure {
     WMI_SOCKET_CMD wmi_cmd FIELD_PACKED;
     QOSAL_UINT32 ssl FIELD_PACKED;     // SSL connection object
     QOSAL_UINT32 size FIELD_PACKED;    // the size of the configuration data
     QOSAL_UINT8  data[sizeof(SSL_CONFIG)] FIELD_PACKED; // The configuration data
 }POSTPACK SOCK_SSL_CONFIGURE_T;
 
-typedef PREPACK struct sock_ssl_ctx_new {
+typedef PREPACK_STRUCT sock_ssl_ctx_new {
     WMI_SOCKET_CMD wmi_cmd FIELD_PACKED;
     QOSAL_UINT32 role FIELD_PACKED;
     QOSAL_INT32 inbufSize FIELD_PACKED;
@@ -582,12 +582,12 @@ typedef PREPACK struct sock_ssl_ctx_new {
     QOSAL_INT32 reserved FIELD_PACKED;
 }POSTPACK SOCK_SSL_CTX_NEW_T;
 
-typedef PREPACK struct sock_ssl_ctx_free {
+typedef PREPACK_STRUCT sock_ssl_ctx_free {
     WMI_SOCKET_CMD wmi_cmd FIELD_PACKED;
     QOSAL_UINT32 ctx FIELD_PACKED;  // SSL context
 }POSTPACK SOCK_SSL_CTX_FREE_T;
 
-typedef PREPACK struct sock_ssl_add_cert {
+typedef PREPACK_STRUCT sock_ssl_add_cert {
     WMI_SOCKET_CMD wmi_cmd FIELD_PACKED;
     QOSAL_UINT32 ctx FIELD_PACKED;    // SSL context
     QOSAL_UINT32 type FIELD_PACKED;   // Type: 1 for device certificate, 2: CA list
@@ -597,7 +597,7 @@ typedef PREPACK struct sock_ssl_add_cert {
     QOSAL_UINT8 data[1] FIELD_PACKED; // CA list or certificate data
 }POSTPACK SOCK_SSL_ADD_CERT_T;
 
-typedef PREPACK struct sock_ssl_store_cert {
+typedef PREPACK_STRUCT sock_ssl_store_cert {
     WMI_SOCKET_CMD wmi_cmd FIELD_PACKED;
     QOSAL_UINT8  name[32] FIELD_PACKED; // The name of the certificate or CA list
     QOSAL_UINT32 total FIELD_PACKED;    // The size of the certificate or CA list
@@ -606,24 +606,24 @@ typedef PREPACK struct sock_ssl_store_cert {
     QOSAL_UINT8 data[1] FIELD_PACKED;   // certificate or CA list data
 }POSTPACK SOCK_SSL_STORE_CERT_T;
 
-typedef PREPACK struct sock_ssl_load_cert {
+typedef PREPACK_STRUCT sock_ssl_load_cert {
     WMI_SOCKET_CMD wmi_cmd FIELD_PACKED;
     QOSAL_UINT32 ctx FIELD_PACKED;      // SSL context
     QOSAL_UINT32 type FIELD_PACKED;     // Type: 1 for device certificate, 2: CA list
     QOSAL_UINT8  name[32] FIELD_PACKED; // The name of the certificate or CA list
 }POSTPACK SOCK_SSL_LOAD_CERT_T;
 
-typedef PREPACK struct sock_ssl_list_cert {
+typedef PREPACK_STRUCT sock_ssl_list_cert {
     WMI_SOCKET_CMD wmi_cmd FIELD_PACKED;
     QOSAL_UINT32 reserved FIELD_PACKED;
 }POSTPACK SOCK_SSL_LIST_CERT_T;
 
 #endif
 
-typedef PREPACK struct sock_get_dev_from_dest_ip {
+typedef PREPACK_STRUCT sock_get_dev_from_dest_ip {
     WMI_SOCKET_CMD wmi_cmd FIELD_PACKED;
     QOSAL_UINT32 handle FIELD_PACKED;		//socket handle
-    PREPACK union 
+    PREPACK_UNION 
     {
         QOSAL_UINT32   ipaddr FIELD_PACKED;
         IP6_ADDR_T ip6addr FIELD_PACKED;	

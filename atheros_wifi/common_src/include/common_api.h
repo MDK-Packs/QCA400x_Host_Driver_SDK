@@ -152,6 +152,9 @@ QOSAL_VOID
 HW_InterruptHandler(QOSAL_VOID *pCxt);
 QOSAL_VOID 
 Strrcl_Recall(QOSAL_VOID *pCxt, QOSAL_UINT32 msec_sleep);
+#if !ENABLE_STACK_OFFLOAD 
+A_STATUS restore_power_state(void *pCxt, QOSAL_INT32 module);
+#endif
 
 A_STATUS 
 Hcd_ProgramWriteBufferWaterMark(QOSAL_VOID *pCxt, QOSAL_UINT32 length);

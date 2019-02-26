@@ -167,7 +167,7 @@ aggr_process_recv_frm(QOSAL_VOID *cntxt, QOSAL_UINT8 tid, QOSAL_UINT16 seq_no, Q
 	UNUSED_ARGUMENT(is_amsdu);
     
     do{
-    	if(!p_aggr->aggr_enabled_tid_mask & (1<<tid)) {       
+    	if(!(p_aggr->aggr_enabled_tid_mask & (1<<tid))) {
         	result = A_TRUE;
         	break;
     	}

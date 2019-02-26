@@ -97,7 +97,7 @@
 /*
  * generic definitions for IEEE 802.11 frames
  */
-PREPACK struct ieee80211_frame {
+PREPACK_STRUCT ieee80211_frame {
     QOSAL_UINT8    i_fc[2] FIELD_PACKED;
     QOSAL_UINT8    i_dur[2] FIELD_PACKED;
     QOSAL_UINT8    i_addr1[IEEE80211_ADDR_LEN] FIELD_PACKED;
@@ -108,7 +108,7 @@ PREPACK struct ieee80211_frame {
     /* see below */
 } POSTPACK;
 
-PREPACK struct ieee80211_qosframe {
+PREPACK_STRUCT ieee80211_qosframe {
     QOSAL_UINT8 i_fc[2] FIELD_PACKED;
     QOSAL_UINT8 i_dur[2] FIELD_PACKED;
     QOSAL_UINT8 i_addr1[IEEE80211_ADDR_LEN] FIELD_PACKED;
@@ -318,7 +318,7 @@ typedef enum {
 /*
  * WMM/802.11e Tspec Element
  */
-typedef PREPACK struct wmm_tspec_ie_t {
+typedef PREPACK_STRUCT wmm_tspec_ie_t {
     QOSAL_UINT8     elementId FIELD_PACKED;
     QOSAL_UINT8     len FIELD_PACKED;
     QOSAL_UINT8     oui[3] FIELD_PACKED;

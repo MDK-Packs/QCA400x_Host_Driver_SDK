@@ -31,6 +31,7 @@
 #include <htc.h>
 #include <spi_hcd_if.h>
 #include <hcd_api.h>
+#include "stdio.h"
 
 #include "atheros_wifi_api.h"
 #include "atheros_wifi_internal.h"

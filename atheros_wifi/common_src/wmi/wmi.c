@@ -364,7 +364,7 @@ wmi_data_hdr_add(struct wmi_t *wmip, void *osbuf, QOSAL_UINT8 msgType, QOSAL_BOO
 }
 
 /* This stuff is used when we want a simple layer-3 visibility */
-typedef PREPACK struct _iphdr {
+typedef PREPACK_STRUCT _iphdr {
     QOSAL_UINT8     ip_ver_hdrlen FIELD_PACKED;          /* version and hdr length */
     QOSAL_UINT8     ip_tos FIELD_PACKED;                 /* type of service */
     QOSAL_UINT16    ip_len FIELD_PACKED;                 /* total length */

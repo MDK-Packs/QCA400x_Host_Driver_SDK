@@ -29,6 +29,7 @@
 #include "atheros_wifi_api.h"
 #include "atheros_wifi_internal.h"
 #include "cust_netbuf.h"
+#include "stdio.h"
 
 #if ENABLE_STACK_OFFLOAD
 #include "atheros_stack_offload.h"

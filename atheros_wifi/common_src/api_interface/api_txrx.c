@@ -197,9 +197,9 @@ Api_RxComplete(QOSAL_VOID *pCxt, QOSAL_VOID *pReq)
              * min length
              */
             do{
-	            if (pDCxt->conn[devId].networkType != AP_NETWORK &&
-	                (packetLen < minHdrLen) ||
-	                (packetLen > AR4100_MAX_RX_MESSAGE_SIZE))
+	            if ((pDCxt->conn[devId].networkType != AP_NETWORK) &&
+	                ((packetLen < minHdrLen) ||
+	                (packetLen > AR4100_MAX_RX_MESSAGE_SIZE)))
 	            {
 	                /*
 	                 * packet is too short or too long

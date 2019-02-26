@@ -29,6 +29,7 @@
 #include <bmi.h>
 #include <htc.h>
 #include <wmi_host.h>
+#include "stdio.h"
 #if ENABLE_P2P_MODE
 #include <wmi.h>
 #include "p2p.h"
@@ -238,7 +239,7 @@ A_STATUS qcom_dns_server_address_get(A_UINT32 pdns[], A_UINT32* number)
     IP46ADDR dnsaddr[MAX_DNSADDRS];
     
     memset(&dnsaddr[0], 0, sizeof(dnsaddr));
-    error = t_ipconfig(Custom_Api_GetDriverCxt(0), IPCFG_QUERY, NULL, NULL, NULL, dnsaddr, NULL);
+    error = (A_STATUS)t_ipconfig(Custom_Api_GetDriverCxt(0), IPCFG_QUERY, NULL, NULL, NULL, dnsaddr, NULL);
     *number = 0;
     
     if( error == A_OK)
@@ -448,7 +449,7 @@ A_STATUS qcom_ipconfig(A_UINT8 device_id, A_INT32 mode,A_UINT32* address,A_UINT3
     if(qcom_set_deviceid(device_id) == A_ERROR){
         return A_ERROR;
     }
-    return(t_ipconfig(Custom_Api_GetDriverCxt(device_id), mode, address, submask, gateway,NULL,NULL));
+    return((A_STATUS)t_ipconfig(Custom_Api_GetDriverCxt(device_id), mode, address, submask, gateway,NULL,NULL));
 }
 
 A_STATUS qcom_ip6_address_get( A_UINT8 device_id,A_UINT8 *v6Global, A_UINT8 *v6Link, A_UINT8 *v6DefGw,A_UINT8 *v6GlobalExtd, A_INT32 *LinkPrefix,
@@ -457,17 +458,17 @@ A_STATUS qcom_ip6_address_get( A_UINT8 device_id,A_UINT8 *v6Global, A_UINT8 *v6L
     if(qcom_set_deviceid(device_id) == A_ERROR){
         return A_ERROR;
     }
-    return(t_ip6config(Custom_Api_GetDriverCxt(device_id), IPCFG_QUERY, (IP6_ADDR_T*)v6Global, (IP6_ADDR_T*)v6Link, (IP6_ADDR_T*)v6DefGw, (IP6_ADDR_T*)v6GlobalExtd, LinkPrefix, GlbPrefix, DefgwPrefix, GlbPrefixExtd));
+    return((A_STATUS)t_ip6config(Custom_Api_GetDriverCxt(device_id), IPCFG_QUERY, (IP6_ADDR_T*)v6Global, (IP6_ADDR_T*)v6Link, (IP6_ADDR_T*)v6DefGw, (IP6_ADDR_T*)v6GlobalExtd, LinkPrefix, GlbPrefix, DefgwPrefix, GlbPrefixExtd));
 }
 
 A_STATUS qcom_ping(A_UINT32 host, A_UINT32 size)
 {
-    return(t_ping(Custom_Api_GetDriverCxt(0), host, size));
+    return((A_STATUS)t_ping(Custom_Api_GetDriverCxt(0), host, size));
 }
            
 A_STATUS qcom_ping6(A_UINT8* host, A_UINT32 size)
 {
-    return(t_ping6(Custom_Api_GetDriverCxt(0), host, size));
+    return((A_STATUS)t_ping6(Custom_Api_GetDriverCxt(0), host, size));
 }           
 
 A_STATUS qcom_ip6config_router_prefix(A_UINT8 device_id,A_UINT8 *addr,A_INT32 prefixlen, A_INT32 prefix_lifetime, A_INT32 valid_lifetime)
@@ -475,12 +476,12 @@ A_STATUS qcom_ip6config_router_prefix(A_UINT8 device_id,A_UINT8 *addr,A_INT32 pr
     if(qcom_set_deviceid(device_id) == A_ERROR){
         return A_ERROR;
     }
-    return(t_ip6config_router_prefix(Custom_Api_GetDriverCxt(0),addr,prefixlen, prefix_lifetime, valid_lifetime));
+    return((A_STATUS)t_ip6config_router_prefix(Custom_Api_GetDriverCxt(0),addr,prefixlen, prefix_lifetime, valid_lifetime));
 }
 
 A_STATUS qcom_bridge_mode_enable(A_UINT16 bridgemode)
 {
-   return(custom_ipbridgemode(Custom_Api_GetDriverCxt(0), bridgemode));
+   return((A_STATUS)custom_ipbridgemode(Custom_Api_GetDriverCxt(0), bridgemode));
 }
 
 A_STATUS qcom_tcp_set_exp_backoff(A_UINT8 device_id, A_INT32 retry)
@@ -488,7 +489,7 @@ A_STATUS qcom_tcp_set_exp_backoff(A_UINT8 device_id, A_INT32 retry)
     if(qcom_set_deviceid(device_id) == A_ERROR){
         return A_ERROR;
     }
-    return(custom_ipconfig_set_tcp_exponential_backoff_retry(Custom_Api_GetDriverCxt(device_id),retry));
+    return((A_STATUS)custom_ipconfig_set_tcp_exponential_backoff_retry(Custom_Api_GetDriverCxt(device_id),retry));
 }
 
 A_STATUS qcom_ip4_route(A_UINT8 device_id, A_UINT32 cmd, A_UINT32* addr, A_UINT32* subnet, A_UINT32* gw, A_UINT32* ifindex, IPV4_ROUTE_LIST_T *rtlist)
@@ -496,7 +497,7 @@ A_STATUS qcom_ip4_route(A_UINT8 device_id, A_UINT32 cmd, A_UINT32* addr, A_UINT3
     if(qcom_set_deviceid(device_id) == A_ERROR){
         return A_ERROR;
     }
-    return(custom_ipv4_route(Custom_Api_GetDriverCxt(device_id), cmd, addr, subnet, gw, ifindex, rtlist));
+    return((A_STATUS)custom_ipv4_route(Custom_Api_GetDriverCxt(device_id), cmd, addr, subnet, gw, ifindex, rtlist));
 }
 
 A_STATUS qcom_ip6_route(A_UINT8 device_id, A_UINT32 cmd, A_UINT8* ip6addr, A_UINT32* prefixLen, A_UINT8* gw, A_UINT32* ifindex, IPV6_ROUTE_LIST_T *rtlist)
@@ -504,12 +505,12 @@ A_STATUS qcom_ip6_route(A_UINT8 device_id, A_UINT32 cmd, A_UINT8* ip6addr, A_UIN
     if(qcom_set_deviceid(device_id) == A_ERROR){
         return A_ERROR;
     }
-    return(custom_ipv6_route(Custom_Api_GetDriverCxt(device_id), cmd, ip6addr, prefixLen, gw, ifindex, rtlist));
+    return((A_STATUS)custom_ipv6_route(Custom_Api_GetDriverCxt(device_id), cmd, ip6addr, prefixLen, gw, ifindex, rtlist));
 }
 
 
 A_STATUS qcom_tcp_conn_timeout(A_UINT32 timeout_val){
-    return(custom_tcp_connection_timeout(Custom_Api_GetDriverCxt(0),timeout_val));
+    return((A_STATUS)custom_tcp_connection_timeout(Custom_Api_GetDriverCxt(0),timeout_val));
 }
 
 A_INT32 qcom_dhcps_set_pool(A_UINT8 device_id, A_UINT32 startip, A_UINT32 endip,A_INT32 leasetime)
@@ -541,11 +542,11 @@ A_STATUS qcom_dhcps_release_pool(A_UINT8 device_id)
    if(qcom_set_deviceid(device_id) == A_ERROR){
         return A_ERROR;
     }
-   return(custom_ipconfig_dhcp_release(Custom_Api_GetDriverCxt(device_id))); 
+   return((A_STATUS)custom_ipconfig_dhcp_release(Custom_Api_GetDriverCxt(device_id))); 
 }  
 
 A_STATUS qcom_http_server(A_INT32 enable){
-    return(custom_ip_http_server(Custom_Api_GetDriverCxt(0),enable));             
+    return((A_STATUS)custom_ip_http_server(Custom_Api_GetDriverCxt(0),enable));             
 }
 
            
@@ -555,11 +556,11 @@ A_STATUS qcom_http_set_post_cb(void* cxt, void *callback)
     {
         return A_ERROR;
     }
-    return(custom_http_set_post_cb(Custom_Api_GetDriverCxt(0), cxt, callback));       
+    return((A_STATUS)custom_http_set_post_cb(Custom_Api_GetDriverCxt(0), cxt, callback));       
 }
 
 A_STATUS qcom_ip_http_server_method(A_INT32 cmd, A_UINT8 *pagename, A_UINT8 *objname, A_INT32 objtype, A_INT32 objlen, A_UINT8 * value){
-    return(custom_ip_http_server_method(Custom_Api_GetDriverCxt(0), cmd, pagename, objname, objtype, objlen, value));
+    return((A_STATUS)custom_ip_http_server_method(Custom_Api_GetDriverCxt(0), cmd, pagename, objname, objtype, objlen, value));
 }
 
 A_STATUS qcom_http_client_method(A_UINT32 cmd, A_UINT8* url, A_UINT8 *data, A_UINT8 *value){
@@ -567,9 +568,9 @@ A_STATUS qcom_http_client_method(A_UINT32 cmd, A_UINT8* url, A_UINT8 *data, A_UI
     A_STATUS result = A_OK;
     
     if(NULL == value){
-        result = custom_httpc_method(Custom_Api_GetDriverCxt(0), cmd, url, data, NULL); //for HTTPC_CONNECT or HTTPC_DISC 
+        result = (A_STATUS)custom_httpc_method(Custom_Api_GetDriverCxt(0), cmd, url, data, NULL); //for HTTPC_CONNECT or HTTPC_DISC 
     } else {
-        result = custom_httpc_method(Custom_Api_GetDriverCxt(0), cmd, url, data, (A_UINT8**)&output);
+        result = (A_STATUS)custom_httpc_method(Custom_Api_GetDriverCxt(0), cmd, url, data, (A_UINT8**)&output);
     }
     
     if (result == A_OK){
@@ -760,7 +761,7 @@ A_STATUS qcom_set_connect_callback (A_UINT8 device_id,void *callback)
 A_STATUS qcom_set_probe_req_callback (A_UINT8 device_id,void *callback)
 {
     ATH_IOCTL_PARAM_STRUCT  inout_param;
-    A_INT32 error = A_OK;
+    A_STATUS error = A_OK;
     if(qcom_set_deviceid(device_id) == A_ERROR){
         return A_ERROR;
     }
@@ -777,7 +778,7 @@ A_STATUS qcom_set_probe_req_callback (A_UINT8 device_id,void *callback)
 A_STATUS qcom_enable_probe_req_event (A_UINT8 device_id, A_UINT8 enable)
 {
     ATH_IOCTL_PARAM_STRUCT  inout_param;
-    A_INT32 error = A_OK;
+    A_STATUS error = A_OK;
     if(qcom_set_deviceid(device_id) == A_ERROR){
         return A_ERROR;
     }
@@ -2078,6 +2079,7 @@ A_STATUS qcom_p2p_set(A_UINT8 device_id, P2P_CONF_ID config_id, void *data, A_UI
     ATH_IOCTL_PARAM_STRUCT param;
     A_STATUS error = A_OK;
     WMI_P2P_SET_CMD    p2p_set_params;
+    WMI_P2P_CONF_ID    wmi_config_id;
     
     if(qcom_set_deviceid(device_id) == A_ERROR){
         return A_ERROR;
@@ -2086,38 +2088,38 @@ A_STATUS qcom_p2p_set(A_UINT8 device_id, P2P_CONF_ID config_id, void *data, A_UI
 
     switch (config_id) {
         case P2P_CONFIG_LISTEN_CHANNEL:
-            config_id = WMI_P2P_CONFID_LISTEN_CHANNEL;
+            wmi_config_id = WMI_P2P_CONFID_LISTEN_CHANNEL;
             break;
         case P2P_CONFIG_CROSS_CONNECT:
-            config_id = WMI_P2P_CONFID_CROSS_CONNECT;
+            wmi_config_id = WMI_P2P_CONFID_CROSS_CONNECT;
             break;
         case P2P_CONFIG_SSID_POSTFIX:
-            config_id = WMI_P2P_CONFID_SSID_POSTFIX;
+            wmi_config_id = WMI_P2P_CONFID_SSID_POSTFIX;
             break;
         case P2P_CONFIG_INTRA_BSS:
-            config_id = WMI_P2P_CONFID_INTRA_BSS;
+            wmi_config_id = WMI_P2P_CONFID_INTRA_BSS;
             break;
         case P2P_CONFIG_CONCURRENT_MODE:
-            config_id = WMI_P2P_CONFID_CONCURRENT_MODE;
+            wmi_config_id = WMI_P2P_CONFID_CONCURRENT_MODE;
             break;
         case P2P_CONFIG_GO_INTENT:
-            config_id = WMI_P2P_CONFID_GO_INTENT;
+            wmi_config_id = WMI_P2P_CONFID_GO_INTENT;
             break;
         case P2P_CONFIG_DEV_NAME:
-            config_id = WMI_P2P_CONFID_DEV_NAME;
+            wmi_config_id = WMI_P2P_CONFID_DEV_NAME;
             break;
         case P2P_CONFIG_P2P_OPMODE:
-            config_id = WMI_P2P_CONFID_P2P_OPMODE;
+            wmi_config_id = WMI_P2P_CONFID_P2P_OPMODE;
             break;
         case P2P_CONFIG_CCK_RATES:
-            config_id = WMI_P2P_CONFID_CCK_RATES;
+            wmi_config_id = WMI_P2P_CONFID_CCK_RATES;
             break;
         default:
             /* Unknown parameter */
             return A_ERROR;
     }
     
-    p2p_set_params.config_id = config_id;
+    p2p_set_params.config_id = wmi_config_id;
     A_MEMCPY(&p2p_set_params.val, data, data_length);   
     
     param.cmd_id = ATH_P2P_SET;
@@ -2577,7 +2579,7 @@ A_STATUS qcom_set_appie(QOSAL_UINT8 device_id, QOSAL_UINT8 mgmtType, QOSAL_UINT8
 A_STATUS qcom_wps_init_key (QOSAL_UINT8 device_id)
 {
     ATH_IOCTL_PARAM_STRUCT  inout_param;
-    A_INT32 error = A_OK;
+    A_STATUS error = A_OK;
 
     inout_param.cmd_id = ATH_WLAN_WPS_INIT_KEY;
     inout_param.data = NULL;
@@ -2591,7 +2593,7 @@ A_STATUS qcom_wps_init_key (QOSAL_UINT8 device_id)
 A_STATUS qcom_heartbeat_challenge (QOSAL_UINT8 device_id)
 {
     ATH_IOCTL_PARAM_STRUCT  inout_param;
-    A_INT32 error = A_OK;
+    A_STATUS error = A_OK;
     
 #define HB_MAGIC        0x63825363L
     

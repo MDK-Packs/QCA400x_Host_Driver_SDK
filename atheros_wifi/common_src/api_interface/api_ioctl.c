@@ -36,6 +36,7 @@
 #include <atheros_wifi_api.h>
 #include "hw2.0/hw/apb_map.h"
 #include <hw2.0/hw/mbox_reg.h>
+#include "stdio.h"
 extern QOSAL_CONST WMI_SCAN_PARAMS_CMD default_scan_param;
 QOSAL_UINT8 countryCode_storge[4];
 A_STATUS
@@ -458,7 +459,7 @@ Api_ConnectWiFi(QOSAL_VOID *pCxt)
 		    conn_cmd.channel             = A_CPU2LE16(pDCxt->conn[devId].channelHint);
 		   	conn_cmd.ctrl_flags          = A_CPU2LE32(pDCxt->conn[devId].connectCtrlFlags);
 
-		    if (pDCxt->conn[pDCxt->devId].reqBssid != NULL) {
+		    if (&pDCxt->conn[pDCxt->devId] != NULL) {
 		        A_MEMCPY(conn_cmd.bssid, pDCxt->conn[devId].reqBssid, ATH_MAC_LEN);
 		    }
    

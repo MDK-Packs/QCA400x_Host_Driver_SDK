@@ -41,8 +41,7 @@
  *
  * Returns: None
  */
-A_VOID qosal_start()
-{
+A_VOID qosal_start() {
 }
 
 /* Description:
@@ -52,9 +51,8 @@ A_VOID qosal_start()
  *
  * Returns: A_OK if Success, A_ERROR if Fail 
  */
-A_STATUS qosal_get_error_code(A_UINT32 os_err)
-{
-    return 0;
+A_STATUS qosal_get_error_code(A_UINT32 os_err) {
+  return A_OK;
 }
 
 
@@ -70,30 +68,31 @@ A_STATUS qosal_get_error_code(A_UINT32 os_err)
  *         Blocking Flag
  * Returns:  A_OK if Success, A_ERROR if Fail 
  */
-A_STATUS qosal_task_create
-                        (
-                           A_VOID  Task(A_UINT32), 
-                           char *task_name, 
-                           int stack_size, A_VOID *param, 
-                           unsigned long task_priority, 
-                           qosal_task_handle *task_handle,
-                           A_BOOL auto_start 
-                        )
-{
-    A_STATUS osal_ret = A_OK;
+A_STATUS qosal_task_create ( A_VOID  Task(A_UINT32),
+                             char *task_name,
+                             int stack_size, A_VOID *param,
+                             unsigned long task_priority,
+                             qosal_task_handle *task_handle,
+                             A_BOOL auto_start) {
+  A_STATUS       osal_ret = A_OK;
+  osThreadAttr_t thread_attr;
 
-    osThreadAttr_t thread_attr = {
-      .stack_size = stack_size,
-      .priority   = task_priority
-    };
+  if (task_priority <= (unsigned long)(osPriorityRealtime7)) {
+    thread_attr.name       = task_name;
+    thread_attr.attr_bits  = 0;
+    thread_attr.cb_mem     = NULL;
+    thread_attr.cb_size    = 0;
+    thread_attr.stack_mem  = NULL;
+    thread_attr.stack_size = stack_size;
+    thread_attr.priority   = (osPriority_t)task_priority;
+    thread_attr.tz_module  = 0;
 
     task_handle = osThreadNew((osThreadFunc_t)Task, param, &thread_attr);
-    if(task_handle == NULL)
-    {
+    if(task_handle == NULL) {
       osal_ret = A_ERROR;
     }
-
-    return osal_ret;
+  }
+  return osal_ret;
 }
 
 /* 
@@ -104,20 +103,18 @@ A_STATUS qosal_task_create
  * 
  * Returns: A_OK if Success, A_ERROR if Fail 
  */
-A_STATUS qosal_task_get_priority(qosal_task_handle task_handle, 
-                                         A_UINT32 *priority_ptr)
-{
-    A_STATUS osal_ret = A_OK;
-    osPriority_t priority;
+A_STATUS qosal_task_get_priority(qosal_task_handle task_handle,
+                                         A_UINT32 *priority_ptr) {
+  A_STATUS osal_ret = A_OK;
+  osPriority_t priority;
 
-    priority = osThreadGetPriority (task_handle);
-    if(priority == osPriorityError)
-      {
-        osal_ret = A_ERROR;
-      }
-    *priority_ptr = priority;
+  priority = osThreadGetPriority (task_handle);
+  if(priority == osPriorityError) {
+    osal_ret = A_ERROR;
+  }
+  *priority_ptr = (A_UINT32)priority;
 
-    return osal_ret;
+  return osal_ret;
 }
 
 /* 
@@ -128,27 +125,26 @@ A_STATUS qosal_task_get_priority(qosal_task_handle task_handle,
  *         New priority
  * Returns: A_OK if Success, A_ERROR if Fail 
  */
-A_STATUS qosal_task_set_priority(qosal_task_handle task_handle, 
-                                     A_UINT32      new_priority, 
-                                     A_VOID       *priority_ptr)
-{
-    A_STATUS osal_ret = A_OK;
+A_STATUS qosal_task_set_priority(qosal_task_handle task_handle,
+                                     A_UINT32      new_priority,
+                                     A_VOID       *priority_ptr) {
+  A_STATUS osal_ret = A_OK;
+  osPriority_t priority;
 
-    osPriority_t priority;
+  priority = osThreadGetPriority (task_handle);
+  if(priority == osPriorityError) {
+   osal_ret = A_ERROR;
+  }
+  *((A_UINT32 *)priority_ptr) = priority;
 
-    priority = osThreadGetPriority (task_handle);
-    if(priority == osPriorityError)
-      {
-        osal_ret = A_ERROR;
-      }
-    *((A_UINT32 *)priority_ptr) = priority;
-
-    if(osThreadSetPriority (task_handle, new_priority) != osOK)
-    {
+  if (new_priority <= (unsigned long)(osPriorityRealtime7)) {
+    if(osThreadSetPriority (task_handle, (osPriority_t)new_priority) != osOK) {
       osal_ret = A_ERROR;
     }
-
-    return osal_ret;
+  } else {
+    osal_ret = A_ERROR;
+  }
+  return osal_ret;
 }
 
 /* 
@@ -158,13 +154,8 @@ A_STATUS qosal_task_set_priority(qosal_task_handle task_handle,
  *          
  * Returns: Task handle
  */
-qosal_task_handle qosal_task_get_handle(A_VOID)
-{
-    qosal_task_handle handle = 0;
-
-    handle = osThreadGetId();
-
-    return handle;
+qosal_task_handle qosal_task_get_handle(A_VOID) {
+  return osThreadGetId();
 }
 
 /* 
@@ -174,16 +165,13 @@ qosal_task_handle qosal_task_get_handle(A_VOID)
  *          
  * Returns: A_OK if Success, A_ERROR if Fail 
  */
-A_STATUS qosal_task_destroy(qosal_task_handle task_handle)
-{
-    A_STATUS osal_ret = A_OK;
+A_STATUS qosal_task_destroy(qosal_task_handle task_handle) {
+  A_STATUS osal_ret = A_OK;
 
-    if (osThreadTerminate(task_handle) != osOK)
-    {
-      osal_ret = A_ERROR;
-    }
-
-    return osal_ret;
+  if (osThreadTerminate(task_handle) != osOK) {
+    osal_ret = A_ERROR;
+  }
+  return osal_ret;
 }
 
 /* 
@@ -193,11 +181,8 @@ A_STATUS qosal_task_destroy(qosal_task_handle task_handle)
  *          
  * Returns: None  
  */
-A_VOID qosal_task_suspend(qosal_task_handle *task_handle)
-{
-    osThreadSuspend(task_handle);
-
-    return;
+A_VOID qosal_task_suspend(qosal_task_handle *task_handle) {
+  osThreadSuspend(task_handle);
 }
    
 /* 
@@ -208,12 +193,8 @@ A_VOID qosal_task_suspend(qosal_task_handle *task_handle)
  * Returns: None 
  */
 
-A_VOID qosal_task_resume(qosal_task_handle *task_handle)
-{
-
-    osThreadResume(task_handle);
-
-    return;
+A_VOID qosal_task_resume(qosal_task_handle *task_handle) {
+  osThreadResume(task_handle);
 }
 
 /******************************************************************************
@@ -228,9 +209,7 @@ A_VOID qosal_task_resume(qosal_task_handle *task_handle)
  *          
  * Returns: None
  */
-A_VOID qosal_malloc_init(A_VOID)
-{
-
+A_VOID qosal_malloc_init(A_VOID) {
 }
 
 /*
@@ -240,8 +219,7 @@ A_VOID qosal_malloc_init(A_VOID)
  *          
  * Returns: Size of memory block 
  */
-A_UINT32 qosal_get_size(A_VOID* addr)
-{
+A_UINT32 qosal_get_size(A_VOID* addr) {
   return 0;
 }
 
@@ -253,13 +231,8 @@ A_UINT32 qosal_get_size(A_VOID* addr)
  *          
  * Returns: Address of allocatated memory block
  */
-A_VOID* qosal_malloc(A_UINT32 size)
-{
-    A_VOID* addr = NULL;
-
-    addr = malloc(size);
-
-    return addr;
+A_VOID* qosal_malloc(A_UINT32 size) {
+  return malloc(size);
 }
 
 /*
@@ -270,8 +243,7 @@ A_VOID* qosal_malloc(A_UINT32 size)
  * Returns: A_OK if Success, A_ERROR if Fail
 */
 /*Clear a memory pool*/
-A_STATUS  qosal_free(A_VOID* addr)
-{
+A_STATUS  qosal_free(A_VOID* addr) {
     free(addr);
     return A_OK;
 }
@@ -287,10 +259,9 @@ A_STATUS  qosal_free(A_VOID* addr)
  *          
  * Returns: None 
 */
-A_VOID qosal_msec_delay(A_ULONG mSec)
-{
-    osDelay(mSec);
-    return;
+A_VOID qosal_msec_delay(A_ULONG mSec) {
+  osDelay(mSec);
+  return;
 }
 
 /*
@@ -302,25 +273,23 @@ A_VOID qosal_msec_delay(A_ULONG mSec)
  * Returns: None 
 */
 
-A_VOID qosal_usec_delay(A_UINT32 uSec)
-{
-    uint32_t count_delay;
-    uint32_t ms_delay;
-    uint32_t start;
+A_VOID qosal_usec_delay(A_UINT32 uSec) {
+  uint32_t count_delay;
+  uint32_t ms_delay;
+  uint32_t start;
 
-    if (uSec < 1000) {
-        count_delay = (osKernelGetSysTimerFreq() / 1000000) * uSec;
-        start = osKernelGetSysTimerCount();
-        while ((osKernelGetSysTimerCount() - start) < count_delay);
-    } else {
-        ms_delay  =  uSec / 1000;
-        if (uSec - (ms_delay * 1000) > 500) {
-          ms_delay++;
-        }
-        osDelay(ms_delay);
+  if (uSec < 1000) {
+    count_delay = (osKernelGetSysTimerFreq() / 1000000) * uSec;
+    start = osKernelGetSysTimerCount();
+    while ((osKernelGetSysTimerCount() - start) < count_delay);
+  } else {
+    ms_delay = uSec / 1000;
+    if (uSec - (ms_delay * 1000) > 500) {
+      ms_delay++;
     }
-
-    return;
+    osDelay(ms_delay);
+  }
+  return;
 }
 
 /*
@@ -331,11 +300,9 @@ A_VOID qosal_usec_delay(A_UINT32 uSec)
  * Returns: A_OK if Success, A_ERROR if Fail 
  */
 
-A_STATUS qosal_time_get_ticks(A_UINT32 *count)
-{ 
-    A_STATUS osal_ret = A_OK;
-    *count = osKernelGetSysTimerCount();
-    return osal_ret;
+A_STATUS qosal_time_get_ticks(A_UINT32 *count) {
+  *count = osKernelGetSysTimerCount();
+  return A_OK;
 }
 
 /*
@@ -345,9 +312,8 @@ A_STATUS qosal_time_get_ticks(A_UINT32 *count)
  *          
  * Returns: Time ticks per sec
  */
-A_ULONG qosal_time_get_ticks_per_sec(A_VOID)
-{
-    return osKernelGetSysTimerFreq ();
+A_ULONG qosal_time_get_ticks_per_sec(A_VOID) {
+  return osKernelGetSysTimerFreq ();
 }
 
 /*
@@ -357,9 +323,7 @@ A_ULONG qosal_time_get_ticks_per_sec(A_VOID)
  *          
  * Returns: None
 */
-A_VOID qosal_dcache_flush(A_VOID)
-{
-
+A_VOID qosal_dcache_flush(A_VOID) {
 }
 
 /*
@@ -369,9 +333,7 @@ A_VOID qosal_dcache_flush(A_VOID)
  *          
  * Returns: None
 */
-A_VOID qosal_dcache_invalidate(A_VOID)
-{
-
+A_VOID qosal_dcache_invalidate(A_VOID) {
 }
   
 /******************************************************************************
@@ -386,9 +348,7 @@ A_VOID qosal_dcache_invalidate(A_VOID)
  *          
  * Returns: None
  */
-A_VOID qosal_intr_disable (A_VOID)
-{
-
+A_VOID qosal_intr_disable (A_VOID) {
 }
 
 /*
@@ -398,9 +358,7 @@ A_VOID qosal_intr_disable (A_VOID)
  *          
  * Returns: None
  */
-A_VOID qosal_intr_enable (A_VOID)
-{
-
+A_VOID qosal_intr_enable (A_VOID) {
 }
 
 /*****************************************************************************
@@ -420,22 +378,17 @@ A_UINT32 qosal_wait_for_event(qosal_event_handle event_ptr,
                                         A_UINT32 bitsToWaitFor, 
                                         A_UINT32 all, 
                                         A_UINT32 var1, 
-                                        A_UINT32 ticksToWait)
-{   
-    A_UINT32 osal_ret = A_OK;
-    if(all)
-      {
-        all = osFlagsWaitAll;
-      }
-    else
-      {
-        all = osFlagsWaitAny;
-      }
-    if (osEventFlagsWait(*event_ptr, bitsToWaitFor, all, ticksToWait) & 0x80000000)
-      {
-        osal_ret = (uint32_t)A_ERROR;
-      }
-    return osal_ret;
+                                        A_UINT32 ticksToWait) {
+  A_UINT32 osal_ret = A_OK;
+  if(all) {
+    all = osFlagsWaitAll;
+  } else {
+    all = osFlagsWaitAny;
+  }
+  if (osEventFlagsWait(*event_ptr, bitsToWaitFor, all, ticksToWait) & 0x80000000) {
+    osal_ret = (uint32_t)A_ERROR;
+  }
+  return osal_ret;
 }
 
 /*
@@ -445,15 +398,13 @@ A_UINT32 qosal_wait_for_event(qosal_event_handle event_ptr,
  *          
  * Returns: A_OK if Success, A_ERROR if Fail
  */
-A_STATUS qosal_set_event(qosal_event_handle event_ptr, A_UINT32 bitsToSet)
-{
-    A_STATUS osal_ret = A_OK;
+A_STATUS qosal_set_event(qosal_event_handle event_ptr, A_UINT32 bitsToSet) {
+  A_STATUS osal_ret = A_OK;
 
-    if (osEventFlagsSet(*event_ptr, bitsToSet) & 0x80000000)
-      {
-        osal_ret = A_ERROR;
-      }
-    return osal_ret;
+  if (osEventFlagsSet(*event_ptr, bitsToSet) & 0x80000000) {
+    osal_ret = A_ERROR;
+  }
+  return osal_ret;
 }
 
 /*
@@ -463,18 +414,14 @@ A_STATUS qosal_set_event(qosal_event_handle event_ptr, A_UINT32 bitsToSet)
  *          
  * Returns: A_OK if Success, A_ERROR if Fail
  */
-A_STATUS qosal_create_event(qosal_event_handle event_ptr)
-{
-    *event_ptr = osEventFlagsNew(NULL);
-    if (event_ptr != NULL)
-      {
-        return A_OK;
-      }
-    else
-      {
-        return A_ERROR;
-      }
+A_STATUS qosal_create_event(qosal_event_handle event_ptr) {
+  A_STATUS osal_ret = A_OK;
+  *event_ptr = osEventFlagsNew(NULL);
 
+  if (event_ptr == NULL) {
+    osal_ret = A_ERROR;
+  }
+  return osal_ret;
 }
 
 /*
@@ -484,10 +431,8 @@ A_STATUS qosal_create_event(qosal_event_handle event_ptr)
  *          
  * Returns: A_OK if Success, A_ERROR if Fail
  */
-A_STATUS qosal_set_event_auto_clear(qosal_event_handle event_ptr, A_UINT32 flags)
-{    
-    A_STATUS osal_ret = A_OK;
-    return osal_ret;
+A_STATUS qosal_set_event_auto_clear(qosal_event_handle event_ptr, A_UINT32 flags) {
+  return A_OK;
 }
 
 /*
@@ -497,16 +442,13 @@ A_STATUS qosal_set_event_auto_clear(qosal_event_handle event_ptr, A_UINT32 flags
  *          
  * Returns: A_OK if Success, A_ERROR if Fail
 */
-A_STATUS qosal_clear_event(qosal_event_handle event_ptr, A_UINT32 bitsToClear)
-{
-    A_STATUS osal_ret = A_OK;
+A_STATUS qosal_clear_event(qosal_event_handle event_ptr, A_UINT32 bitsToClear) {
+  A_STATUS osal_ret = A_OK;
 
-    if (osEventFlagsClear(*event_ptr, bitsToClear) & 0x80000000)
-      {
-        osal_ret = A_ERROR;
-      }
-
-    return osal_ret;
+  if (osEventFlagsClear(*event_ptr, bitsToClear) & 0x80000000) {
+    osal_ret = A_ERROR;
+  }
+  return osal_ret;
 }
 
 /*
@@ -516,16 +458,13 @@ A_STATUS qosal_clear_event(qosal_event_handle event_ptr, A_UINT32 bitsToClear)
  *          
  * Returns: A_OK if Success, A_ERROR if Fail
  */
-A_STATUS qosal_delete_event(qosal_event_handle event_ptr)
-{
-    A_STATUS osal_ret = A_OK;
+A_STATUS qosal_delete_event(qosal_event_handle event_ptr) {
+  A_STATUS osal_ret = A_OK;
 
-    if (osEventFlagsDelete(*event_ptr) != osOK)
-      {
-        osal_ret = A_ERROR;
-      }
-
-    return osal_ret;
+  if (osEventFlagsDelete(*event_ptr) != osOK) {
+    osal_ret = A_ERROR;
+  } 
+  return osal_ret;
 }
 
 /*****************************************************************************
@@ -540,16 +479,14 @@ A_STATUS qosal_delete_event(qosal_event_handle event_ptr)
  *          
  * Returns: A_OK if Success, A_ERROR if Fail
  */
-A_STATUS qosal_mutex_init(qosal_mutex_handle mutex_ptr)
-{
-    A_STATUS osal_ret = A_OK;
+A_STATUS qosal_mutex_init(qosal_mutex_handle mutex_ptr) {
+  A_STATUS osal_ret = A_OK;
 
-    *mutex_ptr = osSemaphoreNew(1, 1, NULL);
-    if (*mutex_ptr == NULL)
-      {
-        osal_ret = A_ERROR;
-      }
-    return osal_ret;
+  *mutex_ptr = osSemaphoreNew(1, 1, NULL);
+  if (*mutex_ptr == NULL) {
+    osal_ret = A_ERROR;
+   }
+  return osal_ret;
 }
 
 /*
@@ -559,14 +496,12 @@ A_STATUS qosal_mutex_init(qosal_mutex_handle mutex_ptr)
  *          
  * Returns: A_OK if Success, A_ERROR if Fail
  */
-A_STATUS qosal_mutex_acquire(qosal_mutex_handle mutex_lock, A_ULONG tick_count)
-{
-    A_STATUS osal_ret = A_OK;
-    if (osSemaphoreAcquire(*mutex_lock, tick_count) != osOK)
-      {
-        osal_ret = A_ERROR;
-      }
-    return osal_ret; 
+A_STATUS qosal_mutex_acquire(qosal_mutex_handle mutex_lock, A_ULONG tick_count) {
+  A_STATUS osal_ret = A_OK;
+  if (osSemaphoreAcquire(*mutex_lock, tick_count) != osOK) {
+    osal_ret = A_ERROR;
+  }
+  return osal_ret; 
 }
 
 /*
@@ -576,14 +511,13 @@ A_STATUS qosal_mutex_acquire(qosal_mutex_handle mutex_lock, A_ULONG tick_count)
  *          
  * Returns: A_OK if Success, A_ERROR if Fail
  */
-A_STATUS qosal_mutex_release(qosal_mutex_handle mutex_ptr)
-{
-    A_STATUS osal_ret = A_OK;
-    if (osSemaphoreRelease(*mutex_ptr) != osOK)
-      {
-        osal_ret = A_ERROR;
-      }
-    return osal_ret; 
+A_STATUS qosal_mutex_release(qosal_mutex_handle mutex_ptr) {
+  A_STATUS osal_ret = A_OK;
+
+  if (osSemaphoreRelease(*mutex_ptr) != osOK) {
+    osal_ret = A_ERROR;
+  }
+  return osal_ret;
 }
 
 /*
@@ -593,15 +527,13 @@ A_STATUS qosal_mutex_release(qosal_mutex_handle mutex_ptr)
  *          
  * Returns: A_OK if Success, A_ERROR if Fail 
 */
-A_STATUS qosal_mutex_destroy(qosal_mutex_handle mutex_ptr)
-{
-    A_STATUS osal_ret = A_OK;
+A_STATUS qosal_mutex_destroy(qosal_mutex_handle mutex_ptr) {
+  A_STATUS osal_ret = A_OK;
 
-    if (osSemaphoreDelete(*mutex_ptr) != osOK)
-      {
-        osal_ret = A_ERROR;
-      }
-    return osal_ret;
+  if (osSemaphoreDelete(*mutex_ptr) != osOK) {
+    osal_ret = A_ERROR;
+  }
+  return osal_ret;
 }
 
 /*****************************************************************************
@@ -617,10 +549,8 @@ A_STATUS qosal_mutex_destroy(qosal_mutex_handle mutex_ptr)
  *          
  * Returns: None
 */
-A_VOID qosal_time_delay(A_UINT32 msec)
-{
-    osDelay(msec);
-    return;
+A_VOID qosal_time_delay(A_UINT32 msec) {
+  osDelay(msec);
 }
 
 /*
@@ -630,9 +560,8 @@ A_VOID qosal_time_delay(A_UINT32 msec)
  *          
  * Returns: None
 */
-A_VOID qosal_time_get_elapsed(TIME_STRUCT* time)
-{
-    return;
+A_VOID qosal_time_get_elapsed(TIME_STRUCT* time) {
+  return;
 }
 
 /*********************************************************************
@@ -647,10 +576,9 @@ A_VOID qosal_time_get_elapsed(TIME_STRUCT* time)
  *          
 * Returns: A_OK for success, A_ERROR for failure 
 */
-A_UINT32 qosal_klog_create(A_UINT32 size, A_UINT32 flags)
-{
-    return A_OK;
-}  
+A_UINT32 qosal_klog_create(A_UINT32 size, A_UINT32 flags) {
+  return A_OK;
+}
 
 /*
  * Description: Controls logging in kernel log
@@ -662,9 +590,7 @@ A_UINT32 qosal_klog_create(A_UINT32 size, A_UINT32 flags)
 * Returns: None
 */
 
-A_VOID qosal_klog_control(A_UINT32 bit_mask, A_BOOL set_bits)
-{
-
+A_VOID qosal_klog_control(A_UINT32 bit_mask, A_BOOL set_bits) {
 }
 
 /*
@@ -675,10 +601,8 @@ A_VOID qosal_klog_control(A_UINT32 bit_mask, A_BOOL set_bits)
 * Returns: A_OK for success, A_ERROR for failure 
 */
 
-A_BOOL qosal_klog_dispaly(A_VOID)
-{
-    A_BOOL  val = 0;
-    return val;
+A_BOOL qosal_klog_dispaly(A_VOID) {
+  return 0;
 }
 /*
  * Description: This function is used to Creates the kernel logs
@@ -691,10 +615,8 @@ A_BOOL qosal_klog_dispaly(A_VOID)
 * Returns: A_OK for success, A_ERROR for failure 
 */
 
-A_UINT32 qosal_klog_create_at(A_UINT32 max_size, A_UINT32 flags, A_VOID* ptr)
-{
-    A_UINT32 os_ret = 0;
-    return os_ret;
+A_UINT32 qosal_klog_create_at(A_UINT32 max_size, A_UINT32 flags, A_VOID* ptr) {
+  return 0;
 }
 
 #endif

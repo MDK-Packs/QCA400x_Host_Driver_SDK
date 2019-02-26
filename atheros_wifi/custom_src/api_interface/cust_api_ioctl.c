@@ -33,6 +33,7 @@
 #include <wlan_api.h>
 #include <htc.h>
 #include <wmi_host.h>
+#include "stdio.h"
 #if ENABLE_P2P_MODE
 #include <wmi.h>
 #include "p2p.h"
@@ -57,6 +58,8 @@ extern WMI_P2P_PROV_INFO p2p_key_val;
 extern QOSAL_CONST QOSAL_UINT8 max_performance_power_param;
 extern QOSAL_CONST WMI_STORERECALL_CONFIGURE_CMD default_strrcl_config_cmd;
 extern QOSAL_CONST WMI_SCAN_PARAMS_CMD default_scan_param;
+
+extern A_STATUS TxRawPacket(QOSAL_VOID *pCxt, QOSAL_VOID *pReq, ATH_MAC_TX_PARAMS *pParams);
 
 ////uint32_t Custom_Api_Mediactl(uint8_t device_id, uint32_t cmd, void* param);
 //extern uint32_t chip_state_ctrl(A_CUSTOM_DRIVER_CONTEXT * pCxt, uint32_t state);
@@ -612,10 +615,10 @@ A_STATUS ath_ioctl_handler(A_CUSTOM_DRIVER_CONTEXT *pCxt, ATH_IOCTL_PARAM_STRUCT
     case ATH_GET_VERSION_STR:
 #define PRINT_HOSTFWVERSION(ver) 	(ver&0xF0000000)>>28,(ver&0x0F000000)>>24, \
                                	(ver&0x00FF0000)>>16,(ver&0x0000FFFF)
-		sprintf(PTR_VERSION_STR->host_ver, "%d.%d.%d.%d", PRINT_HOSTFWVERSION(pDCxt->hostVersion));
-		sprintf(PTR_VERSION_STR->target_ver, "0x%x", pDCxt->targetVersion);
-		sprintf(PTR_VERSION_STR->wlan_ver, "%d.%d.%d.%d", PRINT_HOSTFWVERSION(pDCxt->wlanVersion));
-		sprintf(PTR_VERSION_STR->abi_ver, "%d", pDCxt->abiVersion);
+		sprintf((char *)PTR_VERSION_STR->host_ver, "%d.%d.%d.%d", PRINT_HOSTFWVERSION(pDCxt->hostVersion));
+		sprintf((char *)PTR_VERSION_STR->target_ver, "0x%x", pDCxt->targetVersion);
+		sprintf((char *)PTR_VERSION_STR->wlan_ver, "%d.%d.%d.%d", PRINT_HOSTFWVERSION(pDCxt->wlanVersion));
+		sprintf((char *)PTR_VERSION_STR->abi_ver, "%d", pDCxt->abiVersion);
 		break;		
 	case ATH_GET_MACADDR:
         A_MEMCPY((int_8_ptr)param_ptr->data, (uint8_t *)(((QCA400x_WiFi *)(Custom_Api_GetDriverCxt(pDCxt->devId)))->ADDRESS), ATH_MAC_LEN);
@@ -1407,11 +1410,11 @@ A_STATUS ath_ioctl_handler(A_CUSTOM_DRIVER_CONTEXT *pCxt, ATH_IOCTL_PARAM_STRUCT
    	((PTR_WEP_IN->defKeyIndex - 1) > WMI_MAX_KEY_INDEX) ||
     	(PTR_WEP_IN->numKeys > WMI_MAX_KEY_INDEX+1) ||
     	/* user passes in num digits as keyLength */
-    	(PTR_WEP_IN->keyLength != WEP_SHORT_KEY*2 &&
+    	((PTR_WEP_IN->keyLength != WEP_SHORT_KEY*2 &&
     	 PTR_WEP_IN->keyLength != WEP_LONG_KEY*2) &&
     	 /* user passes in num digits as keyLength */
     	 (PTR_WEP_IN->keyLength != WEP_SHORT_KEY &&
-    	 PTR_WEP_IN->keyLength != WEP_LONG_KEY))
+    	 PTR_WEP_IN->keyLength != WEP_LONG_KEY)))
       {
           return A_ERROR;
       }
@@ -1514,12 +1517,12 @@ A_STATUS ath_ioctl_handler(A_CUSTOM_DRIVER_CONTEXT *pCxt, ATH_IOCTL_PARAM_STRUCT
             
             break;         
 	default:
-		if(ath_custom_mediactl.ath_ioctl_handler_ext != NULL){
-			error = ath_custom_mediactl.ath_ioctl_handler_ext(pCxt, param_ptr);
-		}else{
+//		if(ath_custom_mediactl.ath_ioctl_handler_ext != NULL){
+//			error = ath_custom_mediactl.ath_ioctl_handler_ext(pCxt, param_ptr);
+//		}else{
 			error = A_ERROR;
-		}
-		break;
+//		}
+//		break;
 	}
 
 

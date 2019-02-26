@@ -20,7 +20,7 @@
 //==============================================================================
 // Author(s): ="Atheros"
 //==============================================================================
-#pragma pack(1)
+//#pragma pack(1)
 
 //#if defined(__MWERKS__) && (__MWERKS__ == 0x4305) && defined(__arm__)
 ///* CodeWarrior ARM 10.1 doesn't support packed/options pragma correctly */

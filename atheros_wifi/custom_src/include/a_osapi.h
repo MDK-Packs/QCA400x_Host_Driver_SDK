@@ -35,6 +35,8 @@
 #include <cust_netbuf.h>
 #include <osal.h>
 
+#include "cmsis_compiler.h"
+
 #define MEM_TYPE_ATHEROS_PERSIST_RX_PCB 0x2001
 
 /* there exist within the common code a few places that make use of the 
@@ -42,56 +44,32 @@
  * or it can be used to disable inlining be leaving the macro blank.
  */
 #ifndef INLINE
-#define INLINE                  inline
+#define INLINE              __INLINE
 #endif
 /* PREPACK and/or POSTPACK are used with compilers that require each data structure
  * that requires single byte alignment be declared individually. these macros typically
  * would be used in place of athstartpack.h and athendpack.h which would be used with 
  * compilers that allow this feature to be invoked through a one-time pre-processor command.
  */
-/*
- * ARM Compiler 4/5
- */
-#if   defined ( __CC_ARM )
-  #ifndef PREWEAK_CODE
-    #define PREWEAK_CODE   __weak
-  #endif /* PREWEAK_CODE */
-  #ifndef POSTWEAK_CODE
-    #define POSTWEAK_CODE
-  #endif /* POSTWEAK_CODE */
-  #ifndef   FIELD_PACKED
-    #define FIELD_PACKED
-  #endif
-  #ifndef   FIELD_PREPACKED
-    #define FIELD_PREPACKED __packed
-  #endif
-  #ifndef PREPACK
-    #define PREPACK        __packed
-  #endif /* PREPACK */
-  #ifndef POSTPACK
-    #define POSTPACK
-  #endif /* POSTPACK */
-
-/*
- * ARM Compiler 6 (armclang)
- */
-#elif defined (__ARMCC_VERSION) && (__ARMCC_VERSION >= 6010050)
-  #ifndef PREWEAK_CODE
-    #define PREWEAK_CODE   __attribute__((weak))
-  #endif /* PREWEAK_CODE */
-  #ifndef POSTWEAK_CODE
-    #define POSTWEAK_CODE
-  #endif /* POSTWEAK_CODE */
-//  #ifndef   FIELD_PACKED
-//    #define FIELD_PACKED __attribute__((packed)) __unaligned
-//  #endif
-  #ifndef PREPACK
-    #define PREPACK __attribute__((__packed__))
-  #endif /* PREPACK */
-  #ifndef POSTPACK
-    #define POSTPACK
-  #endif /* POSTPACK */
+#ifndef PREPACK_STRUCT
+#define PREPACK_STRUCT      __PACKED_STRUCT
 #endif
+#ifndef PREPACK_UNION
+#define PREPACK_UNION       __PACKED_UNION
+#endif
+ 
+#ifndef FIELD_PACKED
+#define FIELD_PACKED        __PACKED
+#endif
+#ifndef FIELD_PREPACKED
+#define FIELD_PREPACKED
+#endif
+#ifndef PREPACK
+#define PREPACK             __PACKED
+#endif /* PREPACK */
+#ifndef POSTPACK
+#define POSTPACK            __PACKED
+#endif /* POSTPACK */
 
 #ifndef min
 #define min(a,b) ((a) < (b))? (a) : (b)
@@ -100,7 +78,6 @@
 #ifndef max
 #define max(a,b) ((a) > (b))? (a) : (b)
 #endif
-
 
 /* unaligned little endian access */
 #define A_LE_READ_2(p)                                              \

@@ -422,7 +422,7 @@ struct p2p_device {
 
 };
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT32 wps_method;
     QOSAL_UINT16 config_methods;
     QOSAL_UINT16 oper_freq;

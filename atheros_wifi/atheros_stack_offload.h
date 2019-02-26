@@ -256,18 +256,18 @@
  * SYNCH WHEN YOU MODIFY THESE.
  ******************************************************************************/
 
-typedef PREPACK struct ip6_addr {
+typedef PREPACK_STRUCT ip6_addr {
    QOSAL_UINT8   addr[16];   /* 128 bit IPv6 address */
 }POSTPACK IP6_ADDR_T;
 
-typedef PREPACK struct sockaddr_4 { ///E.Y. add _4
+typedef PREPACK_STRUCT sockaddr_4 { ///E.Y. add _4
 	QOSAL_UINT16 sin_port FIELD_PACKED;		//Port number
 	QOSAL_UINT16 sin_family FIELD_PACKED;	//ATH_AF_INET
 	QOSAL_UINT32 sin_addr FIELD_PACKED;		//IPv4 Address
 } POSTPACK SOCKADDR_T;
 
 
-typedef PREPACK struct sockaddr_6
+typedef PREPACK_STRUCT sockaddr_6
 {
    QOSAL_UINT16        sin6_family FIELD_PACKED;   // ATH_AF_INET6 
    QOSAL_UINT16        sin6_port FIELD_PACKED;     // transport layer port #
@@ -276,13 +276,13 @@ typedef PREPACK struct sockaddr_6
    QOSAL_UINT32        sin6_scope_id FIELD_PACKED; // set of interfaces for a scope 
 }POSTPACK SOCKADDR_6_T;
 
-typedef PREPACK struct _ip_mreq
+typedef PREPACK_STRUCT _ip_mreq
 {
    QOSAL_UINT32 imr_multiaddr FIELD_PACKED;     //Multicast group address
    QOSAL_UINT32 imr_interface FIELD_PACKED;     //Interface address
 }POSTPACK IP_MREQ_T;
 
-typedef PREPACK struct _ipv6_mreq {
+typedef PREPACK_STRUCT _ipv6_mreq {
    IP6_ADDR_T ipv6mr_multiaddr FIELD_PACKED; /* IPv6 multicast addr */
    IP6_ADDR_T ipv6mr_interface FIELD_PACKED; /* IPv6 interface address */
 }POSTPACK IPV6_MREQ_T;
@@ -302,7 +302,7 @@ enum IPCONFIG_MODE
     IPCFG_AUTO,           /*Run AUTO IP*/
 };
 
-typedef PREPACK struct {
+typedef PREPACK_STRUCT {
     QOSAL_UINT32    length;
     QOSAL_UINT32    resp_code;
     QOSAL_UINT32    flags;
@@ -367,16 +367,16 @@ typedef struct {
 #define  MAX_SNTP_SERVERS 2
 #define DNS_NAME_NOT_SPECIFIED 0
 
-typedef PREPACK struct dnccfgcmd {
+typedef PREPACK_STRUCT dnccfgcmd {
     WMI_SOCKET_CMD wmi_cmd FIELD_PACKED;
     QOSAL_UINT32        mode FIELD_PACKED;			//0-gethostbyname, 1-gethostbyname2, 2-resolvehostname 
     QOSAL_UINT32        domain FIELD_PACKED;     // AF_INET ,AF_INET6
-    QOSAL_UINT8  ahostname[255];  FIELD_PACKED
+    QOSAL_UINT8  ahostname[255] FIELD_PACKED;
 }POSTPACK DNC_CFG_CMD;
 
 
 
-typedef PREPACK struct dncrespinfo {
+typedef PREPACK_STRUCT dncrespinfo {
  
     char           dns_names[64] FIELD_PACKED; /* Buffer of names (usually w/domain) */	
     QOSAL_INT32        h_length; FIELD_PACKED /* Length of the address */
@@ -388,7 +388,7 @@ typedef PREPACK struct dncrespinfo {
 
 }POSTPACK DNC_RESP_INFO;     
 
-typedef PREPACK struct ip46addr {
+typedef PREPACK_STRUCT ip46addr {
 
     QOSAL_UINT8 type  FIELD_PACKED;
     QOSAL_UINT8 au1Rsvd[3] FIELD_PACKED; 
@@ -408,19 +408,19 @@ typedef  struct sntp_time
    QOSAL_INT32  yday FIELD_PACKED;
 }POSTPACK tSntpTime;
 
-typedef PREPACK struct sntp_tm
+typedef PREPACK_STRUCT sntp_tm
 {
    QOSAL_UINT32  tv_sec FIELD_PACKED;     /* seconds */
    QOSAL_UINT32  tv_usec FIELD_PACKED;    /* and microseconds */
 }POSTPACK tSntpTM;
 
-typedef PREPACK struct sntp_dns_addr
+typedef PREPACK_STRUCT sntp_dns_addr
 {
   QOSAL_UINT8 addr[68] FIELD_PACKED;
   QOSAL_UINT8 resolve FIELD_PACKED;
 }POSTPACK tSntpDnsAddr;
 
-typedef PREPACK struct IPv4Route { 
+typedef PREPACK_STRUCT IPv4Route { 
     QOSAL_UINT32  reserved FIELD_PACKED;
     QOSAL_UINT32 address FIELD_PACKED;
     QOSAL_UINT32 mask FIELD_PACKED;
@@ -429,13 +429,13 @@ typedef PREPACK struct IPv4Route {
     QOSAL_UINT32 prot FIELD_PACKED;
 } POSTPACK IPV4_ROUTE_T;
 
-typedef PREPACK struct IPv4RouteLists {
+typedef PREPACK_STRUCT IPv4RouteLists {
 
     QOSAL_UINT32    rtcount FIELD_PACKED;
     IPV4_ROUTE_T  route[ATH_MAX_ROUTES] FIELD_PACKED;
 } POSTPACK IPV4_ROUTE_LIST_T;
 
-typedef PREPACK struct IPv6Route {
+typedef PREPACK_STRUCT IPv6Route {
     QOSAL_UINT32 command FIELD_PACKED;
     QOSAL_UINT8  address[16] FIELD_PACKED;
     QOSAL_INT32  prefixlen FIELD_PACKED;
@@ -444,26 +444,26 @@ typedef PREPACK struct IPv6Route {
     QOSAL_UINT32 prot;
 }POSTPACK IPV6_ROUTE_T;
 
-typedef PREPACK struct IPv6RouteLists {
+typedef PREPACK_STRUCT IPv6RouteLists {
 
     QOSAL_UINT32    rtcount FIELD_PACKED;
     IPV6_ROUTE_T  route[ATH_MAX_ROUTES] FIELD_PACKED;
 } POSTPACK IPV6_ROUTE_LIST_T;
 
 #define MAX_OTA_AREA_READ_SIZE 1024
-typedef PREPACK struct ota_upgrade_resp{
+typedef PREPACK_STRUCT ota_upgrade_resp{
   QOSAL_UINT32 resp_code;
   QOSAL_UINT32 size;
 }POSTPACK tOtaUpgradeResp;
 
 
-typedef PREPACK struct ota_info{
+typedef PREPACK_STRUCT ota_info{
   QOSAL_UINT32 resp_code;
   QOSAL_UINT32 size;
   QOSAL_UCHAR *data;
 }POSTPACK tOtaReadResp;
 
-typedef PREPACK struct ota_done{
+typedef PREPACK_STRUCT ota_done{
   QOSAL_UINT32 resp_code;
 }POSTPACK tOtaDoneResp;
 
@@ -559,7 +559,7 @@ typedef enum
   SSL_CA_LIST = 2
 } SSL_CERT_TYPE_T;
 
-typedef PREPACK struct sslVerifyPolicy {
+typedef PREPACK_STRUCT sslVerifyPolicy {
     /** True to verify certificate commonName against peer's domain name */
     QOSAL_UINT8 domain FIELD_PACKED;
     /** True to verify certificate time validity */
@@ -571,14 +571,14 @@ typedef PREPACK struct sslVerifyPolicy {
 } POSTPACK SSL_VERIFY_POLICY;
 
 #define SSL_CIPHERSUITE_LIST_DEPTH 8
-typedef PREPACK struct SSL_config {
+typedef PREPACK_STRUCT SSL_config {
     QOSAL_UINT16 protocol FIELD_PACKED;
     QOSAL_UINT16 cipher[SSL_CIPHERSUITE_LIST_DEPTH] FIELD_PACKED;
     SSL_VERIFY_POLICY verify FIELD_PACKED;
     QOSAL_CHAR matchName[40] FIELD_PACKED;
 } POSTPACK SSL_CONFIG;
 
-typedef PREPACK struct ssl_file_name_list {
+typedef PREPACK_STRUCT ssl_file_name_list {
     QOSAL_UINT8  name[10][20] FIELD_PACKED; // The file names of the certificates or CA lists
 }POSTPACK SSL_FILE_NAME_LIST;
 
@@ -710,7 +710,7 @@ QOSAL_INT32 SSL_read(SSL *ssl, void *buf, QOSAL_INT32 num);
 QOSAL_INT32 SSL_write(SSL *ssl, const void *buf, QOSAL_INT32 num);
 #endif
 #else //ENABLE_STACK_OFFLOAD
-typedef PREPACK struct ip6_addr {
+typedef PREPACK_STRUCT ip6_addr {
    QOSAL_UINT8   addr[16];   /* 128 bit IPv6 address */
 }POSTPACK IP6_ADDR_T;
 #endif //ENABLE_STACK_OFFLOAD

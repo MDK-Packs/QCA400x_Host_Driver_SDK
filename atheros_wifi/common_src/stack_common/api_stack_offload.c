@@ -31,6 +31,7 @@
 #include "cust_netbuf.h"
 #include <wlan_api.h>
 #include "atheros_wifi_api.h"
+#include "stdio.h"
 
 #if ENABLE_STACK_OFFLOAD
 

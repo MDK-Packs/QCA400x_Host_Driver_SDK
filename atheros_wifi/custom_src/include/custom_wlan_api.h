@@ -120,6 +120,7 @@ QOSAL_VOID Custom_Api_GpioDataEvent(QOSAL_VOID *wmip, QOSAL_UINT8 *datap, QOSAL_
 //#define CUSTOM_HW_INIT(pCxt) Custom_HW_Init((pCxt))
 //#define CUSTOM_HW_DEINIT(pCxt) Custom_HW_DeInit((pCxt))
 
+QOSAL_VOID  Custom_Api_Ota_Resp_Result(QOSAL_VOID *pCxt, QOSAL_UINT32 cmd, QOSAL_UINT32 resp_code, QOSAL_UINT32 result);
 QOSAL_INT32 Custom_Api_Dhcps_Success_Callback_Event(QOSAL_VOID *pCxt, QOSAL_UINT8 *datap);
 QOSAL_INT32 Custom_Api_Dhcpc_Success_Callback_Event(QOSAL_VOID *pCxt, QOSAL_UINT8 *datap);
 
