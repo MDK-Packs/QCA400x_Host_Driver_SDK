@@ -387,6 +387,7 @@ Driver_ContextDeInit(QOSAL_VOID *pCxt)
 {
 	A_DRIVER_CONTEXT *pDCxt = GET_DRIVER_COMMON(pCxt);
 
+  pDCxt->rxBufferStatus = A_FALSE;
 	CUSTOM_DRIVER_CXT_DEINIT(pCxt);
 
 	if(pDCxt->padBuffer != NULL){
@@ -538,6 +539,7 @@ A_STATUS
 Driver_DeInit(QOSAL_VOID *pCxt)
 {
 	A_DRIVER_CONTEXT *pDCxt = GET_DRIVER_COMMON(pCxt);
+  A_NETBUF* a_netbuf_ptr = NULL;
 
 	Hcd_Deinitialize(pCxt); /* not necessary if HW_PowerUpDown() actually
 								shuts down chip */
@@ -555,6 +557,17 @@ Driver_DeInit(QOSAL_VOID *pCxt)
     }
 #endif
 
+  if (pDCxt->spi_hcd.pCurrentRequest != NULL) {
+    A_NETBUF_FREE(pDCxt->spi_hcd.pCurrentRequest);
+    pDCxt->spi_hcd.pCurrentRequest = NULL;
+  }
+  /* Free tx queue */
+  a_netbuf_ptr = A_NETBUF_DEQUEUE (&pDCxt->txQueue);
+  while (a_netbuf_ptr != NULL) {
+    A_NETBUF_FREE(a_netbuf_ptr);
+    a_netbuf_ptr = A_NETBUF_DEQUEUE (&pDCxt->txQueue);
+  }
+  
 	RXBUFFER_ACCESS_DESTROY(pCxt);
 	TXQUEUE_ACCESS_DESTROY(pCxt);
 	IRQEN_ACCESS_DESTROY(pCxt);
@@ -562,7 +575,6 @@ Driver_DeInit(QOSAL_VOID *pCxt)
 
 	pDCxt->driver_up = A_FALSE;
 #if DRIVER_CONFIG_MULTI_TASKING
-		qosal_delete_event(&GET_DRIVER_CXT(p_Global_Cxt)->userWakeEvent);
 		qosal_delete_event(&GET_DRIVER_CXT(p_Global_Cxt)->driverWakeEvent);
 #if T_SELECT_VER1
 		qosal_delete_event(&GET_DRIVER_CXT(p_Global_Cxt)->sockSelectWakeEvent);

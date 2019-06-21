@@ -263,6 +263,8 @@ Api_DeInitFinish(QOSAL_VOID *pCxt)
     	if(A_OK != DRIVER_WAIT_FOR_CONDITION(pCxt, &(pDCxt->driver_up), A_FALSE, 5000)){            
             break;
         }
+      qosal_delete_event(&GET_DRIVER_CXT(p_Global_Cxt)->userWakeEvent);
+      
     	/* 2 - remove driver from system */
         DRIVER_REMOVE(pCxt);
        	/* 3 - De-initialize context */
