@@ -722,6 +722,7 @@ A_STATUS qcom_set_ssid(A_UINT8 device_id, A_CHAR *pssid)
         return A_ERROR;
     }       
     param.data = pssid;
+    param.length = strlen(pssid);
     return(custom_qapi(device_id, ATH_SET_SSID, &param));
 }
 
