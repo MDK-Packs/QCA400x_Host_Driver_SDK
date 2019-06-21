@@ -19,6 +19,8 @@
 //------------------------------------------------------------------------------
 //==============================================================================
 // Author(s): ="Atheros"
+//
+// Modified by Arm
 //==============================================================================
 #include <a_config.h>
 #include <a_types.h>
@@ -32,7 +34,8 @@
 
 #if (!ENABLE_STACK_OFFLOAD)
 
-int32_t Custom_Api_Send(QCA400x_WiFi *pDev, A_NATIVE_NETBUF * pcb_ptr, uint32_t size, uint32_t frags, uint32_t flags);
+int32_t
+Custom_Api_Send(QCA400x_WiFi *pDev, A_NATIVE_NETBUF * pcb_ptr, uint32_t size, uint32_t frags, uint32_t flags);
 
 /*****************************************************************************/
 /*  Custom_DeliverFrameToNetworkStack - Called by API_RxComplete to 
@@ -45,7 +48,7 @@ QOSAL_VOID
 Custom_DeliverFrameToNetworkStack(QOSAL_VOID *pCxt, QOSAL_VOID *pReq)
 {
     A_NETBUF* a_netbuf_ptr = (A_NETBUF*)pReq;
-	QOSAL_UINT32 len;	
+	QOSAL_UINT32 len;		
 	A_DRIVER_CONTEXT *pDCxt = GET_DRIVER_COMMON(pCxt);
 	QCA400x_WiFi * pDev = (QCA400x_WiFi *)Custom_Api_GetDriverCxt(pDCxt->devId);
     ATH_PROMISCUOUS_CB prom_cb = (ATH_PROMISCUOUS_CB)(GET_DRIVER_CXT(pCxt)->promiscuous_cb);
@@ -56,7 +59,7 @@ Custom_DeliverFrameToNetworkStack(QOSAL_VOID *pCxt, QOSAL_VOID *pReq)
         
         if(pDCxt->promiscuous_mode){				    	
 	    	if(prom_cb){
-	    		// send frame to callback function 
+	    		/* send frame to callback function */
 				a_netbuf_ptr->native.FRAG[0].LENGTH = len;
 		    	a_netbuf_ptr->native.FRAG[0].FRAGMENT = A_NETBUF_DATA(pReq);
 	    		prom_cb((QOSAL_VOID*)&(a_netbuf_ptr->native));			

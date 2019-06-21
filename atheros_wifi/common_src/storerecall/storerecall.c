@@ -17,6 +17,8 @@
 // EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //==============================================================================
 // Author(s): ="Atheros"
+//
+// Modified by Arm
 //==============================================================================
 
 #include <a_config.h>
@@ -79,7 +81,6 @@ static A_STATUS
 Strrcl_ChipUpFinish(QOSAL_VOID* pCxt)
 {
 	A_DRIVER_CONTEXT *pDCxt = GET_DRIVER_COMMON(pCxt);
-//	WMI_STORERECALL_STORE_EVENT *pEv;
 #ifndef   ENABLE_LARGE_DSET
     QOSAL_UINT8  *pDsetData;
 #endif

@@ -19,6 +19,8 @@
 //------------------------------------------------------------------------------
 //==============================================================================
 // Author(s): ="Atheros"
+//
+// Modified by Arm
 //==============================================================================
 #ifndef _COMMON_API_H_
 #define _COMMON_API_H_
@@ -255,7 +257,7 @@ Driver_WakeUser(QOSAL_VOID *pCxt);
 
 #define STACK_INIT(pCxt)            A_OK
 #define SOCKET_CONTEXT_INIT         A_OK  
-#define SOCKET_CONTEXT_DEINIT()     //A_OK
+#define SOCKET_CONTEXT_DEINIT()
 #define MIN_HDR_LEN                 sizeof (WMI_DATA_HDR) + sizeof(ATH_MAC_HDR) + sizeof(ATH_LLC_SNAP_HDR)
 #define WMI_DOT3_2_DIX(pReq)        wmi_dot3_2_dix((pReq))
 

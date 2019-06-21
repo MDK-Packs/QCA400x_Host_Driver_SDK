@@ -17,6 +17,8 @@
 // EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //==============================================================================
 // Author(s): ="Atheros"
+//
+// Modified by Arm
 //==============================================================================
 
 #ifdef WIN_MOBILE7
@@ -55,7 +57,7 @@ extern QOSAL_UINT32 last_driver_error;
 
 #define ATH_DEBUG_WMI ATH_DEBUG_MAKE_MODULE_MASK(0)
 
-#if 0 /*#ifdef DEBUG*/
+#ifdef DEBUG
 
 static ATH_DEBUG_MASK_DESCRIPTION wmi_debug_desc[] = {
     { ATH_DEBUG_WMI , "General WMI Tracing"},
@@ -88,15 +90,10 @@ static A_STATUS wmi_p2p_req_auth_event_rx(struct wmi_t *wmip, QOSAL_UINT8 devId,
 
 static A_STATUS wmi_p2p_node_list_event_rx(struct wmi_t *wmip, QOSAL_UINT8 devId, QOSAL_UINT8 *datap, QOSAL_UINT32 len);
 
-//static A_STATUS wmi_p2p_goneg_req_rx(struct wmi_t *wmip, QOSAL_UINT8 devId, QOSAL_UINT8 *datap,
-//                                           QOSAL_UINT8 len);
-
 static A_STATUS wmi_p2p_invite_sent_result_rx(struct wmi_t *wmip, QOSAL_UINT8 devId, QOSAL_UINT8 *datap, QOSAL_UINT8 len);
 static A_STATUS wmi_p2p_prov_disc_resp_rx(struct wmi_t *wmip, QOSAL_UINT8 devId, QOSAL_UINT8 *datap, QOSAL_UINT8 len);
 static A_STATUS wmi_p2p_prov_disc_req_rx(struct wmi_t *wmip, QOSAL_UINT8 devId, QOSAL_UINT8 *datap, QOSAL_UINT8 len);
 #if 1//KK
-//static A_STATUS wmi_p2p_start_sdpd_event_rx(struct wmi_t *wmip, QOSAL_UINT8 devId, 
-//                    QOSAL_UINT8 *datap, QOSAL_UINT8 len);
 static A_STATUS wmi_p2p_sdpd_event_rx(struct wmi_t *wmip, QOSAL_UINT8 devId, 
                     QOSAL_UINT8 *datap, QOSAL_UINT8 len);
 static A_STATUS wmi_p2p_invite_req_rx(struct wmi_t *wmip, QOSAL_UINT8 devId, QOSAL_UINT8 *datap,
@@ -111,7 +108,6 @@ WMI_P2P_PROV_INFO p2p_key_val;
 static A_STATUS wmi_test_event_rx(struct wmi_t *wmip, QOSAL_UINT8 devId, QOSAL_UINT8 *datap, QOSAL_UINT32 len);
 #endif
 static A_STATUS wmi_errorEvent_rx(struct wmi_t *wmip, QOSAL_UINT8 devId, QOSAL_UINT8 *datap, int len);
-//static A_STATUS wmi_rsna_4way_rx(struct wmi_t *wmip, QOSAL_UINT8 devId, QOSAL_UINT8 *datap, int len);
 
 #define MODE_A_SUPPORT_RATE_START       ((QOSAL_INT32) 4)
 #define MODE_A_SUPPORT_RATE_STOP        ((QOSAL_INT32) 11)
@@ -655,6 +651,10 @@ wmi_control_rx(struct wmi_t *wmip, void *osbuf)
         A_ASSERT(0);
     }
 
+#ifdef DEBUG
+    printf("wmi_control_rx 0x%04X\n", id);
+#endif
+
     switch (id) {
     case (WMI_GET_CHANNEL_LIST_CMDID):
         A_WMI_CHANNELLIST_RX(wmip->wmi_devt, devId, (QOSAL_INT8)CHAN_EV->numChannels,
@@ -887,20 +887,6 @@ wmi_control_rx(struct wmi_t *wmip, void *osbuf)
     return status;
 }
 
-///* Send a "simple" wmi command -- one with no arguments */
-//static A_STATUS
-//wmi_simple_cmd(struct wmi_t *wmip, WMI_COMMAND_ID cmdid)
-//{
-//    void *osbuf;
-
-//    osbuf = A_NETBUF_ALLOC(0);
-//    if (osbuf == NULL) {
-//        return A_NO_MEMORY;
-//    }
-
-//    return (wmi_cmd_send(wmip, osbuf, cmdid, NO_SYNC_WMIFLAG));
-//}
-
 /*
  * Target is reporting a programming error.  This is for
  * developer aid only.  Target only checks a few common violations
@@ -983,6 +969,9 @@ wmi_cmd_send(struct wmi_t *wmip, void *osbuf, WMI_COMMAND_ID cmdId,
     WMI_SET_DEVICE_ID(cHdr, wmip->deviceid);
     cHdr->info1 = A_CPU2LE16(cHdr->info1); // added for virtual interface
 
+#ifdef DEBUG
+    printf("wmi_control_tx 0x%04X\n", cHdr->commandId );
+#endif
 
     A_WMI_CONTROL_TX(wmip->wmi_devt, osbuf, eid);
 
@@ -1004,7 +993,6 @@ A_STATUS
 wmi_ap_set_param(struct wmi_t *wmip, QOSAL_VOID *data)
 {
 	ATH_AP_PARAM_STRUCT *ap_param = (ATH_AP_PARAM_STRUCT *)data;
-//	void *osbuf = NULL;
 	union{
         QOSAL_UINT8 hidden_ssid_flag;
         WMI_AP_CONN_INACT_CMD conn_inact_cmd;
@@ -1433,8 +1421,6 @@ A_STATUS wmi_p2p_set_noa(struct wmi_t *wmip,WMI_NOA_INFO_STRUCT *noa)
 
 void wmi_save_key_info (WMI_P2P_PROV_INFO *p2p_info)
 {
-//    int i =0;
-
     A_MEMCPY (&p2p_key_val, p2p_info, sizeof(WMI_P2P_PROV_INFO));
 }
 
@@ -1634,7 +1620,6 @@ A_STATUS wmi_dset_host_cfg_cmd (QOSAL_VOID* handle)
 A_STATUS wmi_dset_host_cfg_cmd (void *handle)
 {
     HOST_DSET  *pDset;
-//	A_STATUS status = A_ERROR;
 	WMI_STORERECALL_RECALL_CMD  *pStrrclCmd;
     WMI_STORERECALL_RECALL_DSET  *pDsetInfo;
     A_DRIVER_CONTEXT *pDCxt = GET_DRIVER_COMMON(handle);

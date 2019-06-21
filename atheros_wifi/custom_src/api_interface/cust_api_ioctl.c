@@ -33,7 +33,7 @@
 #include <wlan_api.h>
 #include <htc.h>
 #include <wmi_host.h>
-#include "stdio.h"
+#include <stdio.h>
 #if ENABLE_P2P_MODE
 #include <wmi.h>
 #include "p2p.h"
@@ -60,9 +60,6 @@ extern QOSAL_CONST WMI_STORERECALL_CONFIGURE_CMD default_strrcl_config_cmd;
 extern QOSAL_CONST WMI_SCAN_PARAMS_CMD default_scan_param;
 
 extern A_STATUS TxRawPacket(QOSAL_VOID *pCxt, QOSAL_VOID *pReq, ATH_MAC_TX_PARAMS *pParams);
-
-////uint32_t Custom_Api_Mediactl(uint8_t device_id, uint32_t cmd, void* param);
-//extern uint32_t chip_state_ctrl(A_CUSTOM_DRIVER_CONTEXT * pCxt, uint32_t state);
 
 /* used to translate from the WPS_ERROR_CODE to that ATH_WPS_ERROR_CODE exposed to app */
 const QOSAL_UINT8 const_wps_error_code_translation[]=
@@ -123,7 +120,6 @@ A_STATUS ath_ioctl_handler(A_CUSTOM_DRIVER_CONTEXT *pCxt, ATH_IOCTL_PARAM_STRUCT
 	WMI_SCAN_PARAMS_CMD scan_param_cmd;
 	WMI_CHANNEL_PARAMS_CMD channel_param_cmd;
     WMI_SET_ROAM_CTRL_CMD * pRoamCtrl; 
-//    POWER_MODE pwrmode;
     QOSAL_UINT32 priority, old_priority;
     QOSAL_UINT32 devId;
     QOSAL_UINT32 i,ii;
@@ -132,9 +128,7 @@ A_STATUS ath_ioctl_handler(A_CUSTOM_DRIVER_CONTEXT *pCxt, ATH_IOCTL_PARAM_STRUCT
     
 #if ENABLE_P2P_MODE
     WMI_P2P_FW_CONNECT_CMD_STRUCT         *pP2PConnect;
-//    WMI_P2P_FW_INVITE_REQ_RSP_CMD  *pP2PInviteAuth;
     WMI_P2P_INVITE_CMD          *p2pInvite;
-//    WMI_SET_PASSPHRASE_CMD      *passParam;
     WMI_P2P_GRP_INIT_CMD        *p2pGroup;
 
 
@@ -246,7 +240,7 @@ A_STATUS ath_ioctl_handler(A_CUSTOM_DRIVER_CONTEXT *pCxt, ATH_IOCTL_PARAM_STRUCT
 	    SCAN_PARAM.bg_period        = ((PTR_SCAN_CTRL->flags & ATH_DISABLE_BG_SCAN)? A_CPU2LE16(0xffff):A_CPU2LE16(0));
 	    if(A_OK != wmi_cmd_start(pWmi, &SCAN_PARAM, WMI_SET_SCAN_PARAMS_CMDID, sizeof(WMI_SCAN_PARAMS_CMD)))
         {
-        	error =A_ERROR;
+        	error = A_ERROR;
         }else{
     		A_MEMCPY(&pDCxt->scan_param, &SCAN_PARAM, sizeof(WMI_SCAN_PARAMS_CMD));//to save scan parameters        
         }
@@ -320,20 +314,6 @@ A_STATUS ath_ioctl_handler(A_CUSTOM_DRIVER_CONTEXT *pCxt, ATH_IOCTL_PARAM_STRUCT
 		break;
     case ATH_GET_CONC_DEV_CHANNEL:
                 *(QOSAL_UINT16*)(param_ptr->data) = 0;
-//                if( pDCxt->devId == 1)
-//                {
-//                    if ((pDCxt->conn[0].isConnected) && (!(pDCxt->conn[1].isConnected)))
-//                    {
-//                         *(QOSAL_UINT16*)(param_ptr->data) = pDCxt->conn[0].channelHint;
-//                    }
-//                }
-//                else if( pDCxt->devId == 0 )
-//                {
-//                    if ((pDCxt->conn[1].isConnected) && (!(pDCxt->conn[0].isConnected)))
-//                    {
-//                         *(QOSAL_UINT16*)(param_ptr->data) = pDCxt->conn[1].channelHint;
-//                    }
-//                }
          break;
 	case ATH_SET_SEC_MODE:
 		if(strcmp((const char *)PTR_SEC_MODE,"open") == 0)
@@ -1348,7 +1328,6 @@ A_STATUS ath_ioctl_handler(A_CUSTOM_DRIVER_CONTEXT *pCxt, ATH_IOCTL_PARAM_STRUCT
         }
         break; 
     }
-//    break;
     case ATH_PFM_CMD:
 		pDCxt->pfmDone = A_FALSE;
 
@@ -1517,12 +1496,7 @@ A_STATUS ath_ioctl_handler(A_CUSTOM_DRIVER_CONTEXT *pCxt, ATH_IOCTL_PARAM_STRUCT
             
             break;         
 	default:
-//		if(ath_custom_mediactl.ath_ioctl_handler_ext != NULL){
-//			error = ath_custom_mediactl.ath_ioctl_handler_ext(pCxt, param_ptr);
-//		}else{
 			error = A_ERROR;
-//		}
-//		break;
 	}
 
 

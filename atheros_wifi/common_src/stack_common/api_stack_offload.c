@@ -19,6 +19,8 @@
 //------------------------------------------------------------------------------
 //==============================================================================
 // Author(s): ="Atheros"
+//
+// Modified by Arm
 //==============================================================================
 #include "a_config.h"
 #include <a_types.h>
@@ -31,7 +33,7 @@
 #include "cust_netbuf.h"
 #include <wlan_api.h>
 #include "atheros_wifi_api.h"
-#include "stdio.h"
+#include <stdio.h>
 
 #if ENABLE_STACK_OFFLOAD
 
@@ -131,13 +133,13 @@ A_STATUS socket_context_init()
           if((pcustctxt = A_MALLOC(sizeof(SOCKET_CONTEXT),MALLOC_ID_CONTEXT)) == NULL){
                     return A_NO_MEMORY;
           }
-
             memset(pcustctxt, 0, sizeof(SOCKET_CONTEXT));
+
             qosal_create_event(&pcustctxt->sockRxWakeEvent); 		
             qosal_create_event(&pcustctxt->sockTxWakeEvent);
-
+           
             A_NETBUF_QUEUE_INIT(&(pcustctxt->rxqueue));
-
+           
             ath_sock_context[index]->sock_context = pcustctxt;
             ath_sock_context[index]->remaining_bytes = 0;
             ath_sock_context[index]->old_netbuf = NULL;
@@ -2054,7 +2056,6 @@ QOSAL_INT32 Api_ipconfig_dhcp_pool(QOSAL_VOID *pCxt,QOSAL_UINT32* start_ipv4_add
 {
     A_DRIVER_CONTEXT *pDCxt;
     IPCONFIG_DHCP_POOL_T ipcfg;
-//    QOSAL_UINT32 index = GLOBAL_SOCK_INDEX; //reserved for global commands ToDo- cleanup later
     pDCxt = GET_DRIVER_COMMON(pCxt);   
     
     /*Check if socket is blocked for a previous command*/
@@ -2082,8 +2083,7 @@ QOSAL_INT32 Api_ipconfig_dhcp_pool(QOSAL_VOID *pCxt,QOSAL_UINT32* start_ipv4_add
 QOSAL_INT32 Api_ip6config_router_prefix(QOSAL_VOID *pCxt,QOSAL_UINT8 *v6addr,QOSAL_INT32 prefixlen,QOSAL_INT32 prefix_lifetime,QOSAL_INT32 valid_lifetime)
 {
     A_DRIVER_CONTEXT *pDCxt;
-    IP6CONFIG_ROUTER_PREFIX_T ip6cfg;//, *result;
-//    QOSAL_UINT32 index = GLOBAL_SOCK_INDEX; //reserved for global commands ToDo- cleanup later
+    IP6CONFIG_ROUTER_PREFIX_T ip6cfg;
     pDCxt = GET_DRIVER_COMMON(pCxt);   
 
     /*Check if socket is blocked for a previous command*/
@@ -2306,7 +2306,6 @@ QOSAL_INT32 Api_httpc_method(QOSAL_VOID* pCxt, QOSAL_UINT32 command, QOSAL_UINT8
     A_DRIVER_CONTEXT *pDCxt = NULL;
     SOCK_HTTPC_T httpc;
     QOSAL_INT32 index = GLOBAL_SOCK_INDEX;
-//    QOSAL_INT32 result = A_OK;
     
     pDCxt = GET_DRIVER_COMMON(pCxt);
     
@@ -2702,13 +2701,11 @@ QOSAL_INT32 Api_ip_sntp_modify_zone_dse(QOSAL_VOID *pCxt,QOSAL_UINT8 hr,QOSAL_UI
     A_DRIVER_CONTEXT *pDCxt = NULL;
     int index = GLOBAL_SOCK_INDEX;
     QOSAL_INT32 res = A_OK;
-//    QOSAL_UINT8 free_buf = 1;
     SOCK_SNTP_MODIFY_TIMEZONE sock_ip_sntp_time_zone;
    
     pDCxt = GET_DRIVER_COMMON(pCxt);   
     /*Check if socket is blocked for a previous command*/
     if(IS_SOCKET_BLOCKED(ath_sock_context[index])){
-//	free_buf = 0;
         return A_ERROR;
     }
     sock_ip_sntp_time_zone.hour    = hr;  
@@ -2719,7 +2716,6 @@ QOSAL_INT32 Api_ip_sntp_modify_zone_dse(QOSAL_VOID *pCxt,QOSAL_UINT8 hr,QOSAL_UI
     SOCK_EV_MASK_SET(ath_sock_context[index], SOCK_IP_SNTP_CONFIG_TIMEZONE_DSE);
     if(wmi_socket_cmd(pDCxt->pWmiCxt, SOCK_IP_SNTP_CONFIG_TIMEZONE_DSE,(void *)(&sock_ip_sntp_time_zone), sizeof(SOCK_SNTP_MODIFY_TIMEZONE))!= A_OK){
         SOCK_EV_MASK_CLEAR(ath_sock_context[index], SOCK_IP_SNTP_CONFIG_TIMEZONE_DSE);
-//free_buf = 0;
         return A_ERROR;
     }
     
@@ -2730,7 +2726,6 @@ QOSAL_INT32 Api_ip_sntp_query_srvr_address(QOSAL_VOID *pCxt,tSntpDnsAddr SntpDns
 {
     A_DRIVER_CONTEXT *pDCxt = NULL;
     int index = GLOBAL_SOCK_INDEX;
-//    QOSAL_UINT8 i = 0;
     QOSAL_INT32 res = A_OK;
     QOSAL_UINT8 free_buf = 1;
     tSntpDnsAddr *result = NULL;
@@ -2777,12 +2772,10 @@ QOSAL_INT32 Api_ip_sntp_client(QOSAL_VOID *pCxt,QOSAL_INT32 command)
     SOCK_IP_SNTP_CLIENT_T sock_sntp_client;
     int index = GLOBAL_SOCK_INDEX;
     QOSAL_INT32 res = A_OK;
-//    QOSAL_UINT8 free_buf = 1;
     
     pDCxt = GET_DRIVER_COMMON(pCxt);   
     /*Check if socket is blocked for a previous command*/
     if(IS_SOCKET_BLOCKED(ath_sock_context[index])){
-//	free_buf = 0;
         return A_ERROR;
     }
     sock_sntp_client.command = A_CPU2LE32(command);
@@ -2791,7 +2784,6 @@ QOSAL_INT32 Api_ip_sntp_client(QOSAL_VOID *pCxt,QOSAL_INT32 command)
     
     if(wmi_socket_cmd(pDCxt->pWmiCxt, SOCK_IP_SNTP_CLIENT_ENABLE,(void *)(&sock_sntp_client), sizeof(SOCK_IP_SNTP_CLIENT_T))!= A_OK){
         SOCK_EV_MASK_CLEAR(ath_sock_context[index], SOCK_IP_SNTP_CLIENT_ENABLE);
-//	free_buf = 0;
         return A_ERROR;
     }
      
@@ -2905,7 +2897,6 @@ QOSAL_INT32 Api_tcp_connection_timeout(QOSAL_VOID *pCxt,QOSAL_UINT32 timeout_val
     A_DRIVER_CONTEXT *pDCxt = NULL;
     SOCK_TCP_CONN_TIMEOUT_T sock_tcp_conn_timeout;
     int index = GLOBAL_SOCK_INDEX;
-//    QOSAL_INT32 res = A_OK;
     
     pDCxt = GET_DRIVER_COMMON(pCxt);   
     //Check if socket is blocked for a previous command
@@ -2933,7 +2924,6 @@ QOSAL_INT32 Api_ota_upgrade(QOSAL_VOID *pCxt,QOSAL_UINT32 addr,QOSAL_CHAR *filen
     A_DRIVER_CONTEXT *pDCxt = NULL;
     SOCK_OTA_UPGRADE_T sock_ota_upgrade;
     int index = GLOBAL_SOCK_INDEX;
-//    QOSAL_INT32 res = A_OK;
     
     pDCxt = GET_DRIVER_COMMON(pCxt);   
     //Check if socket is blocked for a previous command
@@ -2977,7 +2967,6 @@ QOSAL_INT32 Api_ota_read_area(QOSAL_VOID *pCxt,QOSAL_UINT32 offset,QOSAL_UINT32 
     A_DRIVER_CONTEXT *pDCxt = NULL;
     SOCK_OTA_READ_OTA_AREA_T sock_ota_read;
     int index = GLOBAL_SOCK_INDEX;
-//    QOSAL_INT32 res = A_OK;
     
     pDCxt = GET_DRIVER_COMMON(pCxt);   
     //Check if socket is blocked for a previous command
@@ -3020,7 +3009,6 @@ QOSAL_INT32 Api_ota_done(QOSAL_VOID *pCxt, QOSAL_BOOL good_image){
     A_DRIVER_CONTEXT *pDCxt = NULL;
     SOCK_OTA_DONE_T sock_ota_done;
     int index = GLOBAL_SOCK_INDEX;
-//    QOSAL_INT32 res = A_OK;
     
     pDCxt = GET_DRIVER_COMMON(pCxt);   
     //Check if socket is blocked for a previous command
@@ -4198,8 +4186,8 @@ A_STATUS blockForResponse(QOSAL_VOID* pCxt, QOSAL_VOID* ctxt, QOSAL_UINT32 msec,
     
     if (msec == 0) {
         msec = 1;
-    }
-
+    } 
+    
     pcustctxt->blockFlag = 1;	
     
     qosal_task_get_priority(qosal_task_get_handle(), &old_priority);

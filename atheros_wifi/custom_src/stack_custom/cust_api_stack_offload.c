@@ -16,6 +16,8 @@
 // LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
 // WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, 
 // EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+//
+// Modified by Arm
 //------------------------------------------------------------------------------
 #include <a_config.h>
 #include <a_types.h>
@@ -29,7 +31,7 @@
 #include "atheros_wifi_api.h"
 #include "atheros_wifi_internal.h"
 #include "cust_netbuf.h"
-#include "stdio.h"
+#include <stdio.h>
 
 #if ENABLE_STACK_OFFLOAD
 #include "atheros_stack_offload.h"

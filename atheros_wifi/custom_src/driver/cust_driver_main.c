@@ -19,6 +19,8 @@
 //------------------------------------------------------------------------------
 //==============================================================================
 // Author(s): ="Atheros"
+//
+// Modified by Arm
 //==============================================================================
 #include "QCA400x.h"
 
@@ -30,22 +32,26 @@
 #include "atheros_wifi_api.h"
 #include "atheros_stack_offload.h"
 #include "atheros_wifi_internal.h"
-
 #include "qcom_api.h"
 
 
 
 ATH_CUSTOM_INIT_T ath_custom_init = 
 {
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,	
-	NULL,
-	NULL,
-	A_FALSE,
-	A_FALSE,
+NULL,
+NULL,
+NULL,
+NULL,
+NULL,
+NULL,
+NULL,
+NULL,
+NULL,
+NULL,
+NULL,
+NULL,
+A_FALSE,
+A_FALSE
 };
 
 ATH_CUSTOM_MEDIACTL_T ath_custom_mediactl = 
@@ -62,7 +68,6 @@ ATH_CUSTOM_HTC_T ath_custom_htc =
 static QOSAL_VOID 
 Custom_FreeRxRequest(A_NATIVE_NETBUF *native_ptr)
 {
-//    A_NETBUF* a_netbuf_ptr = (A_NETBUF*)native_ptr;
 #if (!ENABLE_STACK_OFFLOAD)      
 #if DRIVER_CONFIG_IMPLEMENT_RX_FREE_QUEUE    
     A_CUSTOM_DRIVER_CONTEXT *pCxt = (A_CUSTOM_DRIVER_CONTEXT *)a_netbuf_ptr->native.PRIVATE;
@@ -140,7 +145,7 @@ Custom_Driver_ContextDeInit(QOSAL_VOID *pCxt)
 	while(GET_DRIVER_COMMON(pCxt)->rxBufferStatus == A_TRUE){
 		pReq = Custom_GetRxRequest(pCxt, 10);
 		/* call default free function */
- 		default_native_free_fn((A_NETBUF *)pReq);	
+		default_native_free_fn((A_NETBUF *)pReq);	
 	}
 	
 	if(GET_DRIVER_COMMON(pCxt)->tempStorage != NULL){
@@ -159,7 +164,7 @@ Custom_Driver_ContextDeInit(QOSAL_VOID *pCxt)
  *****************************************************************************/
 A_STATUS 
 Custom_Driver_ContextInit(QOSAL_VOID *pCxt)
-{
+{	
     QOSAL_UINT32 tempStorageLen = 0;
      A_DRIVER_CONTEXT* pDCxt = GET_DRIVER_COMMON(pCxt);
     
@@ -167,7 +172,6 @@ Custom_Driver_ContextInit(QOSAL_VOID *pCxt)
       If store recall is enabled, it may use this buffer for storing target data.
       Will also be shared by scan module to store scan results*/
     tempStorageLen = max((STORE_RECALL_BUF_SIZE), (ATH_MAX_SCAN_BUFFERS*sizeof(ATH_SCAN_EXT)));
-//    tempStorageLen = max(tempStorageLen, (ATH_MAX_SCAN_BUFFERS*sizeof(ATH_SCAN_EXT)));
     
     if(tempStorageLen)
     {
@@ -195,8 +199,7 @@ Custom_Driver_ContextInit(QOSAL_VOID *pCxt)
 		/* NUM_RX_PCBS should be == BSP_CONFIG_ATHEROS_PCB which
 		 * is defined in atheros_wifi.h
 		 */	 
-		//numRxBuffers = enet_ptr->PARAM_PTR->NUM_RX_PCBS;
-        numRxBuffers = BSP_CONFIG_ATHEROS_PCB;
+		numRxBuffers = BSP_CONFIG_ATHEROS_PCB;
 		//pre-allocate rx buffers
 		for(i=0 ; i< numRxBuffers; i++){
 		
@@ -207,8 +210,6 @@ Custom_Driver_ContextInit(QOSAL_VOID *pCxt)
 			/*Set rx pool ID so that the buffer is freed to the RX pool*/		
 			A_NETBUF_SET_RX_POOL(pReq);
 #endif					    	
-//	    	/* mqx allows us to set a memtype to help identify buffers */	
-//	    	_mem_set_type(pReq, MEM_TYPE_ATHEROS_PERSIST_RX_PCB);
 		    A_NETBUF_ENQUEUE(&GET_DRIVER_COMMON(pCxt)->rxFreeQueue, pReq);
 		    
 	    }

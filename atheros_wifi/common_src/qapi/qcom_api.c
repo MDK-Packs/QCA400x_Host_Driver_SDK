@@ -17,6 +17,8 @@
 // EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //==============================================================================
 // Author(s): ="Atheros"
+//
+// Modified by Arm
 //==============================================================================
 
 #include <a_config.h>
@@ -29,7 +31,7 @@
 #include <bmi.h>
 #include <htc.h>
 #include <wmi_host.h>
-#include "stdio.h"
+#include <stdio.h>
 #if ENABLE_P2P_MODE
 #include <wmi.h>
 #include "p2p.h"
@@ -833,7 +835,6 @@ A_STATUS qcom_commit (A_UINT8 device_id)
 #if ENABLE_SCC_MODE 
     A_UINT16 conc_channel, cur_channel;
     A_UINT8 ssid[MAX_SSID_LENGTH];  
-//    A_UINT8  val;
     int num_dev = WLAN_NUM_OF_DEVICES;
    
     if( qcom_get_ssid (device_id,(char*)ssid) != A_OK )
@@ -1018,7 +1019,6 @@ A_STATUS qcom_disconnect(A_UINT8 device_id)
 A_STATUS qcom_get_phy_mode(A_UINT8 device_id, A_UINT8 *pphymode)
 {
     ATH_IOCTL_PARAM_STRUCT inout_param;
-//    A_STATUS error = A_OK;
     A_UINT32 value = 0;
 
     if(qcom_set_deviceid(device_id) == A_ERROR){
@@ -1053,7 +1053,6 @@ A_STATUS qcom_get_phy_mode(A_UINT8 device_id, A_UINT8 *pphymode)
 
 A_STATUS qcom_get_country_code(A_UINT8 device_id, A_UINT8* countryCode)
 {
-//	A_STATUS error = A_OK;
        ATH_IOCTL_PARAM_STRUCT inout_param;       
    	WMI_GET_COUNTRY_CODE_REPLY para_countryCode;
 
@@ -1076,7 +1075,6 @@ A_STATUS qcom_get_country_code(A_UINT8 device_id, A_UINT8* countryCode)
 
 A_STATUS qcom_set_country_code(A_UINT8 device_id, A_UINT8* countryCode)
 {
-//	A_INT32 error;
        ATH_IOCTL_PARAM_STRUCT inout_param;       
    	ATH_PROGRAM_COUNTRY_CODE_PARAM data;
 
@@ -1344,7 +1342,6 @@ A_STATUS qcom_sec_get_wepkey(A_UINT8 device_id, A_UINT32 keyindex, A_CHAR *pkey)
 
 A_STATUS qcom_sec_set_wepkey_index(A_UINT8 device_id, A_UINT32 keyindex)
 {
-//    A_STATUS error = A_OK;    
     ATH_IOCTL_PARAM_STRUCT inout_param;    
     A_UINT32 param;
        
@@ -1363,7 +1360,6 @@ A_STATUS qcom_sec_set_wepkey_index(A_UINT8 device_id, A_UINT32 keyindex)
          
 A_STATUS qcom_sec_get_wepkey_index(A_UINT8 device_id, A_UINT32 *pkeyindex)
 {
-//    A_STATUS error = A_OK;    
     ATH_IOCTL_PARAM_STRUCT inout_param;    
     A_UINT32 param;
            
@@ -1381,7 +1377,6 @@ A_STATUS qcom_sec_get_wepkey_index(A_UINT8 device_id, A_UINT32 *pkeyindex)
 A_STATUS qcom_sec_set_auth_mode(A_UINT8 device_id, A_UINT32 mode)
 {
     uint32_t inout_param;
-//    A_STATUS error = A_OK;
 
     if(qcom_set_deviceid(device_id) == A_ERROR){
         return A_ERROR;
@@ -2389,7 +2384,6 @@ A_STATUS qcom_raw_mode_send_pkt(QCOM_RAW_MODE_PARAM_t *ppara)
     A_UINT8 access_cat;
     A_INT32 i;
     ATH_IOCTL_PARAM_STRUCT param;
-//    A_UINT32 status = 0;
     ATH_MAC_TX_RAW_S details;
     A_UINT8 *buffer = NULL;
     typedef struct{

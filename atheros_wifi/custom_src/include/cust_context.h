@@ -32,17 +32,6 @@
  *  remain constant from system to system. The porting effort requieres that  
  *  the A_CUSTOM_DRIVER_CONTEXT be populated with system specific elements. */
 
-//typedef struct _a_custom_hcd
-//{
-//    /* PORT_NOTE: These three elements are used to provide access
-//     *  to the chip HW interface.  Use system appropriate element types. */
-//    FILE_PTR        spi_cxt;          /* used for device SPI access */
-//    FILE_PTR        int_cxt;         /* used for device interrupt */
-//#if WLAN_CONFIG_ENABLE_CHIP_PWD_GPIO
-//    FILE_PTR	    pwd_cxt;	/* used for PWD line */
-//#endif
-//} A_CUSTOM_HCD_CXT;
-
 /* PORT_NOTE: Include any System header files here to resolve any types used
  *  in A_CUSTOM_DRIVER_CONTEXT */ 
 
@@ -75,9 +64,6 @@ typedef struct _a_custom_driver_context
     QOSAL_EVENT_STRUCT sockSelectWakeEvent; /* wakes t_select  */
 #endif //T_SELECT_VER1
 #endif
-//#if 1    
-//    FILE_PTR		adc_cxt;	/* used for ADC SENSOR */
-//#endif     
     /* PORT_NOTE: These 2 elements provide pointers to system context.
      *  The pDriverParam is intended provide definition for info such as 
      *  which GPIO's to use for the SPI bus.  The pUpperCxt should be 
@@ -100,7 +86,6 @@ typedef struct _a_custom_driver_context
 #if MANUFACTURING_SUPPORT
     QOSAL_UINT32        testCmdRespBufLen;
 #endif
-//    A_CUSTOM_HCD_CXT customhcdcxt;
     QOSAL_VOID* httpPostCb;  /*callback handler for http post events*/
     QOSAL_VOID* httpPostCbCxt;
     QOSAL_VOID* otaCB;       /* callback handler for OTA event */ 
@@ -112,7 +97,6 @@ typedef struct _a_custom_driver_context
 #define GET_DRIVER_CXT(pCxt) ((A_CUSTOM_DRIVER_CONTEXT*)(pCxt))
 #define GET_DRIVER_COMMON(pCxt) ((A_DRIVER_CONTEXT*)(GET_DRIVER_CXT((pCxt))->pCommonCxt))
 
-//#define GET_DRIVER_HCD_CXT(pCxt) ((A_CUSTOM_HCD_CXT*)(pCxt))   //custom struct
 
 #if DRIVER_CONFIG_MULTI_TASKING
 #define RXBUFFER_ACCESS_INIT(pCxt) A_MUTEX_INIT(&(GET_DRIVER_CXT(pCxt)->utility_mutex))

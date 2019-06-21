@@ -79,6 +79,7 @@
 #define max(a,b) ((a) > (b))? (a) : (b)
 #endif
 
+
 /* unaligned little endian access */
 #define A_LE_READ_2(p)                                              \
         ((QOSAL_UINT16)(                                                \
@@ -134,11 +135,14 @@ extern QOSAL_UINT32 g_poolid;
 #define DRIVER_STATE_SHUTDOWN 3
 extern QOSAL_UINT8 g_driverState;
 
+extern A_VOID   qosal_malloc_init(A_VOID);
+extern A_VOID*  qosal_malloc(A_UINT32 size);
+extern A_STATUS qosal_free(A_VOID* addr);
 /* Definitions used for ID param in calls to A_MALLOC and A_FREE */
-//      NAME                    VALUE  DESCRIPTION
-#define MALLOC_ID_CONTEXT       1   // persistent allocation for the life of Driver
-#define MALLOC_ID_NETBUFF       2   // buffer used to perform TX/RX SPI transaction
-#define MALLOC_ID_NETBUFF_OBJ   3   // NETBUF object
+//		NAME					VALUE 	DESCRIPTION
+#define MALLOC_ID_CONTEXT 		1	// persistent allocation for the life of Driver
+#define MALLOC_ID_NETBUFF 		2	// buffer used to perform TX/RX SPI transaction
+#define MALLOC_ID_NETBUFF_OBJ 	3	// NETBUF object
 #define MALLOC_ID_TEMPORARY     4   // other temporary allocation
 /* Macros used for heap memory allocation and free */
 #define A_MALLOCINIT()                  qosal_malloc_init()

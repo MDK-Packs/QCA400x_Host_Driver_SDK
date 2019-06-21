@@ -15,9 +15,8 @@
 // LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
 // WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, 
 // EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
+//
 // Modified by Arm
-
 #ifndef _OSAL_H_
 #define _OSAL_H_
 
@@ -62,7 +61,8 @@ typedef struct time_struct
    uint32_t     MILLISECONDS;
 } TIME_STRUCT;
 
-#define BSP_ALARM_FREQUENCY 1024
+#define BSP_ALARM_FREQUENCY     1024
+#define QOSAL_TASK_DESTRUCTION  1
 
 typedef osThreadId_t            qosal_task_handle;
 typedef osEventFlagsId_t        *qosal_event_handle;

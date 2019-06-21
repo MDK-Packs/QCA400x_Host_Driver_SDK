@@ -19,6 +19,8 @@
 //------------------------------------------------------------------------------
 //==============================================================================
 // Author(s): ="Atheros"
+//
+// Modified by Arm
 //==============================================================================
 
 #ifndef _A_TYPES_H_
@@ -27,10 +29,10 @@
 #include "stdint.h"
 #include "stdbool.h"
 
-#define _PTR_   *
-#define TRUE    true
-#define FALSE   false
-typedef uint8_t uchar;
+#define _PTR_       *
+#define TRUE        true
+#define FALSE       false
+typedef uint8_t     uchar;
 
 #define int_8_ptr   int8_t*
 #define uint_8_ptr  uint8_t*

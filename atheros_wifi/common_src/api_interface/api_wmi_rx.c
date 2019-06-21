@@ -19,6 +19,8 @@
 //------------------------------------------------------------------------------
 //==============================================================================
 // Author(s): ="Atheros"
+//
+// Modified by Arm
 //==============================================================================
 #include <a_config.h>
 #include <a_types.h>
@@ -33,7 +35,7 @@
 #include <atheros_wifi_api.h> //IGX_UD_CHANGES
 #include <atheros_wifi_internal.h> //IGX_UD_CHANGES
 #include <wlan_api.h>
-#include "stdio.h"
+#include <stdio.h>
 
 #if ENABLE_P2P_MODE
 #include "p2p.h"
@@ -589,7 +591,6 @@ Api_HostDsetReadbackEvent(QOSAL_VOID *pCxt, QOSAL_UINT8 devId, QOSAL_UINT8 *data
 QOSAL_VOID
 Api_HostDsetSyncEvent(QOSAL_VOID *pCxt, QOSAL_UINT8 devId, QOSAL_UINT8 *datap, QOSAL_INT32 len, QOSAL_VOID *pReq)
 {
-//    HOST_DSET  *pDset;
     QOSAL_UINT32    msgLength;
     QOSAL_UINT16    count;
     void *osbuf;
@@ -716,10 +717,6 @@ Api_dset_write_event(A_DRIVER_CONTEXT *pDCxt, HOST_DSET_HANDLE *pDsetHandle, WMI
 QOSAL_VOID
 Api_DsetOPEvent(QOSAL_VOID *pCxt, QOSAL_UINT8 devId, QOSAL_UINT8 *datap, QOSAL_INT32 len, QOSAL_VOID *pReq)
 {
-//    void *osbuf;
-//    QOSAL_UINT32    msgLength;
-//    WMI_HOST_DSET_RESP_WRITE_CMD   *p;
-//    HOST_DSET  *pDset;
     A_DRIVER_CONTEXT *pDCxt = GET_DRIVER_COMMON(pCxt);
 
     struct WMIX_DSET_OP_SET_EVENT {
@@ -962,16 +959,8 @@ Api_StoreRecallStartEvent(QOSAL_VOID *pCxt, QOSAL_UINT8 devId, QOSAL_UINT8 *data
 QOSAL_VOID
 Api_WpsProfileEvent(QOSAL_VOID *pCxt, QOSAL_UINT8 devId, QOSAL_UINT8 *datap, QOSAL_INT32 len, QOSAL_VOID *pReq)
 {
-//#if ENABLE_P2P_MODE
-//	void *wmip;
-//#endif	
 	WMI_WPS_PROFILE_EVENT *pEv = (WMI_WPS_PROFILE_EVENT *)datap;
 	A_DRIVER_CONTEXT *pDCxt = GET_DRIVER_COMMON(pCxt);
-
-//#if ENABLE_P2P_MODE
-//    WMI_P2P_PERSISTENT_PROFILE_CMD wpsProfile;
-//	wmip = (struct wmi_t *)pCxt;
-//#endif
 
 	UNUSED_ARGUMENT(len);
     UNUSED_ARGUMENT(devId);
@@ -1152,7 +1141,6 @@ Api_GetSetParamReply(A_VOID *pCxt,A_UINT8 *datap)
 QOSAL_VOID
 p2p_go_neg_event(QOSAL_VOID *pCxt, QOSAL_UINT8 devId, QOSAL_UINT8 *datap, QOSAL_UINT32 len,WMI_P2P_PROV_INFO *wps_info)
 {
-//    A_DRIVER_CONTEXT *pDCxt = GET_DRIVER_COMMON(pCxt);
     API_P2P_GO_NEG_EVENT(pCxt, devId, datap, len, wps_info);
 }
 
@@ -1160,7 +1148,6 @@ p2p_go_neg_event(QOSAL_VOID *pCxt, QOSAL_UINT8 devId, QOSAL_UINT8 *datap, QOSAL_
 QOSAL_VOID
 p2p_invite_sent_result_event(QOSAL_VOID *pCxt, QOSAL_UINT8 devId, QOSAL_UINT8 *datap, QOSAL_UINT32 len)
 {
-//    A_DRIVER_CONTEXT *pDCxt = GET_DRIVER_COMMON(pCxt);
     API_P2P_INVITE_SEND_RESULT(pCxt, devId, datap,len);
 }
 /*****************************************************************************/
@@ -1389,7 +1376,6 @@ Api_p2p_node_list_event(QOSAL_VOID *pCxt, QOSAL_UINT8 devId, QOSAL_UINT8 *datap,
 
     QOSAL_UINT32 evt_id = 0;
     QOSAL_UINT8 *tmpBuf;
-    struct p2p_device;
     evt_id = WMI_P2P_NODE_LIST_EVENTID;
     WMI_P2P_NODE_LIST_EVENT *handleP2PDev = (WMI_P2P_NODE_LIST_EVENT *)datap;
     A_DRIVER_CONTEXT* pDCxt = GET_DRIVER_COMMON(pCxt);  

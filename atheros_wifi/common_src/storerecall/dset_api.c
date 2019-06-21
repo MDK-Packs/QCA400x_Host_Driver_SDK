@@ -19,6 +19,8 @@
 //------------------------------------------------------------------------------
 //==============================================================================
 // Author(s): ="Atheros"
+//
+// Modified by Arm
 //==============================================================================
 #include <a_config.h>
 #include <a_types.h>
@@ -33,7 +35,7 @@ HOST_DSET_HANDLE   dset_handles[MAX_HOST_DSET_SIZE];
 //TODO: fixme. dummy fn, implemented in app
 uint32_t remote_dset_op(DSET_OP op, HOST_DSET_HANDLE *pDsetHandle)
 {
-    return (uint32_t)A_ERROR;
+ 	return (uint32_t)A_ERROR;
 }
 
 uint_32 remote_dset_op(DSET_OP op, HOST_DSET_HANDLE *pDsetHandle);

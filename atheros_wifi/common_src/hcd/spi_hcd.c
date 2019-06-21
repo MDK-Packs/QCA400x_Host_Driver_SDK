@@ -17,6 +17,8 @@
 // EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //==============================================================================
 // Author(s): ="Atheros"
+//
+// Modified by Arm
 //==============================================================================
 
 #include <a_config.h>
@@ -91,7 +93,6 @@ DoPioWriteInternal(QOSAL_VOID *pCxt,
                                       QOSAL_UINT16        Addr,
                                       QOSAL_UINT32        Value) 
 {   
-//    A_STATUS status;
     QOSAL_UINT32 dataIn;
     QOSAL_UINT32 dataOut;
 

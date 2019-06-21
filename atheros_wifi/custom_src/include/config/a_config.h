@@ -43,7 +43,7 @@ extern "C" {
 #define TARGET_AR400X_REV5 0x40000026
 
 
-#define ATH_FIRMWARE_TARGET TARGET_AR400X_REV1      //TARGET_AR400X_REV2
+#define ATH_FIRMWARE_TARGET TARGET_AR400X_REV1		//TARGET_AR400X_REV2
 
 
 #define SUPPORT_11N 1
@@ -57,60 +57,56 @@ extern "C" {
  * 	the requirements/attributes of the OS and MCU. */
 
 /* DRIVER_CONFIG_INCLUDE_BMI - optionally set to 0 if the driver will
- *  not be used in BMI mode and code space needs to be saved.
+ * 	not be used in BMI mode and code space needs to be saved.
  *  If the driver will be used in BMI for flash reprogram or other then
- *  this option must be 1.
+ *	this option must be 1.
  */
-#define DRIVER_CONFIG_INCLUDE_BMI               1//1 or 0
+#define DRIVER_CONFIG_INCLUDE_BMI				1//1 or 0
 
 /* DRIVER_CONFIG_DISABLE_ASSERT - set to 1 if assert NOP behavior is
  * preferred <not recommended> */
-#define DRIVER_CONFIG_DISABLE_ASSERT            0//1 or 0
+#define DRIVER_CONFIG_DISABLE_ASSERT 			0//1 or 0
 /* DRIVER_CONFIG_PROFILE_BOOT - can be used to profile driver boot
  * process with GPIO's + logic analyzer */
-#define DRIVER_CONFIG_PROFILE_BOOT              0//1 or 0
+#define DRIVER_CONFIG_PROFILE_BOOT 				0//1 or 0
 /* DRIVER_CONFIG_ENDIANNESS - set according to host CPU endianness */
-//#if PSP_ENDIAN == MQX_BIG_ENDIAN
-#define DRIVER_CONFIG_ENDIANNESS                A_LITTLE_ENDIAN//A_LITTLE_ENDIAN or A_BIG_ENDIAN
-//#else
-//#define DRIVER_CONFIG_ENDIANNESS                A_LITTLE_ENDIAN
-//#endif
+#define DRIVER_CONFIG_ENDIANNESS				A_LITTLE_ENDIAN
 /* DRIVER_CONFIG_MULTI_TASKING - set according to host OS
  * multi-task support */
-#define DRIVER_CONFIG_MULTI_TASKING             1//1 or 0
+#define DRIVER_CONFIG_MULTI_TASKING 		1//1 or 0
 /* DRIVER_CONFIG_IMPLEMENT_RX_FREE_QUEUE - set if driver should
  * implement a RX Free Queue */
-#define DRIVER_CONFIG_IMPLEMENT_RX_FREE_QUEUE   0//1 or 0
+#define DRIVER_CONFIG_IMPLEMENT_RX_FREE_QUEUE 	0//1 or 0
 
 /*TCPIP stack offload for AR4001*/
 #define ENABLE_STACK_OFFLOAD                    WIFI_QCA400x_MODE_INT_STACK //1 or 0
 
-#define T_SELECT_VER1                           1//1 or 0
-
+#define T_SELECT_VER1                    	 1//1 or 0
+	
 /* DRIVER_CONFIG_ENABLE_STORE_RECALL - optionally set to zero to reduce
  * driver memory footprint.
  */
-#define DRIVER_CONFIG_ENABLE_STORE_RECALL       1//1 or 0
+#define DRIVER_CONFIG_ENABLE_STORE_RECALL                       1//1 or 0
 
-#define ENABLE_AP_MODE                          1 //1 or 0
+#define ENABLE_AP_MODE                      					1 //1 or 0
 
-#define MULTI_SOCKET_SUPPORT                    1 //1 or 0
+#define MULTI_SOCKET_SUPPORT									1 //1 or 0
 
-#define MANUFACTURING_SUPPORT                   1
-#define ENABLE_P2P_MODE                         1 //1 or 0
+#define MANUFACTURING_SUPPORT                                   1
+#define ENABLE_P2P_MODE                                         1 //1 or 0
 
 /* DRIVER_CONFIG_PROGRAM_MAC_ADDR - optionally add code to allow an application
  * to program a new mac address to the wifi device.  this code should only
  * be included when programming a mac address is required such as during
  * production.  otherwise code space can be saved by setting this to 0.
  */
-#define DRIVER_CONFIG_PROGRAM_MAC_ADDR                          1 //1 or 0
+#define DRIVER_CONFIG_PROGRAM_MAC_ADDR							1 //1 or 0
 
 /* DRIVER_CONFIG_ENABLE_HOST_FW_DOWNLOAD is used to enable Firmware download
    from the host. This feature is implemented but kept disable and can be enabled
    on need basis. DO NOT EDIT NEXT LINE INCLUDING THE SPACE. BUILD SCRIPT SEARCHES
    FOR THIS PATTERN AND UPDATES IT IN BUILD TIME. */
-#define DRIVER_CONFIG_ENABLE_HOST_FW_DOWNLOAD   0 //1 or 0
+#define DRIVER_CONFIG_ENABLE_HOST_FW_DOWNLOAD 0 //1 or 0
 
 #define ENABLE_HTTP_SERVER                      1//1 or 0
 
@@ -126,14 +122,14 @@ extern "C" {
 
 #define WLAN_NUM_OF_DEVICES                     1 // Only 1 supported
 
-#define ENABLE_ROUTING_CMDS                     1//1 or 0
+#define ENABLE_ROUTING_CMDS                        1//1 or 0
 #define ENABLE_HTTPS_SERVER                     1//1 or 0
 
 #define ENABLE_HTTPS_CLIENT                     1//1 or 0
 
 #define ENABLE_SSL                              1//1 or 0
 
-#define ENABLE_SCC_MODE                         1//1 or 0
+#define ENABLE_SCC_MODE                     1//1 or 0
 #define ENABLE_KF_PERFORMANCE                   1
 
 #define ENABLE_LARGE_DSET                       1   //1 or 0

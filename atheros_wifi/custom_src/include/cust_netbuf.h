@@ -19,6 +19,8 @@
 //------------------------------------------------------------------------------
 //==============================================================================
 // Author(s): ="Atheros"
+//
+// Modified by Arm
 //==============================================================================
 #ifndef _CUST_NETBUF_H_
 #define _CUST_NETBUF_H_
@@ -32,12 +34,9 @@
 
 #if !ENABLE_STACK_OFFLOAD
 
-#define MAX_BUF_FRAGS 1 /* must match definition of PCB2 */
+#define MAX_BUF_FRAGS 1
 /* A_NATIVE_NETBUF and A_NATIVE_ORIG are used to point to upper-layer 
  *	netbuf structures. They are OS/TCP stack dependant. */
-//typedef PCB2 A_NATIVE_NETBUF;
-//typedef PCB A_NATIVE_ORIG;
-
 
 typedef void (*_pcb_free_fn)(void * pcb_ptr);
 typedef struct db_frag {

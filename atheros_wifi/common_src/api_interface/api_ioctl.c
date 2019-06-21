@@ -19,6 +19,8 @@
 //------------------------------------------------------------------------------
 //==============================================================================
 // Author(s): ="Atheros"
+//
+// Modified by Arm
 //==============================================================================
 #include <a_config.h>
 #include <a_types.h>
@@ -36,7 +38,7 @@
 #include <atheros_wifi_api.h>
 #include "hw2.0/hw/apb_map.h"
 #include <hw2.0/hw/mbox_reg.h>
-#include "stdio.h"
+#include <stdio.h>
 extern QOSAL_CONST WMI_SCAN_PARAMS_CMD default_scan_param;
 QOSAL_UINT8 countryCode_storge[4];
 A_STATUS
@@ -226,7 +228,6 @@ program_mac_addr(QOSAL_VOID *pCxt)
     A_NETBUF_DECLARE req;
 	QOSAL_VOID *pReq = (QOSAL_VOID*)&req;
 	QOSAL_UINT32 mac_word;
-//	QOSAL_UINT32 address;
 	QOSAL_UINT8 *ptr_mac_word = (QOSAL_UINT8*)&mac_word;
 	QOSAL_UINT32 i;
 	
@@ -869,7 +870,6 @@ Api_ProgramMacAddress(QOSAL_VOID *pCxt, QOSAL_UINT8* addr, QOSAL_UINT16 length, 
 A_STATUS
 Api_SetPowerMode(QOSAL_VOID *pCxt,POWER_MODE *app_setting)
 {
-//    A_STATUS status = A_ERROR;
     A_DRIVER_CONTEXT *pDCxt = GET_DRIVER_COMMON(pCxt);
        
     if(app_setting->pwr_module < PWR_MAX) {
@@ -959,7 +959,7 @@ A_STATUS scan_setup(QOSAL_VOID *pCxt, QOSAL_VOID *pWmi, WMI_START_SCAN_CMD *star
 	    WMI_PROBED_SSID_CMD probeParam;
 	}stackU;
 	QOSAL_UINT32 size;
-    A_STATUS     error = A_OK;
+	A_STATUS error = A_OK;
 	A_DRIVER_CONTEXT *pDCxt = GET_DRIVER_COMMON(pCxt);
 
 	do{

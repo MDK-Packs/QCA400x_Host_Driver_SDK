@@ -19,6 +19,8 @@
 //------------------------------------------------------------------------------
 //==============================================================================
 // Author(s): ="Atheros"
+//
+// Modified by Arm
 //==============================================================================
 #include <a_config.h>
 #include <a_types.h>
@@ -31,7 +33,7 @@
 #include <htc.h>
 #include <spi_hcd_if.h>
 #include <hcd_api.h>
-#include "stdio.h"
+#include <stdio.h>
 
 #include "atheros_wifi_api.h"
 #include "atheros_wifi_internal.h"
@@ -65,7 +67,6 @@ Driver_Main(QOSAL_VOID *pCxt, QOSAL_UINT8 scope, QOSAL_BOOL *pCanBlock, QOSAL_UI
 {
     QOSAL_VOID *pReq;
     A_DRIVER_CONTEXT *pDCxt = GET_DRIVER_COMMON(pCxt);
-//    QOSAL_UINT8 cpuIntrCause;
 
     HW_ProcessPendingInterrupts(pCxt); //IGX_UD_CHANGES
     
@@ -677,9 +678,9 @@ Driver_WaitForCondition(QOSAL_VOID *pCxt, volatile QOSAL_BOOL *pCond, QOSAL_BOOL
 {                                                                      
 	A_STATUS status= A_OK;                
 	
-    if (msec == 0) {
-      msec = 1;
-    }
+	if (msec == 0) {
+		msec = 1;
+	}
 	
 	while(1){														
 		if ((*pCond != value)){                             
@@ -716,7 +717,7 @@ Atheros_Driver_Task(QOSAL_UINT32 pContext)
 {    
 	QOSAL_VOID *pCxt = (QOSAL_VOID *)pContext;
 	QOSAL_BOOL canBlock = A_FALSE;
-	QOSAL_UINT16 block_msec = 1000; // TODO: what should be a correct value??
+	QOSAL_UINT16 block_msec = 1000U;      // TODO: what should be a correct value??
 	QOSAL_UINT32 timeout;
 	
     do

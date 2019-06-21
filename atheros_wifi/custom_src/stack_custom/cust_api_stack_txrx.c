@@ -31,7 +31,7 @@
 #include "QCA400x.h"
 #include <atheros_wifi_api.h>
 #include "cust_netbuf.h"
-#include "stdio.h"
+#include <stdio.h>
 
 #if ENABLE_STACK_OFFLOAD
 #include "atheros_stack_offload.h"

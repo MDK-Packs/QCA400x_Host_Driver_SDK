@@ -23,33 +23,6 @@
 // Modified by Arm
 //==============================================================================
 
-//#include <a_config.h>
-//#include <a_types.h>
-//#include <a_osapi.h>
-//#include <driver_cxt.h>
-//#include <common_api.h>
-//#include <custom_wlan_api.h>
-//#include <wmi_api.h>
-//#include <bmi.h>
-//#include <htc.h>
-//#include <wmi_host.h>
-//#if ENABLE_P2P_MODE
-//#include <wmi.h>
-//#include "p2p.h"
-//#endif
-//#include "mqx.h"
-//#include "bsp.h"
-//#include "enet.h"
-//#include "enetprv.h"
-//#include "atheros_wifi.h"
-//#include "enet_wifi.h"
-//#include "atheros_wifi_api.h"
-//#include "atheros_wifi_internal.h"
-//#include "atheros_stack_offload.h"
-//#include "dset_api.h"
-//#include "common_stack_offload.h"
-//#include "qcom_api.h"
-
 #include "QCA400x.h"
 #include "atheros_wifi_api.h"
 #include "atheros_stack_offload.h"

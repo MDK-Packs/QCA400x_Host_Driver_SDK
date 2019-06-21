@@ -17,6 +17,8 @@
 // EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //==============================================================================
 // Author(s): ="Atheros"
+//
+// Modified by Arm
 //==============================================================================
 
 #include <a_config.h>
@@ -35,7 +37,6 @@
 A_STATUS HW_ProcessPendingInterrupts(QOSAL_VOID *pCxt)
 {
   
-//  QOSAL_VOID *pReq;
     A_DRIVER_CONTEXT *pDCxt = GET_DRIVER_COMMON(pCxt);
     QOSAL_UINT8 cpuIntrCause;
 

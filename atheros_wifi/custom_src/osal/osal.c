@@ -15,7 +15,7 @@
 // LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
 // WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, 
 // EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
+//
 // Modified by Arm
 
 #include <osal.h>
@@ -87,8 +87,8 @@ A_STATUS qosal_task_create ( A_VOID  Task(A_UINT32),
     thread_attr.priority   = (osPriority_t)task_priority;
     thread_attr.tz_module  = 0;
 
-    task_handle = osThreadNew((osThreadFunc_t)Task, param, &thread_attr);
-    if(task_handle == NULL) {
+    *task_handle = osThreadNew((osThreadFunc_t)Task, param, &thread_attr);
+    if(*task_handle == NULL) {
       osal_ret = A_ERROR;
     }
   }
