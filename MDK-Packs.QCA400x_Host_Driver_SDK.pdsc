@@ -7,8 +7,8 @@
   <url>https://github.com/MDK-Packs/Pack/raw/master/QCA400x_Host_Driver_SDK/</url>
   <license>license_terms.txt</license>
   <releases>
-    <release version="1.0.0-beta">
-      Beta release based on Qualcomm QCA4002/4 Host Driver SDK v3.3.6
+    <release version="1.0.0" date="2019-06-21">
+      Initial release based on Qualcomm QCA4002/4 Host Driver SDK v3.3.6
     </release>
   </releases>
   <conditions>
@@ -20,7 +20,7 @@
     </condition>
   </conditions>
   <components>
-    <component Cclass="Qualcomm" Cgroup="QCA400x" Csub="Host Driver SDK" Cvariant="SPI" Cversion="1.0.0-beta" condition="CMSIS_CORE CMSIS_RTOS2 CMSIS_Driver_SPI">
+    <component Cclass="Qualcomm" Cgroup="QCA400x" Csub="Host Driver SDK" Cvariant="SPI" Cversion="1.0.0" condition="CMSIS_CORE CMSIS_RTOS2 CMSIS_Driver_SPI">
       <description>Qualcomm QCA400x Host Driver SDK (SPI)</description>
       <RTE_Components_h>
         <!-- the following content goes into file 'RTE_Components.h' -->
