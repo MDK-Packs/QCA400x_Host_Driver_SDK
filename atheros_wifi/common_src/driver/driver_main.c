@@ -713,11 +713,10 @@ A_STATUS setup_host_dset(QOSAL_VOID* handle)
 
 
 static QOSAL_VOID 
-Atheros_Driver_Task(QOSAL_UINT32 pContext)
-{    
+Atheros_Driver_Task(QOSAL_UINT32 pContext) {
 	QOSAL_VOID *pCxt = (QOSAL_VOID *)pContext;
 	QOSAL_BOOL canBlock = A_FALSE;
-	QOSAL_UINT16 block_msec = 1000U;      // TODO: what should be a correct value??
+	QOSAL_UINT16 block_msec = 100U;      // TODO: what should be a correct value??
 	QOSAL_UINT32 timeout;
 	
     do
@@ -750,7 +749,7 @@ Atheros_Driver_Task(QOSAL_UINT32 pContext)
 				Driver_Main(pCxt, DRIVER_SCOPE_RX|DRIVER_SCOPE_TX, &canBlock, &block_msec);
 			}
 		
-			Driver_DeInit(pCxt);	            
+			Driver_DeInit(pCxt);
 	        DRIVER_WAKE_USER(pCxt);
 		}
 #if QOSAL_TASK_DESTRUCTION		
@@ -767,7 +766,7 @@ Atheros_Driver_Task(QOSAL_UINT32 pContext)
 }
 
 #define ATHEROS_TASK_PRIORITY   QOSAL_DRIVER_TASK_PRIORITY
-#define ATHEROS_TASK_STACKSIZE (3000)
+#define ATHEROS_TASK_STACKSIZE (4*1024)
 
 A_STATUS 
 Driver_CreateThread(QOSAL_VOID *pCxt)
@@ -864,10 +863,10 @@ QOSAL_UINT16 sillyloop=0;
 
 void assert_func(const char *func_name, QOSAL_UINT32 line)
 {
-    printf("driver assert at %s:%d\n", func_name, line);
+    printf("\n\r  *** driver assert at %s:%d\n", func_name, line);
 
-    while(1){
-        sillyloop++;        
-    }
+//    while(1){
+//        sillyloop++;        
+//    }
 }
 
