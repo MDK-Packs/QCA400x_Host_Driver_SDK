@@ -237,7 +237,7 @@ Custom_HW_Init(QOSAL_VOID *pCxt)
                                ARM_SPI_MSB_LSB     |
                                ARM_SPI_SS_MASTER_HW_OUTPUT,
                                1000000);
-      }
+     }
      if (ret == ARM_DRIVER_OK) {
          status = A_OK;
       }
@@ -270,6 +270,16 @@ Custom_HW_DeInit(QOSAL_VOID *pCxt)
   }
 
   return status;
+}
+
+QOSAL_VOID 
+Custom_HW_SetClock(QOSAL_VOID *pCxt, QOSAL_UINT32 *pClockRate) {
+  SPIdrv->Control (ARM_SPI_MODE_MASTER |
+                   ARM_SPI_CPOL1_CPHA1 |
+                   ARM_SPI_DATA_BITS(8)|
+                   ARM_SPI_MSB_LSB     |
+                   ARM_SPI_SS_MASTER_HW_OUTPUT,
+                   *pClockRate);
 }
 
 QOSAL_VOID 

@@ -124,8 +124,7 @@ HW_InterruptHandler(QOSAL_VOID *pCxt)
 QOSAL_VOID 
 HW_SetClock(QOSAL_VOID *pCxt, QOSAL_UINT32 *pClockRate)
 {
-    UNUSED_ARGUMENT(pCxt);
-	UNUSED_ARGUMENT(pClockRate);
+    Custom_HW_SetClock (pCxt, pClockRate);
 }
 
 QOSAL_UINT32
