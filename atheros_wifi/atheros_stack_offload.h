@@ -39,7 +39,7 @@
 #if ENABLE_STACK_OFFLOAD
 
 /**********************Macros and config parameters**********/
-#define MAX_SOCKETS_SUPPORTED      (16) 
+#define MAX_SOCKETS_SUPPORTED      (4) 
 #define SOCKET_NOT_FOUND           (-1)
 #define EMPTY_SOCKET_CONTEXT       (0)
 #define SOCKET_HANDLE_PLACEHOLDER  (0xFFFFFFFF)
