@@ -7,6 +7,18 @@
   <url>https://github.com/MDK-Packs/Pack/raw/master/QCA400x_Host_Driver_SDK/</url>
   <license>license_terms.txt</license>
   <releases>
+    <release version="1.0.1-dev0">
+      - Updated SDK Configuration:
+      -- Enabled DRIVER_CONFIG_IMPLEMENT_RX_FREE_QUEUE
+      -- Increased Atheros task stack size to 4096
+      -- Reduced maximum number of sockets: MAX_SOCKETS_SUPPORTED = 16
+      -- Reduced timeouts: COMMAND_BLOCK_TIMEOUT and TRANSMIT_BLOCK_TIMEOUT
+      - Updated Socket functionality:
+      -- Updated Api_shutdown function: wait for command response
+      -- Updated t_accept and Api_accept functions to return actual socket address length (in "* length" parameter)
+      - Updated HW initialization: Added power down-up sequence of the WiFi module.
+      - Added Auto-clear functionality for rtos Events (needed for DriverWakeEvent)
+    </release>
     <release version="1.0.0" date="2019-06-21">
       Initial release based on Qualcomm QCA4002/4 Host Driver SDK v3.3.6
     </release>
