@@ -844,11 +844,12 @@ QOSAL_INT32 Api_socket(QOSAL_VOID *pCxt, QOSAL_UINT32 domain, QOSAL_UINT32 type,
         /*Wait for response from target*/
         do{
             if(BLOCK(pCxt, ath_sock_context[index], COMMAND_BLOCK_TIMEOUT, RX_DIRECTION) != A_OK){
+                result = A_ERROR;
                 A_ASSERT(0);
             }       
         }while(SOCK_EV_MASK_TEST(ath_sock_context[index], SOCK_OPEN));    
     
-        if(ath_sock_context[index]->handle == A_ERROR)
+        if((result == A_ERROR) || (ath_sock_context[index]->handle == A_ERROR))
         {
             /*Socket not created, return error*/
             clear_socket_context(index);            
@@ -898,7 +899,7 @@ QOSAL_INT32 Api_shutdown(QOSAL_VOID *pCxt, QOSAL_UINT32 handle)
         /*Create a socket close wmi message*/
         sock_close.handle = A_CPU2LE32(handle);
         /* set the sock_st_flags before calling wmi_ to avoid possible race conditions */
-        //SOCK_EV_MASK_SET(ath_sock_context[index], SOCK_CLOSE);
+        SOCK_EV_MASK_SET(ath_sock_context[index], SOCK_CLOSE);
         
         if(wmi_socket_cmd(pDCxt->pWmiCxt, SOCK_CLOSE, (void *)(&sock_close), sizeof(SOCK_CLOSE_T)) != A_OK){
             /* clear the flag that would have been cleared by receiving the event */
@@ -907,14 +908,16 @@ QOSAL_INT32 Api_shutdown(QOSAL_VOID *pCxt, QOSAL_UINT32 handle)
             break;	
         }
 
-#if 0 // For shutdown, we are not gonna wait for response. Fire and forgot 
+//#if 0 // For shutdown, we are not gonna wait for response. Fire and forgot 
+
         /*Wait for response from target*/		
         do{
             if(BLOCK(pCxt, ath_sock_context[index], COMMAND_BLOCK_TIMEOUT, RX_DIRECTION) != A_OK){
+                result = A_ERROR;
                 A_ASSERT(0);
             }  
         }while(SOCK_EV_MASK_TEST(ath_sock_context[index], SOCK_CLOSE));
-#endif
+//#endif
         
         result = ath_sock_context[index]->result;
         /* Delete all pending packets */
