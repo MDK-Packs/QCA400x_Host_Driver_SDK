@@ -217,6 +217,9 @@ Custom_HW_Init(QOSAL_VOID *pCxt)
   A_STATUS status = A_ERROR;
   A_DRIVER_CONTEXT *pDCxt = GET_DRIVER_COMMON(pCxt);
 
+  WiFi_QCA400x_Pin_PWDN (0);
+  osDelay(1000);
+  WiFi_QCA400x_Pin_PWDN (1);
   SPI_completed_event = osEventFlagsNew (NULL);
 
   if (SPI_completed_event != NULL) {
