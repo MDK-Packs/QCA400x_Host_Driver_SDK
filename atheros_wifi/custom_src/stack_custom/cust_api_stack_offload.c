@@ -163,7 +163,7 @@ QOSAL_INT32 t_listen(QCA400x_WiFi_PTR pDev, QOSAL_UINT32 handle, QOSAL_UINT32 ba
 /*  t_accept - Custom version of socket accept API- please see Api_accept for details                
  * RETURNS: A_OK or A_ERROR 
  *****************************************************************************/
-QOSAL_INT32 t_accept(QCA400x_WiFi_PTR pDev, QOSAL_UINT32 handle, QOSAL_VOID* name, QOSAL_UINT16 length)
+QOSAL_INT32 t_accept(QCA400x_WiFi_PTR pDev, QOSAL_UINT32 handle, QOSAL_VOID* name, QOSAL_UINT16 * length)
 {
 	QOSAL_VOID *pCxt;
 	
@@ -179,7 +179,7 @@ QOSAL_INT32 t_accept(QCA400x_WiFi_PTR pDev, QOSAL_UINT32 handle, QOSAL_VOID* nam
 }
 
 #if T_SELECT_VER1
-QOSAL_INT32 t_accept_nb(QCA400x_WiFi_PTR pDev, QOSAL_UINT32 handle, QOSAL_VOID* name, QOSAL_UINT16 length)
+QOSAL_INT32 t_accept_nb(QCA400x_WiFi_PTR pDev, QOSAL_UINT32 handle, QOSAL_VOID* name, QOSAL_UINT16 * length)
 {
 	QOSAL_VOID *pCxt;
 	

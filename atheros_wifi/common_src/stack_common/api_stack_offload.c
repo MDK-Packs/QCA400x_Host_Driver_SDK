@@ -1179,7 +1179,7 @@ QOSAL_INT32 Api_listen(QOSAL_VOID *pCxt, QOSAL_UINT32 handle, QOSAL_UINT32 backl
  *  QOSAL_UINT16 length- sock add length
  * Returns- 0 in case of successful connect, A_ERROR otherwise
  *****************************************************************************/
-QOSAL_INT32 Api_accept(QOSAL_VOID *pCxt, QOSAL_UINT32 handle, QOSAL_VOID* name, QOSAL_UINT16 length)
+QOSAL_INT32 Api_accept(QOSAL_VOID *pCxt, QOSAL_UINT32 handle, QOSAL_VOID* name, QOSAL_UINT16 * length)
 {
     A_DRIVER_CONTEXT *pDCxt;
     SOCK_ACCEPT_CMD_T sock_accept;
@@ -1205,7 +1205,7 @@ QOSAL_INT32 Api_accept(QOSAL_VOID *pCxt, QOSAL_UINT32 handle, QOSAL_VOID* name, 
         }
         /* prepare wmi accept structure*/
         sock_accept.handle = A_CPU2LE32(handle);
-        sock_accept.length = A_CPU2LE16(length);		
+        sock_accept.length = A_CPU2LE16(*length);		
     
         SOCK_EV_MASK_SET(ath_sock_context[index], SOCK_ACCEPT);
 
@@ -1270,6 +1270,7 @@ QOSAL_INT32 Api_accept(QOSAL_VOID *pCxt, QOSAL_UINT32 handle, QOSAL_VOID* name, 
                 /*Based on IPv4 vs IPv6, fill in name fields*/
                 if(ath_sock_context[index]->domain == ATH_AF_INET)
                 {		
+                        *length = sizeof(SOCKADDR_T);
                         A_MEMCPY(name, &((SOCK_ACCEPT_RECV_T*)(ath_sock_context[index]->data))->addr.name, sizeof(SOCKADDR_T));
                         ((SOCKADDR_T*)name)->sin_port = A_CPU2LE16(((SOCKADDR_T*)name)->sin_port);
                         ((SOCKADDR_T*)name)->sin_family = A_CPU2LE16(((SOCKADDR_T*)name)->sin_family);
@@ -1277,6 +1278,7 @@ QOSAL_INT32 Api_accept(QOSAL_VOID *pCxt, QOSAL_UINT32 handle, QOSAL_VOID* name, 
                 }
                 else
                 {
+                        *length = sizeof(SOCKADDR_6_T);
                         A_MEMCPY(name, &((SOCK_ACCEPT_RECV_T*)(ath_sock_context[index]->data))->addr.name6, sizeof(SOCKADDR_6_T));
                         ((SOCKADDR_6_T*)name)->sin6_port = A_CPU2LE16(((SOCKADDR_6_T*)name)->sin6_port);
                         ((SOCKADDR_6_T*)name)->sin6_family = A_CPU2LE16(((SOCKADDR_6_T*)name)->sin6_family);
@@ -1299,7 +1301,7 @@ QOSAL_INT32 Api_accept(QOSAL_VOID *pCxt, QOSAL_UINT32 handle, QOSAL_VOID* name, 
 #if T_SELECT_VER1
 
 //Non blocking accept
-QOSAL_INT32 Api_accept_ver1(QOSAL_VOID *pCxt, QOSAL_UINT32 handle, QOSAL_VOID* name, QOSAL_UINT16 length)
+QOSAL_INT32 Api_accept_ver1(QOSAL_VOID *pCxt, QOSAL_UINT32 handle, QOSAL_VOID* name, QOSAL_UINT16 * length)
 {
     A_DRIVER_CONTEXT *pDCxt;
     SOCK_ACCEPT_CMD_T sock_accept;
@@ -1364,7 +1366,7 @@ QOSAL_INT32 Api_accept_ver1(QOSAL_VOID *pCxt, QOSAL_UINT32 handle, QOSAL_VOID* n
         {
             /* prepare wmi accept structure*/
             sock_accept.handle = A_CPU2LE32(handle);
-            sock_accept.length = A_CPU2LE16(length);
+            sock_accept.length = A_CPU2LE16(*length);
 
             SOCK_EV_MASK_SET(ath_sock_context[index], SOCK_ACCEPT);
 

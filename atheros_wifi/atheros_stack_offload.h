@@ -593,12 +593,12 @@ QOSAL_INT32 t_shutdown(QCA400x_WiFi *pDev, QOSAL_UINT32 handle);
 QOSAL_INT32 t_connect(QCA400x_WiFi *pDev, QOSAL_UINT32 handle, QOSAL_VOID* name, QOSAL_UINT16 length);
 QOSAL_INT32 t_bind(QCA400x_WiFi *pDev, QOSAL_UINT32 handle, QOSAL_VOID* name, QOSAL_UINT16 length);
 QOSAL_INT32 t_listen(QCA400x_WiFi *pDev, QOSAL_UINT32 handle, QOSAL_UINT32 backlog);
-QOSAL_INT32 t_accept(QCA400x_WiFi *pDev, QOSAL_UINT32 handle, QOSAL_VOID* name, QOSAL_UINT16 length);
+QOSAL_INT32 t_accept(QCA400x_WiFi *pDev, QOSAL_UINT32 handle, QOSAL_VOID* name, QOSAL_UINT16 * length);
 QOSAL_INT32 t_sendto(QCA400x_WiFi *pDev, QOSAL_UINT32 handle, uint_8* buffer, QOSAL_UINT32 length, QOSAL_UINT32 flags, QOSAL_VOID* name, QOSAL_UINT32 socklength);
 QOSAL_INT32 t_send(QCA400x_WiFi *pDev, QOSAL_UINT32 handle, uint_8* buffer, QOSAL_UINT32 length, QOSAL_UINT32 flags);
 
 #if T_SELECT_VER1
-QOSAL_INT32 t_accept_nb(QCA400x_WiFi *pDev, QOSAL_UINT32 handle, QOSAL_VOID* name, QOSAL_UINT16 length);
+QOSAL_INT32 t_accept_nb(QCA400x_WiFi *pDev, QOSAL_UINT32 handle, QOSAL_VOID* name, QOSAL_UINT16 * length);
 #endif
 QOSAL_INT32 t_setsockopt(QCA400x_WiFi *pDev, QOSAL_UINT32 handle, QOSAL_UINT32 level, QOSAL_UINT32 optname, uint_8* optval, QOSAL_UINT32 optlen);
 QOSAL_INT32 t_getsockopt(QCA400x_WiFi *pDev, QOSAL_UINT32 handle, QOSAL_UINT32 level, QOSAL_UINT32 optname, uint_8* optval, QOSAL_UINT32 optlen);

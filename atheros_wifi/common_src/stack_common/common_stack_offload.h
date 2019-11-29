@@ -696,10 +696,10 @@ QOSAL_INT32 Api_shutdown(QOSAL_VOID *pCxt, QOSAL_UINT32 handle);
 QOSAL_INT32 Api_connect(QOSAL_VOID *pCxt, QOSAL_UINT32 handle, QOSAL_VOID* name, QOSAL_UINT16 length);
 QOSAL_INT32 Api_bind(QOSAL_VOID *pCxt, QOSAL_UINT32 handle, QOSAL_VOID* name,  QOSAL_UINT16 length);
 QOSAL_INT32 Api_listen(QOSAL_VOID *pCxt, QOSAL_UINT32 handle, QOSAL_UINT32 backlog);
-QOSAL_INT32 Api_accept(QOSAL_VOID *pCxt, QOSAL_UINT32 handle, QOSAL_VOID* name,  QOSAL_UINT16 length);
+QOSAL_INT32 Api_accept(QOSAL_VOID *pCxt, QOSAL_UINT32 handle, QOSAL_VOID* name,  QOSAL_UINT16 * length);
 
 #if T_SELECT_VER1
-QOSAL_INT32 Api_accept_ver1(QOSAL_VOID *pCxt, QOSAL_UINT32 handle, QOSAL_VOID* name,  QOSAL_UINT16 length);
+QOSAL_INT32 Api_accept_ver1(QOSAL_VOID *pCxt, QOSAL_UINT32 handle, QOSAL_VOID* name,  QOSAL_UINT16 * length);
 QOSAL_INT32 Api_select_ver1(QOSAL_VOID* pCxt, QOSAL_INT32 num, QOSAL_UINT32 *r_fd, QOSAL_UINT32 *w_fd, QOSAL_UINT32 *e_fd, QOSAL_UINT32 tv);
 #endif
 
