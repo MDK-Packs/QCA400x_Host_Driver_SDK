@@ -24,6 +24,8 @@
 
 #include "stdlib.h"
 
+static qosal_task_handle DriverWakeEvent = NULL; // Needded for Auto Clear
+
 /******************************************************************************/
 /* OS Layer Wrapper function implementation */
 /******************************************************************************/
@@ -349,6 +351,7 @@ A_VOID qosal_dcache_invalidate(A_VOID) {
  * Returns: None
  */
 A_VOID qosal_intr_disable (A_VOID) {
+//  __disable_irq();
 }
 
 /*
@@ -359,6 +362,7 @@ A_VOID qosal_intr_disable (A_VOID) {
  * Returns: None
  */
 A_VOID qosal_intr_enable (A_VOID) {
+//  __enable_irq();
 }
 
 /*****************************************************************************
@@ -380,12 +384,18 @@ A_UINT32 qosal_wait_for_event(qosal_event_handle event_ptr,
                                         A_UINT32 var1, 
                                         A_UINT32 ticksToWait) {
   A_UINT32 osal_ret = A_OK;
+  A_UINT32 opt;
+
   if(all) {
-    all = osFlagsWaitAll;
+    opt = osFlagsWaitAll;
   } else {
-    all = osFlagsWaitAny;
+    opt = osFlagsWaitAny;
   }
-  if (osEventFlagsWait(*event_ptr, bitsToWaitFor, all, ticksToWait) & 0x80000000) {
+  if (event_ptr != DriverWakeEvent) {
+    opt |= osFlagsNoClear;
+  }
+
+  if (osEventFlagsWait(*event_ptr, bitsToWaitFor, opt, ticksToWait) & 0x80000000) {
     osal_ret = (uint32_t)A_ERROR;
   }
   return osal_ret;
@@ -432,6 +442,10 @@ A_STATUS qosal_create_event(qosal_event_handle event_ptr) {
  * Returns: A_OK if Success, A_ERROR if Fail
  */
 A_STATUS qosal_set_event_auto_clear(qosal_event_handle event_ptr, A_UINT32 flags) {
+  if (flags) {
+    // Auto clear is only required by driverWakeEvent
+    DriverWakeEvent = event_ptr;
+  }
   return A_OK;
 }
 
