@@ -30,9 +30,9 @@
 
 #include "atheros_stack_offload.h"
 
-#define COMMAND_BLOCK_TIMEOUT       (960000)   //Socket will block for this period in msec, if no 
+#define COMMAND_BLOCK_TIMEOUT       (15000)   //Socket will block for this period in msec, if no 
                                               //response is received, socket will unblock
-#define TRANSMIT_BLOCK_TIMEOUT      (900000)  //Time in ms for which a send operation blocks, 
+#define TRANSMIT_BLOCK_TIMEOUT      (5000)  //Time in ms for which a send operation blocks, 
 											  //after this time, error is returned to application	
 #define LAST_FRAGMENT               (0x01)    //Indicates this is the last fragment 
 #define RX_DIRECTION                (0)
