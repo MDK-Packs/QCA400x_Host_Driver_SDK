@@ -76,7 +76,7 @@ extern "C" {
 #define DRIVER_CONFIG_MULTI_TASKING 		1//1 or 0
 /* DRIVER_CONFIG_IMPLEMENT_RX_FREE_QUEUE - set if driver should
  * implement a RX Free Queue */
-#define DRIVER_CONFIG_IMPLEMENT_RX_FREE_QUEUE 	0//1 or 0
+#define DRIVER_CONFIG_IMPLEMENT_RX_FREE_QUEUE 	1//1 or 0
 
 /*TCPIP stack offload for AR4001*/
 #define ENABLE_STACK_OFFLOAD                    WIFI_QCA400x_MODE_INT_STACK //1 or 0
@@ -139,7 +139,7 @@ extern "C" {
 *if the rx buffers is low, and multiple sockets are receiving data (especially for multiple TCP RX), 
 *the application may be blocked
 */
-#define WLAN_CONFIG_RX_BUFFERS 10
+#define WLAN_CONFIG_RX_BUFFERS 2
 
 
 #include "wlan_config.h"
