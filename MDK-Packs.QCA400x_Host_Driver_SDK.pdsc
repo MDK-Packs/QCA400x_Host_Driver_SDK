@@ -7,11 +7,15 @@
   <url>https://github.com/MDK-Packs/Pack/raw/master/QCA400x_Host_Driver_SDK/</url>
   <license>license_terms.txt</license>
   <releases>
+    <release version="1.0.1-dev1">
+      - Updated printing of assert and debug messages. Printing is done with the A_PRINTF() macro and is enabled by defining the A_PRINTF_ENABLED macro.
+      - Corrected Custom_FreeRxRequest function in "pass-through" mode  (ENABLE_STACK_OFFLOAD = 0 and DRIVER_CONFIG_IMPLEMENT_RX_FREE_QUEUE = 1)
+    </release>
     <release version="1.0.1-dev0">
       - Updated SDK Configuration:
       -- Enabled DRIVER_CONFIG_IMPLEMENT_RX_FREE_QUEUE
       -- Increased Atheros task stack size to 4096
-      -- Reduced maximum number of sockets: MAX_SOCKETS_SUPPORTED = 16
+      -- Reduced maximum number of sockets: MAX_SOCKETS_SUPPORTED = 4
       -- Reduced timeouts: COMMAND_BLOCK_TIMEOUT and TRANSMIT_BLOCK_TIMEOUT
       - Updated Socket functionality:
       -- Updated Api_shutdown function: wait for command response
