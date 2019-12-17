@@ -150,7 +150,7 @@ A_STATUS custom_receive_tcpip(QOSAL_VOID *pCxt, QOSAL_VOID *pReq)
 		{
 		   if(get_total_pkts_buffered() >= BSP_CONFIG_ATHEROS_PCB - 1)
 		   	{
-		   	   printf("%s dropping packets for %x\n", __FUNCTION__, handle);
+		   	   A_PRINTF("%s dropping packets for %x\n", __FUNCTION__, handle);
 			   A_NETBUF_FREE(pReq);
 		   	}else
 		     {
@@ -162,7 +162,7 @@ A_STATUS custom_receive_tcpip(QOSAL_VOID *pCxt, QOSAL_VOID *pReq)
 		{
 		  if(get_total_pkts_buffered() >= BSP_CONFIG_ATHEROS_PCB )
 		  {
-			printf("%s dropping packets for %x\n", __FUNCTION__, handle);
+			A_PRINTF("%s dropping packets for %x\n", __FUNCTION__, handle);
 			A_NETBUF_FREE(pReq);
 		  }else
 		   {

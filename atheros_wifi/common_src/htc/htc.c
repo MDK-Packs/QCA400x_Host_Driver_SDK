@@ -263,7 +263,7 @@ HTC_ProcessCpuInterrupt(QOSAL_VOID *pCxt)
 
         /* bit 1 is for SOF in argos */
         if (pDCxt->spi_hcd.CpuInterruptCause & 0x2) {
-          //printf("SOF intr\n");
+          //A_PRINTF("SOF intr\n");
         }
 
         /* All interrupts have been processed */

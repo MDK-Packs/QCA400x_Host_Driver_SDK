@@ -149,7 +149,11 @@ extern A_STATUS qosal_free(A_VOID* addr);
 #define A_MALLOC(size, id)              qosal_malloc(size)
 #define A_FREE(addr, id)                qosal_free(addr)
 
+#ifdef A_PRINTF_ENABLED
 #define A_PRINTF(args...)               printf(args)
+#else
+#define A_PRINTF(args...)
+#endif
 
 /* Mutual Exclusion */
 typedef MUTEX_STRUCT                    A_MUTEX_T;

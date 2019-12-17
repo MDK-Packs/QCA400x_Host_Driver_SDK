@@ -85,10 +85,10 @@ static A_STATUS config_dump_target_assert_info(QOSAL_VOID *pCxt)
 	if(A_OK == Driver_DumpAssertInfo(pCxt, regDumpValues, &length)){
 		for (i = 0; i < length; i+=4)
 	    {
-	        printf ("0x%08X ", A_LE2CPU32(regDumpValues[i]));
-	        printf ("0x%08X ", A_LE2CPU32(regDumpValues[i+1]));
-	        printf ("0x%08X ", A_LE2CPU32(regDumpValues[i+2]));
-	        printf ("0x%08X\n", A_LE2CPU32(regDumpValues[i+3]));
+	        A_PRINTF ("0x%08X ", A_LE2CPU32(regDumpValues[i]));
+	        A_PRINTF ("0x%08X ", A_LE2CPU32(regDumpValues[i+1]));
+	        A_PRINTF ("0x%08X ", A_LE2CPU32(regDumpValues[i+2]));
+	        A_PRINTF ("0x%08X\n", A_LE2CPU32(regDumpValues[i+3]));
 
 	    }
 	}
@@ -1450,7 +1450,7 @@ A_STATUS ath_ioctl_handler(A_CUSTOM_DRIVER_CONTEXT *pCxt, ATH_IOCTL_PARAM_STRUCT
 			if(A_OK != Api_ProgramCountryCode(pCxt, PTR_COUNTRY_CODE->countryCode, param_ptr->length, &PTR_COUNTRY_CODE->result)){
 				error = A_ERROR;
 			}
-		  	printf("the set country code is %c, %c\n",PTR_COUNTRY_CODE->countryCode[0],PTR_COUNTRY_CODE->countryCode[1]);
+		  	A_PRINTF("the set country code is %c, %c\n",PTR_COUNTRY_CODE->countryCode[0],PTR_COUNTRY_CODE->countryCode[1]);
 		}
 		break;
 	case ATH_SET_APPIE:
@@ -1467,11 +1467,11 @@ A_STATUS ath_ioctl_handler(A_CUSTOM_DRIVER_CONTEXT *pCxt, ATH_IOCTL_PARAM_STRUCT
               }
               if (pDCxt->wps_init_key != A_OK){
                  error = A_ERROR;
-                 printf("wps init failed\n");
+                 A_PRINTF("wps init failed\n");
               }
               else {
                   error = A_OK;
-                 printf("wps init done\n");                 
+                 A_PRINTF("wps init done\n");                 
               }
 
         break;	 
@@ -1487,11 +1487,11 @@ A_STATUS ath_ioctl_handler(A_CUSTOM_DRIVER_CONTEXT *pCxt, ATH_IOCTL_PARAM_STRUCT
             
             if (pDCxt->hb_challenge_done != A_TRUE ){
                error = A_ERROR;
-               printf("heart beat challenge failed\n");
+               A_PRINTF("heart beat challenge failed\n");
             }
             else {
                 error = A_OK;
-               printf("heart beat challenge done\n");                 
+               A_PRINTF("heart beat challenge done\n");                 
             }            
             
             break;         

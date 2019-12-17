@@ -47,6 +47,7 @@
 #include <ath_fw_binary.h>
 #include <hw2.0/hw/mbox_reg.h>
 #endif /* DRIVER_CONFIG_ENABLE_HOST_FW_DOWNLOAD */
+#include <stdio.h>
 
 
 #define HI_OPTION_NUM_DEV_SHIFT   0x9
@@ -731,7 +732,7 @@ Driver_BootComm(QOSAL_VOID *pCxt)
             {
                  A_ASSERT(0);
             }
-            //printf("%d\r\n", param);
+            A_PRINTF("%d\r\n", param);
         }while(param != A_CPU2LE32(EXPECTED_REF_CLK_AR4100) &&
                param != A_CPU2LE32(EXPECTED_REF_CLK_AR400X));
 

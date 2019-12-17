@@ -863,7 +863,8 @@ QOSAL_UINT16 sillyloop=0;
 
 void assert_func(const char *func_name, QOSAL_UINT32 line)
 {
-    printf("\n\r  *** driver assert at %s:%d\n", func_name, line);
+  A_PRINTF("\n\r  *** driver assert at %s:%d\n", func_name, line);
+
 
 //    while(1){
 //        sillyloop++;        

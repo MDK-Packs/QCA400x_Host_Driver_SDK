@@ -626,7 +626,7 @@ QOSAL_VOID zero_copy_http_free(QOSAL_VOID* buffer)
     
     length = (QOSAL_UINT32 *) buffer;
     buffer = (QOSAL_VOID *) (length - 3);
-    //printf("Deleting from Q %p\n", buffer);
+    //A_PRINTF("Deleting from Q %p\n", buffer);
     zero_copy_free(buffer);
 }
 #endif /* ENABLE_HTTP_CLIENT */
@@ -1359,7 +1359,7 @@ QOSAL_VOID zero_copy_free(QOSAL_VOID* buffer)
 	if(a_netbuf_ptr != NULL)
 		A_NETBUF_FREE(a_netbuf_ptr);
 	//else
-		//printf("Error: buffer not found\n");
+		//A_PRINTF("Error: buffer not found\n");
 }
 
 
@@ -1405,7 +1405,7 @@ QOSAL_INT32 Api_recvfrom(QOSAL_VOID *pCxt, QOSAL_UINT32 handle, void** buffer, Q
 	     {
                 if(queue_empty(index))
                 {
-                   printf("fin in recv \r\n");
+                   A_PRINTF("fin in recv \r\n");
                    clear_socket_context(index);
                    return A_SOCK_INVALID;
                 }
@@ -1420,7 +1420,7 @@ QOSAL_INT32 Api_recvfrom(QOSAL_VOID *pCxt, QOSAL_UINT32 handle, void** buffer, Q
 				}
                 if(ath_sock_context[index]->TCPCtrFlag == TCP_FIN)
                  {
-                      printf("clr sock in recv \r\n");
+                      A_PRINTF("clr sock in recv \r\n");
                      clear_socket_context(index);
                      return A_SOCK_INVALID;
                  }   

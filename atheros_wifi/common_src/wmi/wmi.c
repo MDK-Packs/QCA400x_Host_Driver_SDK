@@ -55,9 +55,10 @@
 extern QOSAL_UINT32 last_driver_error;
 //static QOSAL_UINT16 channel_no = 0;
 
-#define ATH_DEBUG_WMI ATH_DEBUG_MAKE_MODULE_MASK(0)
+#define ATH_DEBUG_WMI   1
+#define ATH_DEBUG_ERROR 1
 
-#ifdef DEBUG
+#if 0
 
 static ATH_DEBUG_MASK_DESCRIPTION wmi_debug_desc[] = {
     { ATH_DEBUG_WMI , "General WMI Tracing"},
@@ -74,11 +75,11 @@ ATH_DEBUG_INSTANTIATE_MODULE_VAR(wmi,
 
 #ifndef REXOS
 #define DBGARG      _A_FUNCNAME_
-#define DBGFMT      "%s() : "
+#define DBGFMT      "%s() :"
 #define DBG_WMI     ATH_DEBUG_WMI
 #define DBG_ERROR   ATH_DEBUG_ERR
 #define DBG_WMI2    ATH_DEBUG_WMI
-#define A_DPRINTF   AR_DEBUG_PRINTF
+#define A_DPRINTF(mask, dbgfmt,  args...)   AR_DEBUG_PRINTF(mask, dbgfmt args)
 #endif
 
 #if ENABLE_P2P_MODE
@@ -237,7 +238,7 @@ wmi_dix_2_dot3(struct wmi_t *wmip, void *osbuf)
         /*
          * packet is already in 802.3 format - return success
          */
-        A_DPRINTF(DBG_WMI, (DBGFMT "packet already 802.3\n", DBGARG));
+      A_DPRINTF(DBG_WMI, DBGFMT, "packet already 802.3\n", DBGARG);
         return (A_OK);
     }
 
@@ -535,7 +536,7 @@ wmi_control_rx_xtnd(struct wmi_t *wmip, QOSAL_UINT8 devId, void *osbuf)
     A_STATUS status = A_OK;
 
     if (A_NETBUF_LEN(osbuf) < sizeof(WMIX_CMD_HDR)) {
-        A_DPRINTF(DBG_WMI, (DBGFMT "bad packet 1\n", DBGARG));
+        A_DPRINTF(DBG_WMI, DBGFMT, "bad packet 1\n", DBGARG);
         wmip->wmi_stats.cmd_len_err++;
         return A_ERROR;
     }
@@ -544,7 +545,7 @@ wmi_control_rx_xtnd(struct wmi_t *wmip, QOSAL_UINT8 devId, void *osbuf)
     id = cmd->commandId;
 
     if (A_NETBUF_PULL(osbuf, sizeof(WMIX_CMD_HDR)) != A_OK) {
-        A_DPRINTF(DBG_WMI, (DBGFMT "bad packet 2\n", DBGARG));
+        A_DPRINTF(DBG_WMI, DBGFMT, "bad packet 2\n", DBGARG);
         wmip->wmi_stats.cmd_len_err++;
         return A_ERROR;
     }
@@ -574,7 +575,7 @@ wmi_control_rx_xtnd(struct wmi_t *wmip, QOSAL_UINT8 devId, void *osbuf)
       break;
     default:
         A_DPRINTF(DBG_WMI|DBG_ERROR,
-            (DBGFMT "Unknown id 0x%x\n", DBGARG, id));
+            DBGFMT, "Unknown id 0x%x\n", DBGARG, id);
         wmip->wmi_stats.cmd_id_err++;
         status = A_ERROR;
         break;
@@ -590,7 +591,7 @@ wmi_control_rx_xtnd(struct wmi_t *wmip, QOSAL_UINT8 devId, void *osbuf)
 A_STATUS
 wmi_control_rx(struct wmi_t *wmip, void *osbuf)
 {
-  // printf("wmi_control_rx.\n");
+  // A_PRINTF("wmi_control_rx.\n");
     WMI_CMD_HDR *cmd;
     QOSAL_UINT16 id;
     QOSAL_UINT8 *datap;
@@ -625,7 +626,7 @@ wmi_control_rx(struct wmi_t *wmip, void *osbuf)
     A_ASSERT(osbuf != NULL);
     if (A_NETBUF_LEN(osbuf) < sizeof(WMI_CMD_HDR)) {
         A_NETBUF_FREE(osbuf);
-        A_DPRINTF(DBG_WMI, (DBGFMT "bad packet 1\n", DBGARG));
+        A_DPRINTF(DBG_WMI, DBGFMT, "bad packet 1\n", DBGARG);
         wmip->wmi_stats.cmd_len_err++;
         return A_ERROR;
     }
@@ -638,7 +639,7 @@ wmi_control_rx(struct wmi_t *wmip, void *osbuf)
 
     if (A_NETBUF_PULL(osbuf, sizeof(WMI_CMD_HDR)) != A_OK) {
         A_NETBUF_FREE(osbuf);
-        A_DPRINTF(DBG_WMI, (DBGFMT "bad packet 2\n", DBGARG));
+        A_DPRINTF(DBG_WMI, DBGFMT, "bad packet 2\n", DBGARG);
         wmip->wmi_stats.cmd_len_err++;
         return A_ERROR;
     }
@@ -652,7 +653,7 @@ wmi_control_rx(struct wmi_t *wmip, void *osbuf)
     }
 
 #ifdef DEBUG
-    printf("wmi_control_rx 0x%04X\n", id);
+    A_PRINTF("wmi_control_rx 0x%04X \n", id);
 #endif
 
     switch (id) {
@@ -672,7 +673,7 @@ wmi_control_rx(struct wmi_t *wmip, void *osbuf)
 	break;
     case (WMI_GET_COUNTRY_CODE_REPLY_EVENTID):
 	   {
-              //   printf("wmi code reply.\n");
+              //   A_PRINTF("wmi code reply.\n");
 		 A_WMI_GET_COUNTRY_CODE_REPLY(wmip->wmi_devt, datap, len);
            };
 	break;
@@ -717,7 +718,7 @@ wmi_control_rx(struct wmi_t *wmip, void *osbuf)
     	}
         break;
     case (WMI_BSSINFO_EVENTID):
-        A_DPRINTF(DBG_WMI, (DBGFMT "WMI_BSSINFO_EVENTID\n", DBGARG));
+        A_DPRINTF(DBG_WMI, DBGFMT, "WMI_BSSINFO_EVENTID\n", DBGARG);
         {
             /*
              * convert WMI_BSS_INFO_HDR2 to WMI_BSS_INFO_HDR
@@ -870,8 +871,7 @@ wmi_control_rx(struct wmi_t *wmip, void *osbuf)
           	
     default:
        if(A_OK != (status = A_WMI_EVENT(id, wmip->wmi_devt, datap, len, osbuf))) {
-         A_DPRINTF(DBG_WMI|DBG_ERROR,
-            (DBGFMT "Unknown id 0x%x\n", DBGARG, id));
+         A_DPRINTF(DBG_WMI|DBG_ERROR, DBGFMT, "Unknown id 0x%x\n", DBGARG, id);
          wmip->wmi_stats.cmd_id_err++;
          status = A_ERROR;
       }
@@ -902,7 +902,7 @@ wmi_errorEvent_rx(struct wmi_t *wmip, QOSAL_UINT8 devId, QOSAL_UINT8 *datap, int
 	UNUSED_ARGUMENT(len);
     UNUSED_ARGUMENT(devId);
     ev = (WMI_CMD_ERROR_EVENT *)datap;
-    AR_DEBUG_PRINTF(ATH_DEBUG_WMI, ("Programming Error: cmd=%d ", ev->commandId));
+    AR_DEBUG_PRINTF(ATH_DEBUG_WMI, "Programming Error: cmd=%d ", ev->commandId);
     switch (ev->errorCode) {
     case (INVALID_PARAM):
         AR_DEBUG_PRINTF(ATH_DEBUG_WMI, ("Illegal Parameter\n"));
@@ -945,7 +945,7 @@ wmi_cmd_send(struct wmi_t *wmip, void *osbuf, WMI_COMMAND_ID cmdId,
 #if 0
          WMI_SOCKET_CMD *cmd;
 	cmd = (WMI_SOCKET_CMD *)A_NETBUF_DATA(osbuf);
-	printf("cmd type is %d.\n",cmd->cmd_type);    
+	A_PRINTF("cmd type is %d.\n",cmd->cmd_type);    
  #endif
 
  #if WLAN_CONFIG_ENABLE_WMI_SYNC
@@ -970,7 +970,7 @@ wmi_cmd_send(struct wmi_t *wmip, void *osbuf, WMI_COMMAND_ID cmdId,
     cHdr->info1 = A_CPU2LE16(cHdr->info1); // added for virtual interface
 
 #ifdef DEBUG
-    printf("wmi_control_tx 0x%04X\n", cHdr->commandId );
+    A_PRINTF("wmi_control_tx 0x%04X\n", cHdr->commandId);
 #endif
 
     A_WMI_CONTROL_TX(wmip->wmi_devt, osbuf, eid);

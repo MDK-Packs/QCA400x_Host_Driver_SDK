@@ -469,7 +469,7 @@ Api_HostDsetCreateEvent(QOSAL_VOID *pCxt, QOSAL_UINT8 devId, QOSAL_UINT8 *datap,
 
     WMI_HOST_DSET_CREATE_EVENT  *pDsetEvent = (WMI_HOST_DSET_CREATE_EVENT *)datap;
 	pHost = dset_get(pDsetEvent->dset_id, pDsetEvent->length);   
-    printf("dset create  id=%d  length=%d\n", pDsetEvent->dset_id, pDsetEvent->length);
+    A_PRINTF("dset create  id=%d  length=%d\n", pDsetEvent->dset_id, pDsetEvent->length);
 
 /*
  *  respose KF dset create request
@@ -506,7 +506,7 @@ Api_HostDsetWriteEvent(QOSAL_VOID *pCxt, QOSAL_UINT8 devId, QOSAL_UINT8 *datap, 
     if (pDset == NULL)
         return;
 
-    printf("dset write  id=%d  offset:%d  length=%d\n", pDsetEvent->dset_id, pDsetEvent->offset, pDsetEvent->length);
+    A_PRINTF("dset write  id=%d  offset:%d  length=%d\n", pDsetEvent->dset_id, pDsetEvent->offset, pDsetEvent->length);
     dset_write(pDset, pDsetEvent->data, pDsetEvent->offset, pDsetEvent->length);
 
 /*
@@ -543,7 +543,7 @@ Api_HostDsetReadbackEvent(QOSAL_VOID *pCxt, QOSAL_UINT8 devId, QOSAL_UINT8 *data
     WMI_HOST_DSET_READBACK_EVENT  *pDsetEvent = (WMI_HOST_DSET_READBACK_EVENT *)datap;
 
     msgLength = sizeof(WMI_HOST_DSET_READBACK_CMD) - sizeof(QOSAL_UINT8);
-    printf("dset id=%d\n", pDsetEvent->dset_id);
+    A_PRINTF("dset id=%d\n", pDsetEvent->dset_id);
 
     pDset = dset_find(pDsetEvent->dset_id);
     if (IS_STRRCL_DSET(pDsetEvent->dset_id))
@@ -646,7 +646,7 @@ Api_HostDsetReadEvent(QOSAL_VOID *pCxt, QOSAL_UINT8 devId, QOSAL_UINT8 *datap, Q
     p->length = A_CPU2LE32(dset_length);
     A_MEMCPY(&p->data[0], strrclData, dset_length);
 
-    printf("[%02x][%02x][%02x][%02x] [%02x][%02x]\n", strrclData[0], strrclData[1], strrclData[2], strrclData[3], strrclData[4], strrclData[5]);
+    A_PRINTF("[%02x][%02x][%02x][%02x] [%02x][%02x]\n", strrclData[0], strrclData[1], strrclData[2], strrclData[3], strrclData[4], strrclData[5]);
 
     /* here we append the payload to the msg rather than copy it. this is a
      * memory and CPU optimization as the payload can be very large.
@@ -668,7 +668,7 @@ Api_dset_read_event(A_DRIVER_CONTEXT *pDCxt, HOST_DSET_HANDLE *pDsetHandle, WMI_
 
     if (pRespRead->status == 0)
     {
-		printf("read off:%d len:%d\n", pRespRead->offset, pRespRead->length);
+		A_PRINTF("read off:%d len:%d\n", pRespRead->offset, pRespRead->length);
 
 		if (offset + length > pDsetHandle->offset + pDsetHandle->length)
 			length = pDsetHandle->offset + pDsetHandle->length - offset;
@@ -681,7 +681,7 @@ Api_dset_read_event(A_DRIVER_CONTEXT *pDCxt, HOST_DSET_HANDLE *pDsetHandle, WMI_
 			return;
     }
 
-	printf("read done\n");
+	A_PRINTF("read done\n");
 
     if (pDsetHandle->cb != NULL)
 		pDsetHandle->cb(pRespRead->status, pDsetHandle->cb_args);
@@ -696,7 +696,7 @@ Api_dset_write_event(A_DRIVER_CONTEXT *pDCxt, HOST_DSET_HANDLE *pDsetHandle, WMI
     length = pRespRead->length;
     offset = pRespRead->offset;
 
-	printf("read off:%d len:%d\n", pRespRead->offset, pRespRead->length);
+	A_PRINTF("read off:%d len:%d\n", pRespRead->offset, pRespRead->length);
 
 	if (offset + length > pDsetHandle->offset + pDsetHandle->length)
         length = pDsetHandle->offset + pDsetHandle->length - offset;
@@ -708,7 +708,7 @@ Api_dset_write_event(A_DRIVER_CONTEXT *pDCxt, HOST_DSET_HANDLE *pDsetHandle, WMI
     if (pDsetHandle->left_len != 0)
 		return;
 
-	printf("write done\n");
+	A_PRINTF("write done\n");
 
     if (pDsetHandle->cb != NULL)
 		pDsetHandle->cb(pRespRead->status, pDsetHandle->cb_args);
@@ -724,7 +724,7 @@ Api_DsetOPEvent(QOSAL_VOID *pCxt, QOSAL_UINT8 devId, QOSAL_UINT8 *datap, QOSAL_I
 	} *pCmd;
 	HOST_DSET_HANDLE *pDsetHandle;
 
-	printf("dset op event\n");
+	A_PRINTF("dset op event\n");
 
     WMI_DSET_OP_EVENT  *pDsetOPEvent = (WMI_DSET_OP_EVENT *)datap;
 
@@ -741,7 +741,7 @@ Api_DsetOPEvent(QOSAL_VOID *pCxt, QOSAL_UINT8 devId, QOSAL_UINT8 *datap, QOSAL_I
 		WMI_DSET_OP_CREATE_EVENT  *pCreateEvent;
 		pCreateEvent = (WMI_DSET_OP_CREATE_EVENT *)pDsetOPEvent->data;
 
-		printf("create return: %d\n", pCreateEvent->status);
+		A_PRINTF("create return: %d\n", pCreateEvent->status);
     	if (pDsetHandle->cb != NULL)
 			pDsetHandle->cb(pCreateEvent->status, pDsetHandle->cb_args);
 
@@ -754,7 +754,7 @@ Api_DsetOPEvent(QOSAL_VOID *pCxt, QOSAL_UINT8 devId, QOSAL_UINT8 *datap, QOSAL_I
 		WMI_DSET_OP_CREATE_EVENT  *pCreateEvent;
 		pCreateEvent = (WMI_DSET_OP_CREATE_EVENT *)pDsetOPEvent->data;
 
-		printf("open return: %d\n", pCreateEvent->status);
+		A_PRINTF("open return: %d\n", pCreateEvent->status);
     	if (pDsetHandle->cb != NULL)
 			pDsetHandle->cb(pCreateEvent->status, pDsetHandle->cb_args);
 
@@ -778,7 +778,7 @@ Api_DsetOPEvent(QOSAL_VOID *pCxt, QOSAL_UINT8 devId, QOSAL_UINT8 *datap, QOSAL_I
 		WMI_DSET_OP_CREATE_EVENT  *pCreateEvent;
 		pCreateEvent = (WMI_DSET_OP_CREATE_EVENT *)pDsetOPEvent->data;
 
-		printf("write return: %d\n", pCreateEvent->status);
+		A_PRINTF("write return: %d\n", pCreateEvent->status);
     	if (pDsetHandle->cb != NULL)
 			pDsetHandle->cb(pCreateEvent->status, pDsetHandle->cb_args);
 
@@ -791,7 +791,7 @@ Api_DsetOPEvent(QOSAL_VOID *pCxt, QOSAL_UINT8 devId, QOSAL_UINT8 *datap, QOSAL_I
 		WMI_DSET_OP_COMMIT_EVENT  *pRespCommit;
 		pRespCommit = (WMI_DSET_OP_COMMIT_EVENT *)pDsetOPEvent->data;
 
-		printf("commit return: %d\n", pRespCommit->status);
+		A_PRINTF("commit return: %d\n", pRespCommit->status);
     	if (pDsetHandle->cb != NULL)
 			pDsetHandle->cb(pRespCommit->status, pDsetHandle->cb_args);
 
@@ -804,7 +804,7 @@ Api_DsetOPEvent(QOSAL_VOID *pCxt, QOSAL_UINT8 devId, QOSAL_UINT8 *datap, QOSAL_I
 		WMI_DSET_OP_CLOSE_EVENT  *pRespClose;
 		pRespClose = (WMI_DSET_OP_CLOSE_EVENT *)pDsetOPEvent->data;
 
-		printf("close return: %d\n", pRespClose->status);
+		A_PRINTF("close return: %d\n", pRespClose->status);
     	if (pDsetHandle->cb != NULL)
 			pDsetHandle->cb(pRespClose->status, pDsetHandle->cb_args);
 
@@ -817,7 +817,7 @@ Api_DsetOPEvent(QOSAL_VOID *pCxt, QOSAL_UINT8 devId, QOSAL_UINT8 *datap, QOSAL_I
 		WMI_DSET_OP_CREATE_EVENT  *pCreateEvent;
 		pCreateEvent = (WMI_DSET_OP_CREATE_EVENT *)pDsetOPEvent->data;
 
-		printf("size return: %d\n", pCreateEvent->status);
+		A_PRINTF("size return: %d\n", pCreateEvent->status);
     	if (pDsetHandle->cb != NULL)
 			pDsetHandle->cb(pCreateEvent->status, pDsetHandle->cb_args);
 
@@ -830,7 +830,7 @@ Api_DsetOPEvent(QOSAL_VOID *pCxt, QOSAL_UINT8 devId, QOSAL_UINT8 *datap, QOSAL_I
 		WMI_DSET_OP_CREATE_EVENT  *pCreateEvent;
 		pCreateEvent = (WMI_DSET_OP_CREATE_EVENT *)pDsetOPEvent->data;
 
-		printf("delete return: %d\n", pCreateEvent->status);
+		A_PRINTF("delete return: %d\n", pCreateEvent->status);
     	if (pDsetHandle->cb != NULL)
 			pDsetHandle->cb(pCreateEvent->status, pDsetHandle->cb_args);
 
@@ -937,7 +937,7 @@ Api_StoreRecallStartEvent(QOSAL_VOID *pCxt, QOSAL_UINT8 devId, QOSAL_UINT8 *data
 			//pDCxt->strrclCxt = strrclData;        
 			//pDCxt->strrclCxtLen = len;
 
-    printf("total = %d   buff len=%d\n", pDCxt->strrclCxtLen, pDCxt->tempStorageLength);
+    A_PRINTF("total = %d   buff len=%d\n", pDCxt->strrclCxtLen, pDCxt->tempStorageLength);
 
 			pDCxt->strrclState = STRRCL_ST_ACTIVE;    
 			/* this call should shutdown the chip and maintain that state for msec_sleep milliseconds */
@@ -1113,7 +1113,7 @@ Api_GetCountryCodeReply(QOSAL_VOID *pCxt,QOSAL_UINT8 *datap, QOSAL_UINT32 len)
     WMI_GET_COUNTRY_CODE_REPLY *pReply = (WMI_GET_COUNTRY_CODE_REPLY *) datap;
     pDCxt->countryCodeValid = A_TRUE;    
     A_MEMCPY(pDCxt->raw_countryCode, pReply->country_code, 3);
-    printf("code is %c , %c.\n",pDCxt->raw_countryCode[0],pDCxt->raw_countryCode[1]);
+    A_PRINTF("code is %c , %c.\n",pDCxt->raw_countryCode[0],pDCxt->raw_countryCode[1]);
     API_GET_COUNTRY_CODE_REPLY(pCxt, datap, len);
 }
 /* GetSetParamReply - recv param set ack from the device

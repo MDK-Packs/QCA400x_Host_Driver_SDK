@@ -35,6 +35,7 @@
 #include <atheros_wifi_internal.h>
 #include <atheros_stack_offload.h>
 #include <common_stack_offload.h>
+#include <stdio.h>
 
 
 QOSAL_CONST QOSAL_UINT8 max_performance_power_param = MAX_PERF_POWER;
@@ -131,7 +132,7 @@ Api_InitFinish(QOSAL_VOID *pCxt)
         
 //        Api_BootProfile(pCxt, BOOT_PROFILE_WMI_READY);       
         
-        //printf("%d\r\n", pDCxt->wmiReady);
+        A_PRINTF("%d\r\n", pDCxt->wmiReady);
         if(pDCxt->wmiReady != A_TRUE)
         {            
             ret = A_ERROR;

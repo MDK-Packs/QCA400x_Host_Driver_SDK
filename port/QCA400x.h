@@ -8,6 +8,7 @@
 // Joined multicast groups
 typedef struct _mcb_struct {
   uint8_t GROUP[6];
+  uint8_t reserved[2];
   uint32_t HASH;
   struct _mcb_struct *NEXT;
 } MCB_STRUCT, *MCB_STRUCT_PTR;
@@ -21,6 +22,7 @@ typedef void (*FrameReceived)(A_NETBUF *a_netbuf_ptr);
 typedef struct _QCA400x_WiFi {
   A_CUSTOM_DRIVER_CONTEXT *MAC_CONTEXT_PTR;
   uint8_t                  ADDRESS[6];
+  uint8_t                  reserved[2];
 #if WIFI_QCA400x_MODE_PASSTHROUGH
   FrameReceived            FrameReceived_cb;
 #endif

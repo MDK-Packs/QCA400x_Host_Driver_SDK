@@ -116,7 +116,7 @@ int qcom_listen(int s,int backlog)
 
 int qcom_accept(int s, struct sockaddr* addr,int *addrlen)           
 {
-    return(t_accept(Custom_Api_GetDriverCxt(0), s, addr, *addrlen));
+    return(t_accept(Custom_Api_GetDriverCxt(0), s, addr, (unsigned short *)addrlen));
 }
  
 int qcom_setsockopt(int s, int level,int name,void* arg,int arglen)
@@ -1091,25 +1091,25 @@ A_STATUS qcom_set_country_code(A_UINT8 device_id, A_UINT8* countryCode)
        inout_param.data = (A_UINT8*)&data;
 	
       if(custom_qapi(device_id, ATH_PROGRAM_COUNTRY_CODE, &inout_param) != A_OK){
-        	printf("countryCode PROGRAM ERROR: unknown driver error\n");
+        	A_PRINTF("countryCode PROGRAM ERROR: unknown driver error\n");
         	return A_ERROR;	
        }else{
     	
     	switch(data.result)
     	{
     	case ATH_PROGRAM_COUNTRY_CODE_RESULT_DRIVER_FAILED :
-    		printf("COUNTRY_CODE PROGRAM ERROR: the driver was unable to complete the request.\n");
+    		A_PRINTF("COUNTRY_CODE PROGRAM ERROR: the driver was unable to complete the request.\n");
     	break;
     	case ATH_PROGRAM_COUNTRY_CODE_RESULT_SUCCESS :
-    		printf("COUNTRY_CODE PROGRAM SUCCESS.\n");
+    		A_PRINTF("COUNTRY_CODE PROGRAM SUCCESS.\n");
     	break;
     	case ATH_PROGRAM_COUNTRY_CODE_RESULT_DEV_DENIED :
-    		printf("COUNTRY_CODE PROGRAM ERROR: the firmware failed to program the country_code.\n");
-    		printf(" possibly the same COUNTRY_CODEis already programmed.\n");
+    		A_PRINTF("COUNTRY_CODE PROGRAM ERROR: the firmware failed to program the country_code.\n");
+    		A_PRINTF(" possibly the same COUNTRY_CODEis already programmed.\n");
     	break;
     	case ATH_PROGRAM_COUNTRY_CODE_RESULT_DEV_FAILED :
     	default:
-    		printf("COUNTRY_CODE PROGRAM ERROR: Device unknown failure.\n");
+    		A_PRINTF("COUNTRY_CODE PROGRAM ERROR: Device unknown failure.\n");
     	break;
     	}
     }
@@ -1440,7 +1440,7 @@ A_STATUS qcom_sec_set_pmk(A_UINT8 device_id, A_CHAR *pmk)
         val = Util_Ascii2Hex(pmk[j]);
         if(val == 0xff)
         {
-                printf("Invalid character\n");
+                A_PRINTF("Invalid character\n");
                 return A_ERROR;
         }
         else
@@ -1688,7 +1688,7 @@ A_STATUS qcom_param_set(A_UINT8 device_id,A_UINT16 grp_id,A_UINT16 param_id,void
 
     if(!cmd)
     {
-        printf("malloc fail\n");
+        A_PRINTF("malloc fail\n");
         return A_ERROR;
     }
     cmd->length = cmd_length;
@@ -2560,7 +2560,7 @@ A_STATUS qcom_set_appie(QOSAL_UINT8 device_id, QOSAL_UINT8 mgmtType, QOSAL_UINT8
 
 	if(param.ieLen > ATH_MAX_IE_LEN)
     {
-        printf("Application-specified IE length exceeds Maximum value\n");
+        A_PRINTF("Application-specified IE length exceeds Maximum value\n");
         return A_ERROR;
     }
 

@@ -18,7 +18,7 @@
  * 3. This notice may not be removed or altered from any source distribution.
  *
  *
- * $Date:        14. February 2019
+ * $Date:        10. December 2019
  * $Revision:    V1.0
  *
  * Project:      Hardware specific implementation for 
@@ -26,8 +26,11 @@
  * -------------------------------------------------------------------------- */
 
 #include <stdbool.h>
-
 #include "QCA400x.h"
+// Add device specific include files here
+// <code WiFi_QCA400x_include_files>
+
+// </code>
 
 extern QCA400x_WiFi wifiDev;
 extern void WiFi_QCA400x_Pin_INTR_cb (QCA400x_WiFi *pDev);
@@ -41,11 +44,14 @@ extern void WiFi_QCA400x_Pin_INTR_cb (QCA400x_WiFi *pDev);
   \return      none
 */
 void WiFi_QCA400x_Pin_PWDN (bool pwdn) {
+  // Add code for driving PWDN pin here
+  // <code WiFi_QCA400x_Pin_PWDN>
   if (pwdn == true) {
     // Add code for driving PWDN pin to high state
   } else {
     // Add code for driving PWDN pin to low state
   }
+  // </code>
 }
 
 /**

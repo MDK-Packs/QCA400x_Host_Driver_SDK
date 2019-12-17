@@ -23,12 +23,15 @@
 #ifndef _A_DEBUG_H_
 #define _A_DEBUG_H_
 
+#include <stdio.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
 
+#define _A_FUNCNAME_                           __FUNCTION__
 #define A_REGISTER_MODULE_DEBUG_INFO(mod)
-#define AR_DEBUG_PRINTF(mask, args) 
+#define AR_DEBUG_PRINTF(mask, args...)         A_PRINTF(args)
 
 #ifdef __cplusplus
 }

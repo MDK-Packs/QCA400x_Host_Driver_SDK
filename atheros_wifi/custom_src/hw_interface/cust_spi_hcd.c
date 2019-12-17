@@ -227,7 +227,7 @@ Custom_HW_Init(QOSAL_VOID *pCxt)
     if (SPI_semaphore != NULL) {
       pDCxt->spi_hcd.PowerUpDelay = 1;
       pDCxt->spi_hcd.SpiHWCapabilitiesFlags = (HW_SPI_FRAME_WIDTH_8 | HW_SPI_NO_DMA | HW_SPI_INT_EDGE_DETECT);
-      pDCxt->spi_hcd.OperationalClock = 1000000;
+      pDCxt->spi_hcd.OperationalClock = 2000000;
     
       ret = SPIdrv->Initialize(SPI_Callback);
       if (ret == ARM_DRIVER_OK) {
@@ -239,7 +239,7 @@ Custom_HW_Init(QOSAL_VOID *pCxt)
                                ARM_SPI_DATA_BITS(8)|
                                ARM_SPI_MSB_LSB     |
                                ARM_SPI_SS_MASTER_HW_OUTPUT,
-                               1000000);
+                               2000000);
      }
      if (ret == ARM_DRIVER_OK) {
          status = A_OK;

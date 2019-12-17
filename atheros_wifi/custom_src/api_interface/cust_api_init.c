@@ -25,6 +25,7 @@
 #include "a_osapi.h"
 #include "QCA400x.h"
 #include "common_api.h"
+#include <stdio.h>
 
 void *p_Global_Cxt = NULL;
 
@@ -170,7 +171,7 @@ static int32_t Custom_Api_Initialize(QCA400x_WiFi * pDev)
         }
     }
    
-#if 0
+#if 1
 if(g_totAlloc){
     A_PRINTF("init alloc: %d\n", g_totAlloc);	
     //for more information one can implement _mem_get_free() to 

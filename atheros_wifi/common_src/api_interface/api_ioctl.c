@@ -88,7 +88,7 @@ Program_CountryCode(QOSAL_VOID *pCxt)
 			ptr_country_code[0] = 0;
 			// the first byte is used to store the result, the rest three bytes are used to store countrycode
 			A_MEMCPY(&ptr_country_code[1], &countryCode_storge[1], 3);    
-			printf("ptr_country_code is %c, %c.\n",ptr_country_code[1],ptr_country_code[2]);
+			A_PRINTF("ptr_country_code is %c, %c.\n",ptr_country_code[1],ptr_country_code[2]);
 			//ATH_SET_PIO_EXTERNAL_WRITE_OPERATION(pReq, SCRATCH_ADDRESS, A_TRUE, sizeof(QOSAL_UINT32));
                     ATH_SET_PIO_EXTERNAL_WRITE_OPERATION(pReq,SCRATCH_ADDRESS, A_TRUE, sizeof(QOSAL_UINT32));
 
@@ -123,7 +123,7 @@ Program_CountryCode(QOSAL_VOID *pCxt)
 				}
 				// result from target is stored in ptr_country_code
 				if((ptr_country_code[0] != 0)){
-                                  printf("ptr_country_code break;.\n");
+                                  A_PRINTF("ptr_country_code break;.\n");
 					break; /* done - exit loop */
 				}                   
                         }
@@ -143,7 +143,7 @@ Program_CountryCode(QOSAL_VOID *pCxt)
 	}else{
 		countryCode_storge[0] = 0;
 	}
-	printf("target result is %c,%d.\n",ptr_country_code[0],ptr_country_code[0]);
+	A_PRINTF("target result is %c,%d.\n",ptr_country_code[0],ptr_country_code[0]);
 	status = A_OK;
 	pDCxt->asynchRequest = NULL;
 //	pDCxt->macProgramming = A_FALSE;
@@ -179,7 +179,7 @@ Api_ProgramCountryCode(QOSAL_VOID *pCxt, QOSAL_UINT8* country_code, QOSAL_UINT16
 		//A_MEMCPY(pDCxt->conn[pDCxt->devId].reqBssid, country_code, 3);
              A_MEMCPY(&countryCode_storge[1], country_code, 3);
 		
-		printf("api_ioctl countryCode_storge is %c,%c.\n",countryCode_storge[1],countryCode_storge[2]);
+		A_PRINTF("api_ioctl countryCode_storge is %c,%c.\n",countryCode_storge[1],countryCode_storge[2]);
 		pDCxt->asynchRequest =Program_CountryCode;
 		DRIVER_WAKE_DRIVER(pCxt);
 		DRIVER_WAIT_FOR_CONDITION(pCxt, &countryCodeProgram, A_FALSE, 5000); 
@@ -297,7 +297,7 @@ program_mac_addr(QOSAL_VOID *pCxt)
 	        	if(A_OK != (status = Hcd_DoPioExternalAccess(pCxt, pReq))){
 					A_ASSERT(0);
 				}
-				printf("ptr_mac_word[1] is %c.\n",ptr_mac_word[1]);
+				A_PRINTF("ptr_mac_word[1] is %c.\n",ptr_mac_word[1]);
 				if(ptr_mac_word[1] != 0){
 					break; /* done - exit loop */
 				}
@@ -884,14 +884,14 @@ Api_SetPowerMode(QOSAL_VOID *pCxt,POWER_MODE *app_setting)
     if((app_setting->pwr_mode == REC_POWER) && (pDCxt->pwrStateSetting == 0x00)){
         pDCxt->userPwrMode = REC_POWER; 
     }
-    printf("Power Mode : %x,%d,%d \n",pDCxt->pwrStateSetting,app_setting->pwr_mode,app_setting->pwr_module);
+    A_PRINTF("Power Mode : %x,%d,%d \n",pDCxt->pwrStateSetting,app_setting->pwr_mode,app_setting->pwr_module);
     if(A_OK != wmi_cmd_start(pDCxt->pWmiCxt, &pDCxt->userPwrMode, WMI_SET_POWER_MODE_CMDID, sizeof(WMI_POWER_MODE_CMD)))
     {
         return A_ERROR;
     }
     
     if((app_setting->pwr_mode == REC_POWER) && pDCxt->userPwrMode == MAX_PERF_POWER){
-        printf("Device will remain MAX_PERF \n");
+        A_PRINTF("Device will remain MAX_PERF \n");
     }
     return A_OK;
 }

@@ -35,7 +35,7 @@
 #include "AR6002/hw2.0/hw/mbox_host_reg.h"
 #include <wlan_api.h>
 #include "atheros_wifi_api.h"
-
+#include <stdio.h>
 
 #define CMD_ADDR_READ        (1 << 15)    
 #define CMD_ADDRESS_INTERNAL (1 << 14)
@@ -1132,7 +1132,7 @@ while(i<50000){
             /* save this off for watermark level calculations */
         pDCxt->spi_hcd.MaxWriteBufferSpace = pDCxt->spi_hcd.WriteBufferSpace;
   
-        //printf("%d\r\n", pDCxt->spi_hcd.MaxWriteBufferSpace);
+        A_PRINTF("%d\r\n", pDCxt->spi_hcd.MaxWriteBufferSpace);
         /* NOTE: if this assert fails it suggests that SPI communication with the WIFI device
          * 	is not functioning. Perhaps the 2 chips are not connected. */
         A_ASSERT(pDCxt->spi_hcd.MaxWriteBufferSpace == EXPECTED_MAX_WRITE_BUFFER_SPACE);

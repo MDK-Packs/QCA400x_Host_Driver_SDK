@@ -72,7 +72,7 @@ QOSAL_VOID a_rxbuf_enqueue(A_NETBUF_QUEUE_T *q, QOSAL_VOID *pReq)
     }
     else
     {
-//       printf("wrong\n");
+//       A_PRINTF("wrong\n");
     }
 }
 

@@ -291,7 +291,7 @@ A_STATUS Api_SockResponseEventRx(QOSAL_VOID *pCxt, QOSAL_UINT8 devId, QOSAL_UINT
             
 #if T_SELECT_VER1
 	    //Asynchronous sock_close event. 
-	    //printf("Asynch SOCK Close for socket index %d\n", index);
+	    //A_PRINTF("Asynch SOCK Close for socket index %d\n", index);
 	    //SOCK_EV_MASK_SET(ath_sock_context[index], SOCK_CLOSE);
 	    UNBLOCK_SELECT(pCxt);
 #endif //T_SELECT_VER1
@@ -471,7 +471,7 @@ A_STATUS Api_SockResponseEventRx(QOSAL_VOID *pCxt, QOSAL_UINT8 devId, QOSAL_UINT
             unblock_flag=1;
             freeBuf = 0;
         }
-        //printf("Received http client resp :%d req %x\n", ath_sock_context[index]->result, ath_sock_context[index]->pReq);
+        //A_PRINTF("Received http client resp :%d req %x\n", ath_sock_context[index]->result, ath_sock_context[index]->pReq);
         break;
 #endif /* ENABLE_HTTP_CLIENT */
     case SOCK_DNC_CMD:
@@ -529,7 +529,7 @@ A_STATUS Api_SockResponseEventRx(QOSAL_VOID *pCxt, QOSAL_UINT8 devId, QOSAL_UINT
         break;
     case SOCK_IP_SNTP_GET_TIME:
         index = GLOBAL_SOCK_INDEX;
-        //printf("resp from sntp \r\n");
+        //A_PRINTF("resp from sntp \r\n");
         /*Check if a socket is waiting on the response*/
         if(SOCK_EV_MASK_TEST(ath_sock_context[index], resp_type))
         {
@@ -989,10 +989,14 @@ QOSAL_INT32 Api_connect(QOSAL_VOID *pCxt, QOSAL_UINT32 handle, QOSAL_VOID* name,
     
         do{
             if(BLOCK(pCxt, ath_sock_context[index], COMMAND_BLOCK_TIMEOUT, RX_DIRECTION) != A_OK){
+                result = A_ERROR;
                 A_ASSERT(0);
+                break;
             }      
         }while(SOCK_EV_MASK_TEST(ath_sock_context[index], SOCK_CONNECT));
-        result = ath_sock_context[index]->result;
+        if(result != A_ERROR){
+            result = ath_sock_context[index]->result;
+        }
     }while(0);
     
     return result;
@@ -2342,7 +2346,7 @@ QOSAL_INT32 Api_httpc_method(QOSAL_VOID* pCxt, QOSAL_UINT32 command, QOSAL_UINT8
     if((ath_sock_context[index]->result != A_ERROR) && (output != NULL))
     {
         *output = ath_sock_context[index]->data;
-       // printf("Adding Q %p %p\n", ath_sock_context[index]->pReq, ath_sock_context[index]->data);
+       // A_PRINTF("Adding Q %p %p\n", ath_sock_context[index]->pReq, ath_sock_context[index]->data);
         A_NETBUF_ENQUEUE(&zero_copy_free_queue, ath_sock_context[index]->pReq);
     }
     else
@@ -2381,7 +2385,7 @@ QOSAL_INT32 Api_ip_resolve_host_name(QOSAL_VOID *pCxt,DNC_CFG_CMD *DncCfg,DNC_RE
 
     do{
         if(BLOCK(pCxt, ath_sock_context[index], dns_block_time, RX_DIRECTION) != A_OK){
-            //printf("dnsclient timed out \r\n");
+            //A_PRINTF("dnsclient timed out \r\n");
             return -1;
         }
     }while(SOCK_EV_MASK_TEST(ath_sock_context[index], SOCK_DNC_CMD));
@@ -2537,7 +2541,7 @@ QOSAL_INT32 Api_ipdns(QOSAL_VOID *pCxt,QOSAL_INT32 command,QOSAL_CHAR *domain_na
     memset(&sock_ip_dns,0,sizeof(SOCK_IP_DNS_T));
     strcpy(sock_ip_dns.domain_name,domain_name);  
     sock_ip_dns.command = A_CPU2LE32(command);
-     //printf("api_dns addr type %d \r\n",dnsaddr->type);    
+     //A_PRINTF("api_dns addr type %d \r\n",dnsaddr->type);    
      if(dnsaddr->type == ATH_AF_INET)
     {	    
       sock_ip_dns.addr.type = ATH_AF_INET;
@@ -3423,7 +3427,7 @@ QOSAL_VOID clear_socket_context(QOSAL_INT32 index)
 	  This may happen when a command response comes later than Timeout period*/
 	if(ath_sock_context[index]->data)
 	{
-		printf("%s index:%d data:%p\n", __func__, index, ath_sock_context[index]->data);
+		A_PRINTF("%s index:%d data:%p\n", __func__, index, ath_sock_context[index]->data);
 		A_FREE(ath_sock_context[index]->data,MALLOC_ID_CONTEXT);
 		ath_sock_context[index]->data = NULL;	
 	}
