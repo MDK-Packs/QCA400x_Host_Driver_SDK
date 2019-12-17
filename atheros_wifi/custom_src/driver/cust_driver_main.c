@@ -70,16 +70,17 @@ Custom_FreeRxRequest(A_NATIVE_NETBUF *native_ptr)
 {
 #if (!ENABLE_STACK_OFFLOAD)      
 #if DRIVER_CONFIG_IMPLEMENT_RX_FREE_QUEUE    
+    A_NETBUF* a_netbuf_ptr = (A_NETBUF*)native_ptr;
     A_CUSTOM_DRIVER_CONTEXT *pCxt = (A_CUSTOM_DRIVER_CONTEXT *)a_netbuf_ptr->native.PRIVATE;
     	
-	if(_mem_get_type(a_netbuf_ptr) == MEM_TYPE_ATHEROS_PERSIST_RX_PCB) {    
+//	if(_mem_get_type(a_netbuf_ptr) == MEM_TYPE_ATHEROS_PERSIST_RX_PCB) {    
 	    RXBUFFER_ACCESS_ACQUIRE((QOSAL_VOID*)pCxt);	    
 	    A_NETBUF_ENQUEUE(&(GET_DRIVER_COMMON(pCxt)->rxFreeQueue), a_netbuf_ptr);			   
 	    Driver_ReportRxBuffStatus((QOSAL_VOID*)pCxt, A_TRUE);	    
 	    RXBUFFER_ACCESS_RELEASE((QOSAL_VOID*)pCxt);
-    }else{
-    	A_ASSERT(0);
-    }
+//    }else{
+//    	A_ASSERT(0);
+//    }
 #else
 	default_native_free_fn((A_NATIVE_NETBUF *)native_ptr);
 #endif
