@@ -30,7 +30,7 @@
 #include <driver_cxt.h>
 #include <wmi_host.h>
 
-#include "QCA400X.h"
+#include "QCA400x.h"
 
 #if ENABLE_P2P_MODE
 #include "p2p.h"
