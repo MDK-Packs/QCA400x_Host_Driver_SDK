@@ -33,6 +33,7 @@
 #include <atheros_wifi_api.h>
 #include <atheros_wifi_internal.h>
 #include <wlan_api.h>
+#include "custom_spi_api.h"
 
 A_STATUS HW_ProcessPendingInterrupts(QOSAL_VOID *pCxt)
 {
