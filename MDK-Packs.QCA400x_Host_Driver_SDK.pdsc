@@ -1,11 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<package schemaVersion="1.6" xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="PACK.xsd">
+<package schemaVersion="1.7.36" xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="https://raw.githubusercontent.com/Open-CMSIS-Pack/Open-CMSIS-Pack-Spec/v1.7.36/schema/PACK.xsd">
   <vendor>MDK-Packs</vendor>
   <name>QCA400x_Host_Driver_SDK</name>
   <description>Qualcomm QCA4002/4 Host Driver SDK</description>
   <!-- web download link -->
   <url>https://github.com/MDK-Packs/Pack/raw/master/QCA400x_Host_Driver_SDK/</url>
   <license>license_terms.txt</license>
+  <licenseSets>
+    <licenseSet id="all" default="true" gating="true">
+      <license title="BSD License for Qualcomm SDK" name="./License.txt"          spdx="BSD-3-Clause"/>
+      <license title="Apache 2.0 for DNS resolver"  name="./port/dns/License.txt" spdx="Apache-2.0"/>
+    </licenseSet>
+  </licenseSets>
   <releases>
     <release version="1.1.1" date="2021-03-02">
       - Added missing prototype for Custom_HW_SetClock function (by including custom_spi_api.h to hw_api.c)
